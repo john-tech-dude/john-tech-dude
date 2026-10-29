@@ -384,6 +384,12 @@ img {
   max-width: 100%;
   height: auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+}
+
+img[alt] {
+  min-height: 200px;
+  background-color: var(--stone);
 }
 
 /* 3D hover effect for images */
