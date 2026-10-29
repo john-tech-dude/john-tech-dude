@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAZUMI RONIN - The Legendary Warrior</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/idr2g0H70M_1743216759084.jpeg">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  
+  <!-- Wallet SDKs -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script src="https://unpkg.com/@solflare-wallet/sdk"></script>
+  <script src="https://unpkg.com/@wallet-standard/wallet"></script>
+  <script src="https://unpkg.com/@phantom-labs/sdk"></script>
+</head>
+
+<body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">忠</div>
+    <div class="japanese-symbol japanese-symbol-splash symbol-bottom-left-splash">誠</div>
+    <h1 class="splash-title">NAZUMI RONIN</h1>
+    <p class="splash-subtitle">Loading the path of the warrior...</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-logo">NAZUMI RONIN</div>
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item" style="--item-index: 1;"><a href="#origin" class="nav-link">Origin</a></li>
+      <li class="nav-item" style="--item-index: 2;"><a href="#training" class="nav-link">Training</a></li>
+      <li class="nav-item" style="--item-index: 3;"><a href="#awakening" class="nav-link">Awakening</a></li>
+      <li class="nav-item" style="--item-index: 4;"><a href="#enlightenment" class="nav-link">Enlightenment</a></li>
+      <li class="nav-item" style="--item-index: 5;"><a href="#roadmap" class="nav-link">Journey</a></li>
+      <li class="nav-item" style="--item-index: 6;"><a href="#community" class="nav-link">Community</a></li>
+      <li class="nav-item nav-buy-container" style="--item-index: 7;"><a href="#" id="buyButton" class="nav-buy">Buy Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- Floating Buy Button (Mobile Only) -->
+  <button class="floating-buy-btn pulse" id="floatingBuyBtn">
+    <i class="fas fa-coins"></i>
+  </button>
+
+  <!-- Dark Mode Toggle (fixed position) -->
+  <button class="dark-mode-toggle" id="darkModeToggle" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="japanese-symbol symbol-top-right">忠</div>
+      <div class="japanese-symbol symbol-bottom-left">誠</div>
+
+      <!-- Cherry blossom petals -->
+      <div class="cherry-petals">
+        <div class="petal" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="petal" style="top: 5%; left: 40%; animation-delay: 2s;"></div>
+        <div class="petal" style="top: 15%; left: 60%; animation-delay: 3.5s;"></div>
+        <div class="petal" style="top: 8%; left: 80%; animation-delay: 1s;"></div>
+        <div class="petal" style="top: 20%; left: 10%; animation-delay: 4s;"></div>
+        <div class="petal" style="top: 25%; left: 30%; animation-delay: 2.5s;"></div>
+        <div class="petal" style="top: 17%; left: 50%; animation-delay: 1.5s;"></div>
+        <div class="petal" style="top: 12%; left: 70%; animation-delay: 3s;"></div>
+        <div class="petal" style="top: 28%; left: 90%; animation-delay: 0.5s;"></div>
+        <div class="petal" style="top: 35%; left: 25%; animation-delay: 4.5s;"></div>
+        <div class="petal" style="top: 5%; left: 65%; animation-delay: 2.3s;"></div>
+        <div class="petal" style="top: 18%; left: 85%; animation-delay: 3.2s;"></div>
+      </div>
+
+      <div class="hero-character">
+        <div class="hero-character-frame">
+          <img src="https://i.imgur.com/nD9J9A7.jpg" alt="Nazumi Ronin Character" class="hero-character-img">
+        </div>
+      </div>
+
+      <div class="hero-scroll">
+        <div class="scroll-title">NAZUMI RONIN</div>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text">From the ashes of tragedy rises a warrior of honor. Orphaned by war, forged in suffering, Nazumi wields his sword with purpose.</div>
+        <div class="scroll-text">Vengeance. Redemption. Enlightenment.</div>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text">Follow the path of the ronin as he seeks meaning in a world of chaos.</div>
+      </div>
+
+      <div class="red-seal">
+        運命
+      </div>
+    </section>
+    <!-- The Hero Section -->
+
+    <!-- The Tragic Origin -->
+    <section id="origin" class="manga-section">
+      <h2 class="section-title">THE TRAGIC ORIGIN</h2>
+
+      <div class="panel-grid">
+        <div class="panel panel-md">
+          <div class="arc-header">
+            <div class="arc-number">壱</div>
+            <div class="arc-title">Village in Flames</div>
+          </div>
+
+          <div class="village-scene">
+            <img src="https://i.imgur.com/A4d1rv6.jpg" alt="Burning Village" class="village-image">
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">The peaceful village of Musouka, reduced to ashes in a single night of terror. Young Nazumi's innocence died with his family, replaced by an unquenchable thirst for justice.</div>
+          </div>
+        </div>
+
+        <div class="panel panel-sm encounter-panel">
+          <div class="action-lines lines-speed"></div>
+          <div class="emotion-indicator emotion-surprise">!</div>
+          <!-- The Tragic Origin -->
+
+          <!-- The Encounter -->
+          <div class="arc-header">
+            <div class="arc-number">弐</div>
+            <div class="arc-title">The Encounter</div>
+          </div>
+
+          <div class="encounter-image-container">
+            <img src="https://i.imgur.com/tmlEUmC.jpg" alt="Samurai Encounter" class="encounter-image">
+          </div>
+
+          <div class="encounter-text-container">
+            <div class="speech-bubble speech-left" style="margin-bottom: 0.5rem;">
+              <div class="speech-text">The enemy samurai Takashi found the child hiding in the ruins. Instead of striking him down, he saw a reflection of his own lost humanity.</div>
+            </div>
+
+            <div class="speech-bubble speech-right" style="margin-top: 0;">
+              <div class="speech-text">"I will teach you the way of the sword, young one. Not for vengeance, but for protection."</div>
+            </div>
+          </div>
+        </div>
+        <!-- The Encounter -->
+
+        <!-- The First Lesson -->
+        <div class="panel panel-sm">
+          <div class="arc-header">
+            <div class="arc-number">忍</div>
+            <div class="arc-title">The First Lesson</div>
+          </div>
+
+          <div class="speech-bubble speech-left">
+            <div class="speech-text">Under the crimson sunset, Takashi placed a wooden sword in Nazumi's trembling hands.</div>
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">"A sword is neither good nor evil. Like its wielder, it simply... is. Remember this as your first lesson."</div>
+          </div>
+
+          <div class="sound-effect sound-bottom-left">WISDOM</div>
+        </div>
+        <!-- The First Lesson -->
+
+        <!-- The Journey Begins -->
+        <div class="panel panel-sm">
+          <div class="arc-header">
+            <div class="arc-number">参</div>
+            <div class="arc-title">The Journey Begins</div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-node">
+              <div class="node-icon">始</div>
+              <div class="node-content">
+                <h3>THE DEPARTURE</h3>
+                <p>Nazumi leaves his destroyed home, following the warrior who spared his life.</p>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon">路</div>
+              <div class="node-content">
+                <h3>THE PATH</h3>
+                <p>Through mountains and valleys, the reluctant master and his young apprentice travel toward an uncertain future.</p>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon">誓</div>
+              <div class="node-content">
+                <h3>THE PROMISE</h3>
+                <p>Master Takashi makes a solemn vow: "I will forge you into a warrior who protects, not destroys. This is my atonement."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- The Journey Begins -->
+
+        <!-- The Mountain Temple -->
+        <div class="panel panel-sm zen-temple mountain-temple-panel" style="position: relative; overflow: hidden; min-height: 350px;">
+          <div class="temple-bg parallax-bg" style="
+    background-image: url('https://i.imgur.com/OB2EODq.jpg');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    transform: translateY(0);
+    z-index: 0;
+  "></div>
+
+          <div class="arc-header" style="position: relative; z-index: 2;">
+            <div class="arc-number">修</div>
+            <div class="arc-title">The Mountain Temple</div>
+          </div>
+
+          <div class="speech-bubble speech-left temple-speech" style="
+    margin: 0;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+  ">
+            <div class="speech-text">"This sacred place will be our home for many seasons. Here, you will learn not only to fight, but to understand why we fight."</div>
+          </div>
+
+
+        </div>
+        <!-- The Mountain Temple -->
+
+        <!-- The Warrior -->
+        <div class="panel panel-sm warrior-panel" style="position: relative; overflow: hidden;">
+          <!-- Background with parallax -->
+          <div class="warrior-bg" style="
+    background-image: url('https://i.imgur.com/VsnU0Lb.jpg');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    z-index: 0;
+  "></div>
+
+          <!-- Content container with proper z-index -->
+          <div style="position: relative; z-index: 2; padding-top: 180px;">
+            <div class="journey-reflection" style="
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    ">
+              <p class="reflection-text">A decade of training forged the orphan into a warrior of unparalleled skill. Yet the void left by his master's passing would lead Nazumi down an unexpected path—one that would test not only his blade, but his spirit.</p>
+            </div>
+
+            <!-- Square stamp with aspect ratio preserved using padding technique -->
+            <div class="japanese-stamp" style="
+      margin: 0 auto 1rem;
+      width: 120px;
+      max-width: 30%;
+      position: relative;
+    ">
+              <div style="padding-top: 100%; /* This maintains aspect ratio */"></div>
+              <div class="stamp-container" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      ">
+                <div class="stamp-bg"></div>
+                <div class="stamp-text"></div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- The Warrior -->
+
+        <!-- The Masterless Warrior -->
+        <div class="panel panel-sm warrior-showcase">
+          <div class="arc-header">
+            <div class="arc-number">侍</div>
+            <div class="arc-title">The Masterless Warrior</div>
+          </div>
+
+          <div class="warrior-image-container">
+            <img src="https://i.imgur.com/qdGqEx2.jpg" alt="Nazumi - A Warrior Without a Master" class="warrior-image">
+            <div class="warrior-image-overlay">
+              <span>無主</span>
+            </div>
+          </div>
+
+          <div class="warrior-caption">
+            <p>With technique forged in hardship and a spirit tempered by loss, Nazumi emerges as a ronin—bound by honor to a code without a master.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Masterless Warrior -->
+
+    <!-- The Training -->
+    <section id="training" class="manga-section">
+      <h2 class="section-title">FORGING THE WARRIOR</h2>
+      <div class="panel-grid">
+        <div class="panel panel-lg">
+          <div class="action-lines lines-speed"></div>
+          <div class="sound-effect sound-bottom-left">SLASH!</div>
+
+          <div class="arc-header">
+            <div class="arc-number">四</div>
+            <div class="arc-title">Years of Training</div>
+          </div>
+
+          <div class="character-evolution" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin: 2rem 0; flex-wrap: wrap;">
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/41jyzmZ.jpg" alt="Young Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Orphan</div>
+            </div>
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/Wy4YMbC.jpg" alt="Training Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Student</div>
+            </div>
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/P1kjylS.jpg" alt="Warrior Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Warrior</div>
+            </div>
+          </div>
+
+          <div class="speech-bubble">
+            <div class="speech-text">Through bitter winters and scorching summers, Nazumi's spirit hardened like the steel of his blade. His eyes grew cold, his strikes precise, his heart locked away.</div>
+          </div>
+        </div>
+
+        <div class="panel panel-sm">
+          <div class="emotion-indicator emotion-sadness">💧</div>
+          <div class="rain-effect"></div>
+
+          <div class="arc-header">
+            <div class="arc-number">五</div>
+            <div class="arc-title">The Masterless Path</div>
+          </div>
+
+          <div class="title-image-container">
+            <img src="https://i.imgur.com/p49CxJb.jpg" alt="Nazumi - Warrior Without a Master" class="title-image">
+          </div>
+
+          <div class="speech-bubble speech-left">
+            <div class="speech-text">"Live with honor, Nazumi. Protect... the innocent..."</div>
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">Master Takashi's last words echoed in Nazumi's mind as he buried his mentor. Now he walked the path of a ronin – masterless, purposeless, alone.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Training -->
+
+    <!-- AWAKENING section -->
+    <section id="awakening" class="manga-section">
+      <h2 class="section-title">THE AWAKENING</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md awakening-panel" style="
+      position: relative;
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      padding: 2rem;
+      ">
+          <!-- Background image with parallax effect -->
+          <div class="parallax-bg awakening-bg" style="
+          position: absolute;
+          top: -20px;
+          left: 0;
+          width: 100%;
+          height: 120%;
+          background-image: url('https://i.imgur.com/wmY44Ld.jpg');
+          background-size: cover;
+          background-position: center;
+          opacity: 0.9;
+          z-index: 0;
+          transform: translateY(0);
+      "></div>
+
+          <!-- Light overlay in light mode -->
+          <div class="awakening-overlay" style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.7);
+          z-index: 1;
+      "></div>
+
+          <!-- Japanese symbols -->
+          <div class="japanese-symbol symbol-top-right" style="
+          position: absolute;
+          top: 10%;
+          right: 10%;
+          font-size: 4rem;
+          color: var(--primary-red);
+          z-index: 2;
+          transform: rotate(15deg);
+      ">悟</div>
+
+          <div class="japanese-symbol symbol-bottom-left" style="
+          position: absolute;
+          bottom: 10%;
+          left: 10%;
+          font-size: 4rem;
+          color: var(--primary-red);
+          z-index: 2;
+          transform: rotate(-10deg);
+      ">覚</div>
+
+          <!-- Cherry blossom petals -->
+          <div class="cherry-petals" style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          pointer-events: none;
+      ">
+            <div class="petal" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+            <div class="petal" style="top: 5%; left: 40%; animation-delay: 2s;"></div>
+            <div class="petal" style="top: 15%; left: 60%; animation-delay: 3.5s;"></div>
+            <div class="petal" style="top: 8%; left: 80%; animation-delay: 1s;"></div>
+            <div class="petal" style="top: 20%; left: 10%; animation-delay: 4s;"></div>
+          </div>
+
+          <div class="action-lines lines-radial" style="z-index: 2; position: relative;"></div>
+          <div class="sound-effect sound-top-right" style="z-index: 3; position: relative;">悟り!</div>
+
+          <div class="arc-header" style="z-index: 2; position: relative; margin-bottom: 1.5rem;">
+            <div class="arc-number">六</div>
+            <div class="arc-title">Rediscovering Purpose</div>
+          </div>
+
+          <!-- Speech bubble -->
+          <div class="speech-bubble awakening-speech" style="
+          z-index: 2; 
+          position: relative; 
+          max-width: 90%;
+          margin: 0 auto 1.5rem;
+      ">
+            <div class="speech-text">In saving a child from bandits, Nazumi saw himself in the boy's frightened eyes. The walls around his heart began to crumble. "Perhaps the sword can protect as well as destroy."</div>
+          </div>
+
+          <!-- Tokenomics container -->
+          <div class="tokenomics-container awakening-tokenomics" style="
+          z-index: 2; 
+          position: relative; 
+          max-width: 95%;
+          margin: 0 auto;
+      ">
+            <h3 class="tokenomics-title">The Token's Path</h3>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Community Treasury</div>
+              <div class="distribution-value">50%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Liquidity Pool</div>
+              <div class="distribution-value">20%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Development</div>
+              <div class="distribution-value">15%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Marketing</div>
+              <div class="distribution-value">10%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Team</div>
+              <div class="distribution-value">5%</div>
+            </div>
+          </div>
+
+          <!-- Red seal -->
+          <div class="red-seal" style="
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          background-color: var(--primary-red);
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-size: 1rem;
+          bottom: 20px;
+          right: 20px;
+          transform: rotate(-15deg);
+          box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+          z-index: 3;
+      ">
+            悟空
+          </div>
+        </div>
+      </div>
+
+
+    </section>
+    <!-- The AWAKENING section -->
+
+    <!-- The Enlightenment -->
+<section id="enlightenment" class="manga-section">
+  <h2 class="section-title">THE ENLIGHTENMENT</h2>
+  <div class="panel-grid">
+    <!-- First panel (Inner Peace) with parallax scrolling -->
+    <div class="panel panel-sm zen-temple" style="position: relative; overflow: hidden;">
+      <div class="temple-bg parallax-bg" style="
+        background-image: url('https://i.imgur.com/go2g6R9.jpg');
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        z-index: 0;
+      "></div>
+      
+      <div class="arc-header" style="position: relative; z-index: 2;">
+        <div class="arc-number">七</div>
+        <div class="arc-title">Inner Peace</div>
+      </div>
+      
+      <div class="circular-panel" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 1;"></div>
+      
+      <!-- Speech bubble directly on background (no temple-content box) -->
+      <div class="speech-bubble speech-left" style="
+        margin: 0;
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        z-index: 2;
+      ">
+        <div class="speech-text">At the mountain temple, Nazumi found what his heart had sought. Not vengeance, but balance. Not power, but wisdom.</div>
+      </div>
+    </div>
+
+    <!-- Second panel (Join the Path) - unchanged -->
+    <div class="panel panel-sm">
+      <div class="emotion-indicator emotion-excitement">✨</div>
+      <div class="sound-effect sound-bottom-left">JOIN!</div>
+      <div class="arc-header">
+        <div class="arc-number">八</div>
+        <div class="arc-title">Join the Path</div>
+      </div>
+      <div class="speech-bubble speech-right">
+        <div class="speech-text">Like Nazumi, our token seeks balance in the chaotic crypto world. Join our community of warriors seeking a better path.</div>
+      </div>
+      <div class="allies-gathering">
+        <div class="ally-card">
+          <div class="ally-icon">
+            <i class="fab fa-telegram-plane" style="color: #0088cc;"></i>
+          </div>
+          <div class="ally-info">
+            <div class="ally-name">TELEGRAM</div>
+          </div>
+        </div>
+        <div class="ally-card">
+          <div class="ally-icon" style="background-color: #000;">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 50%; height: auto;">
+          </div>
+          <div class="ally-info">
+            <div class="ally-name">X</div>
+          </div>
+        </div>
+      </div>
+      <div class="japanese-stamp">
+        <div class="stamp-container">
+          <div class="stamp-bg"></div>
+          <div class="stamp-text"></div>
+        </div>
+      </div>
+      <a href="#" id="buyButtonPanel" class="btn btn-red" style="margin-top: 1.5rem;">
+        JOIN THE RONIN PATH <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- Third panel (Path of Enlightenment) - unchanged -->
+    <div class="panel panel-sm enlightened-monk">
+      <div class="arc-header">
+        <div class="arc-number">九</div>
+        <div class="arc-title">Path of Enlightenment</div>
+      </div>
+      <div class="monk-image-container">
+        <img src="https://i.imgur.com/awM1v2v.jpg" alt="Nazumi as Zen Monk" class="monk-image">
+      </div>
+      <div class="wisdom-scroll">
+        <p>In solitude, Nazumi found truth. The past was a teacher, not a burden. His sword now rests beside him, a reminder of the journey rather than a tool for vengeance.</p>
+        <span class="wisdom-signature">- Master Nazumi</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+    <!-- Third panel (Path of Enlightenment) -->
+
+    <!-- The Path Ahead (Roadmap) -->
+    <section id="roadmap" class="manga-section">
+      <h2 class="section-title">THE PATH AHEAD</h2>
+      <div class="roadmap">
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">道</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q2 2025: Genesis
+              <span class="status status-completed">COMPLETED</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Token launch on SOL blockchain</li>
+                <li>Initial liquidity pool establishment</li>
+                <li>Community building initiatives</li>
+                <li>Social media presence expansion</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">修</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q3 2025: Training Arc
+              <span class="status status-progress">IN PROGRESS</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Whitepaper v2.0 release</li>
+                <li>Strategic partnerships with aligned projects</li>
+                <li>First major exchange listing</li>
+                <li>Community governance implementation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">剣</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q4 2025: Warrior's Ascension
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>NFT collection launch</li>
+                <li>Creation of DAO treasury</li>
+                <li>Community rewards program</li>
+                <li>Major marketing campaign</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">悟</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q1 2026: Enlightenment
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Launch of Nazumi ecosystem</li>
+                <li>Decentralized application release</li>
+                <li>Cross-chain integration</li>
+                <li>Partnership with major brands</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">遺</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Beyond: Legacy
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Global adoption initiatives</li>
+                <li>Charitable foundation establishment</li>
+                <li>Advanced technological integrations</li>
+                <li>"The journey continues..."</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Path Ahead (Roadmap) -->
+
+    <!-- Community Section -->
+    <section id="community" class="manga-section community-section">
+      <h2 class="section-title">OUR COMMUNITY</h2>
+      <div class="community-intro">
+        <p>Nazumi's journey is not a solitary one. Join our growing community of warriors, each bringing unique skills and perspectives to our collective path. Together, we forge a stronger future.</p>
+      </div>
+
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/p49CxJb.jpg" alt="Sensei Khan">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Sensei Khan</h3>
+            <div class="community-role">Founder & Lead Developer</div>
+            <div class="community-bio">Former blockchain architect with 8+ years experience. Leads technical development with vision and precision.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/Wy4YMbC.jpg" alt="Sakura">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Sakura</h3>
+            <div class="community-role">Marketing Strategist</div>
+            <div class="community-bio">Marketing wizard with experience at leading crypto projects. Brings creativity and strategic thinking to every campaign.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/awM1v2v.jpg" alt="Takumi">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Takumi</h3>
+            <div class="community-role">Community Manager</div>
+            <div class="community-bio">Heart and soul of our community. Creates engaging events and ensures everyone feels welcome on the path.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-discord"></i></a>
+              <a href="#"><i class="fab fa-reddit"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/JyHxv0n.jpg" alt="Rei">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Rei</h3>
+            <div class="community-role">Financial Strategist</div>
+            <div class="community-bio">Financial expert with deep knowledge of DeFi ecosystems. Ensures project stability and sustainable growth.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-medium"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="community-join">
+        <h3>Join the Ronin Clan</h3>
+        <p>Become part of our growing community as we walk the path together.</p>
+        <div class="social-links" style="margin-top: 1.5rem;">
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 60%; height: auto;">
+          </a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+        </div>
+      </div>
+    </section>
+    <!-- Community Section -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">NAZUMI RONIN</div>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 60%; height: auto;">
+          </a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+        </div>
+
+        <div class="copyright">
+          &copy; 2025 Nazumi Ronin. All rights reserved. The path of the warrior is eternal.
+        </div>
+      </div>
+    </footer>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Buy Panel -->
+    <div class="buy-panel" id="buyPanel">
+      <div class="panel-corner corner-top-left"></div>
+      <div class="panel-corner corner-top-right"></div>
+      <div class="panel-corner corner-bottom-left"></div>
+      <div class="panel-corner corner-bottom-right"></div>
+
+      <div class="buy-panel-header">
+        <h2 class="buy-panel-title">ACQUIRE NAZUMI RONIN</h2>
+        <button class="close-btn" id="closeBuyPanel">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Contract Address -->
+      <div class="contract-address-container">
+        <span class="contract-address-label">Contract Address:</span>
+        <div class="contract-address">
+          <span>0xNazu4528...mi7892Ron</span>
+          <button class="copy-btn" id="copyAddress">
+            <i class="fa-solid fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Path to Acquisition</h3>
+        <div class="how-to-buy">
+          <h4>Step 1: Acquire SOL</h4>
+          <ul>
+            <li>Purchase SOL from a reputable exchange:</li>
+          </ul>
+          <div class="exchange-logos-container">
+            <a href="https://www.binance.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="assets/images/Binance-Icon-Logo.wine.png" alt="Binance logo">
+              </div>
+              <span>Binance</span>
+            </a>
+            <a href="https://www.coinbase.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="assets/images/Coinbase-icon-symbol-1.png" alt="Coinbase logo">
+              </div>
+              <span>Coinbase</span>
+            </a>
+            <a href="https://www.kraken.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="assets/images/kraken-logo.png" alt="Kraken logo">
+              </div>
+              <span>Kraken</span>
+            </a>
+            <a href="https://www.kucoin.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/6hy8hIL.jpg" alt="KuCoin logo">
+              </div>
+              <span>KuCoin</span>
+            </a>
+          </div>
+          <ul>
+            <li>Transfer SOL to your preferred wallet (Phantom, Solflare, or Backpack)</li>
+            <li>Reserve a small amount of SOL for transaction fees (~0.01 SOL)</li>
+          </ul>
+
+          <h4>Step 2: Connect Your Wallet</h4>
+          <ul>
+            <li>Install a compatible wallet extension</li>
+            <li>Connect your wallet to the chosen exchange</li>
+            <li>Verify the connection is secure</li>
+          </ul>
+
+          <h4>Step 3: Acquire NAZUMI</h4>
+          <ul>
+            <li>Use one of the exchanges below to swap SOL for NAZUMI</li>
+            <li>Set slippage to 1-2% to ensure transaction success</li>
+            <li>Confirm the transaction in your wallet</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Exchange Dojos</h3>
+        <div class="buy-options">
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Jupiter Swap</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/ebKfiAL.jpg" alt="Jupiter Swap logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The grand aggregator of the Solana realm. Find the best path for your token journey.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://jup.ag" target="_blank" class="btn btn-red">
+                Trade on Jupiter <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Raydium</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/th5k1tr.jpg" alt="Raydium logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The warrior's trading ground with deep liquidity pools and swift execution.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://raydium.io/swap" target="_blank" class="btn btn-red">
+                Swap on Raydium <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Pump.fun</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/0xuFyZC.jpg" alt="Pump.fun logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The birthplace of legends. Where meme tokens begin their heroic journeys.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://pump.fun" target="_blank" class="btn btn-red">
+                Buy on Pump.fun <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Warrior Wallets</h3>
+        <div class="buy-options">
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Phantom</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/D2IgwWd.png" alt="Phantom Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The phantom guardian of your digital assets. Swift, secure, and widely trusted.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://phantom.app/download" target="_blank" class="btn btn-red">
+                Download Phantom <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Solflare</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/eUK9cvW.png" alt="Solflare Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The flaring torch that illuminates the Solana path. Powerful and versatile.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://solflare.com/download" target="_blank" class="btn btn-red">
+                Download Solflare <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Backpack</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/zNlY0IQ.png" alt="Backpack Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The traveler's companion on the crypto journey. Modern, sleek, and feature-rich.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://www.backpack.app/download" target="_blank" class="btn btn-red">
+                Download Backpack <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="japanese-stamp" style="margin-top: 2rem;">
+            <div class="stamp-container">
+              <div class="stamp-bg"></div>
+              <div class="stamp-text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

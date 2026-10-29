@@ -1,0 +1,5314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAZUMI RONIN - The Legendary Warrior</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Add AOS CSS for scroll animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  
+  <!-- Add Wallet SDKs -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script src="https://unpkg.com/@solflare-wallet/sdk"></script>
+  <script src="https://unpkg.com/@wallet-standard/wallet"></script>
+  <script src="https://unpkg.com/@phantom-labs/sdk"></script>
+  
+  <style>
+    /* ----- BASE STYLES ----- */
+    :root {
+      /* Color Palette */
+      --primary-red: #9B2226;
+      --dark-red: #7B1B1F;
+      --light-red: #E5383B;
+      --navy: #2E4057;
+      --light-navy: #4D80E6;
+      --pale-blue: #A5D8FF;
+      --stone: #F6F5F0;
+      --dark-stone: #E6E5E0;
+      --ink: #2E2B2A;
+      /* Dark Mode Palette */
+      --dm-primary-red: #E5383B;
+      --dm-dark-red: #9B2226;
+      --dm-light-red: #FF6B6E;
+      --dm-navy: #121820;
+      --dm-light-navy: #2E4057;
+      --dm-pale-blue: #4D80E6;
+      --dm-stone: #121212;
+      --dm-dark-stone: #0A0A0A;
+      --dm-ink: #F5F5F5;
+      --dm-text: #E0E0E0;
+      --dm-panel: #1A1A1A;
+      --dm-border: #444444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Oswald', sans-serif;
+      background-color: var(--stone);
+      color: var(--ink);
+      line-height: 1.5;
+      overflow-x: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--dm-stone);
+      color: var(--dm-text);
+    }
+
+    /* ----- SPLASH SCREEN ----- */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--navy);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .dark-mode .splash-screen {
+      background-color: var(--dm-navy);
+    }
+
+    .splash-title {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      color: white;
+      text-shadow: 3px 3px 0 var(--primary-red);
+      margin-bottom: 3rem;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .splash-subtitle {
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    .loading-bar-container {
+      width: 80%;
+      max-width: 400px;
+      height: 20px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--primary-red);
+      position: relative;
+    }
+
+    .loading-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary-red);
+      border-radius: 8px;
+      transition: width 4s ease-in-out;
+    }
+
+    .japanese-symbol-splash {
+      position: absolute;
+      font-size: 10rem;
+      color: var(--primary-red);
+      opacity: 0.1;
+      z-index: -1;
+    }
+
+    .symbol-top-right-splash {
+      top: 10%;
+      right: 10%;
+    }
+
+    .symbol-bottom-left-splash {
+      bottom: 10%;
+      left: 10%;
+    }
+
+    /* ----- FLOATING ACTION BUTTON ----- */
+    .floating-buy-btn {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-red);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      /* Hidden by default, shown only on mobile */
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      transform: scale(0);
+      animation: bounceIn 0.5s cubic-bezier(0.28, 0.84, 0.42, 1) forwards 4s;
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0);
+      }
+
+      60% {
+        transform: scale(1.1);
+      }
+
+      80% {
+        transform: scale(0.9);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .floating-buy-btn:hover,
+    .floating-buy-btn:focus {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .floating-buy-btn:active {
+      transform: translateY(0) scale(0.95);
+    }
+
+    .dark-mode .floating-buy-btn {
+      background-color: var(--dm-primary-red);
+    }
+
+    /* Pulse animation for the floating button */
+    .pulse {
+      animation: pulse-animation 2s infinite;
+    }
+
+    @keyframes pulse-animation {
+      0% {
+        box-shadow: 0 0 0 0 rgba(155, 34, 38, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 15px rgba(155, 34, 38, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(155, 34, 38, 0);
+      }
+    }
+
+    /* Dark Mode Styles */
+    .dark-mode h1,
+    .dark-mode h2,
+    .dark-mode h3,
+    .dark-mode h4,
+    .dark-mode h5 {
+      color: var(--dm-light-red);
+    }
+
+    .dark-mode .panel {
+      background-color: var(--dm-panel);
+      border-color: var(--dm-border);
+      box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .nav {
+      background-color: var(--dm-navy);
+    }
+
+    .dark-mode .hero-scroll,
+    .dark-mode .speech-bubble,
+    .dark-mode .temple-content,
+    .dark-mode .contract-address-container,
+    .dark-mode .how-to-buy,
+    .dark-mode .buy-option,
+    .dark-mode .roadmap-node,
+    .dark-mode .community-card {
+      background-color: var(--dm-panel);
+      border-color: var(--dm-border);
+      box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .tokenomics-container {
+      background-color: var(--dm-panel);
+      border-color: var(--dm-primary-red);
+      box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .distribution-row {
+      background-color: rgba(77, 128, 230, 0.1);
+      border-color: var(--dm-border);
+    }
+
+    .dark-mode .distribution-value {
+      background-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .footer {
+      background-color: var(--dm-navy);
+    }
+
+    .dark-mode .buy-panel {
+      background-color: var(--dm-stone);
+      border-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .arc-number,
+    .dark-mode .node-icon,
+    .dark-mode .roadmap-symbol {
+      background-color: var(--dm-panel);
+      color: var(--dm-primary-red);
+      border-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .timeline-line,
+    .dark-mode .roadmap-line {
+      background-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .node-content,
+    .dark-mode .roadmap-content {
+      border-color: var(--dm-primary-red);
+      background-color: var(--dm-panel);
+    }
+
+    .dark-mode .btn-red {
+      background-color: var(--dm-primary-red);
+      border-color: var(--dm-text);
+    }
+
+    .dark-mode .btn-red:hover {
+      background-color: var(--dm-light-red);
+    }
+
+    .dark-mode .nav-buy {
+      background-color: var(--dm-primary-red);
+      border-color: var(--dm-text);
+    }
+
+    .dark-mode .nav-buy:hover {
+      background-color: var(--dm-light-red);
+    }
+
+    .dark-mode .social-link {
+      background-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .social-link:hover {
+      background-color: var(--dm-light-red);
+    }
+
+    .dark-mode .panel-corner {
+      border-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .buy-panel-header {
+      border-bottom-color: var(--dm-primary-red);
+    }
+
+    .dark-mode .ally-card {
+      border-color: var(--dm-primary-red);
+    }
+
+    /* Fix for dark mode text visibility */
+    .dark-mode .speech-text {
+      color: var(--dm-text);
+    }
+
+    .dark-mode .ally-name {
+      color: var(--dm-primary-red);
+    }
+
+    .dark-mode .buy-option-description,
+    .dark-mode .distribution-label,
+    .dark-mode .contract-address-label,
+    .dark-mode .contract-address,
+    .dark-mode .how-to-buy h4,
+    .dark-mode .how-to-buy li,
+    .dark-mode .roadmap-text,
+    .dark-mode .roadmap-title,
+    .dark-mode .community-title,
+    .dark-mode .community-role {
+      color: var(--dm-text);
+    }
+
+    /* Dark Mode Adjustments */
+    .dark-mode .ink-splash {
+      background-color: var(--dm-primary-red);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 1px;
+      color: var(--primary-red);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* 3D hover effect for images */
+    .character-image:hover,
+    .hero-character-img:hover,
+    .title-image:hover {
+      transform: perspective(500px) translateZ(20px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    /* ----- CUSTOM ANIMATIONS ----- */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-100px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* V2 Smooth Scrolling & Performance Improvements */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .section-wrapper {
+      will-change: transform, opacity;
+    }
+
+    /* Optimize animations */
+    .panel,
+    .arc-header,
+    .speech-bubble,
+    .village-scene,
+    .character-evolution,
+    .timeline,
+    .tokenomics-container,
+    .zen-temple,
+    .allies-gathering,
+    .btn,
+    .japanese-stamp,
+    .title-image-container,
+    .journey-reflection {
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-5px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rotateIn {
+      from {
+        transform: rotate(-10deg) scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes brush {
+      0% {
+        width: 0;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes samurai-fade {
+      0% {
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      }
+
+      100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    @keyframes slash {
+      0% {
+        clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      }
+
+      100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    @keyframes sword-shine {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    @keyframes ink-drop {
+      0% {
+        transform: scale(0);
+        opacity: 0.7;
+      }
+
+      70% {
+        transform: scale(2.5);
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: scale(3);
+        opacity: 0;
+      }
+    }
+
+    /* ----- NAVIGATION ----- */
+    .nav {
+      background-color: var(--navy);
+      color: white;
+      padding: 1rem;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: slideInDown 0.5s ease-out forwards;
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    @keyframes slideInDown {
+      from {
+        transform: translateY(-100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .nav-logo {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      color: white;
+      text-shadow: 2px 2px 0 var(--primary-red);
+      letter-spacing: 1px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-left: 2rem;
+      position: relative;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: calc(0.1s * var(--item-index, 1));
+      opacity: 0;
+    }
+
+    .nav-item::before {
+      content: "★";
+      color: var(--primary-red);
+      position: absolute;
+      left: -15px;
+    }
+
+    .nav-link {
+      color: white;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-red);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      color: var(--pale-blue);
+    }
+
+    .nav-buy {
+      background-color: var(--primary-red);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-buy::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      transition: all 0.3s ease;
+    }
+
+    .nav-buy:hover::before {
+      left: 100%;
+    }
+
+    .nav-buy:hover {
+      background-color: var(--light-red);
+      transform: translateY(-2px);
+      box-shadow: 2px 4px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mobile Navigation Styles */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        display: flex !important;
+        flex-direction: column !important;
+        background-color: var(--navy);
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-menu.active {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-item {
+        margin: 0 !important;
+        width: 100% !important;
+        text-align: center;
+        padding: 0.75rem 0;
+        display: block !important;
+      }
+
+      .nav-item::before {
+        display: none;
+      }
+
+      /* Hide Buy Now button in mobile menu */
+      .nav-item.nav-buy-container {
+        display: none !important;
+      }
+
+      .nav-link {
+        display: inline-block !important;
+        padding: 0.5rem 0;
+      }
+
+      /* Make underline match text width in mobile */
+      .nav-link::after {
+        width: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+    }
+
+    /* ----- MAIN CONTAINER ----- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1rem 2rem;
+    }
+
+    /* ----- MANGA PANELS ----- */
+    .manga-section {
+      margin-bottom: 5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 2.5rem;
+      color: var(--primary-red);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .dark-mode .section-title {
+      color: var(--dm-light-red);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: "—";
+      color: var(--ink);
+      margin: 0 1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.3s;
+    }
+
+    .section-title.animate::before,
+    .section-title.animate::after {
+      opacity: 1;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      /* Added spacing between panel grids */
+    }
+
+    .panel {
+      background-color: white;
+      border: 3px solid var(--ink);
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .panel.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Panel Sizes */
+    .panel-sm {
+      grid-column: span 4;
+      min-height: 300px;
+    }
+
+    .panel-md {
+      grid-column: span 6;
+      min-height: 350px;
+    }
+
+    .panel-lg {
+      grid-column: span 8;
+      min-height: 350px;
+    }
+
+    .panel-xl {
+      grid-column: span 12;
+      min-height: 400px;
+    }
+
+    /* Panel Shapes */
+    .panel-diagonal {
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      padding-bottom: 3rem;
+    }
+
+    .panel-full-bleed {
+      margin: -1rem;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ----- HERO SECTION ----- */
+    .hero {
+      position: relative;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem;
+      background-color: var(--dark-stone);
+      background-image: url("https://i.imgur.com/6rxfmNY.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards 0.2s;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right,
+          rgba(46, 43, 42, 0.8) 0%,
+          rgba(46, 43, 42, 0.6) 50%,
+          rgba(46, 43, 42, 0.4) 100%);
+      z-index: 1;
+    }
+
+    .dark-mode .hero::before {
+      background: linear-gradient(to right,
+          rgba(10, 10, 10, 0.85) 0%,
+          rgba(10, 10, 10, 0.7) 50%,
+          rgba(10, 10, 10, 0.5) 100%);
+    }
+
+    .hero-character {
+      width: 40%;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: translateX(-50px);
+      animation: slideInLeft 0.8s ease-out forwards 0.5s;
+    }
+
+    .hero-character-frame {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem;
+      border: 3px solid var(--ink);
+      box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      transition: transform 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .dark-mode .hero-character-frame {
+      background: rgba(26, 26, 26, 0.9);
+    }
+
+    .hero-character-frame:hover {
+      transform: translateY(-5px) scale(1.02);
+    }
+
+    .hero-character-frame::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid var(--primary-red);
+      z-index: -1;
+    }
+
+    .hero-character-img {
+      width: 100%;
+      border: 2px solid var(--ink);
+      display: block;
+    }
+
+    .hero-scroll {
+      width: 50%;
+      background-color: rgba(246, 245, 240, 0.9);
+      border: 1px solid var(--ink);
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateX(50px);
+      animation: slideInRight 0.8s ease-out forwards 0.7s;
+      backdrop-filter: blur(5px);
+    }
+
+    .dark-mode .hero-scroll {
+      background-color: rgba(26, 26, 26, 0.9);
+    }
+
+    .hero-scroll::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid var(--primary-red);
+      z-index: -1;
+    }
+
+    .scroll-title {
+      font-size: 2.5rem;
+      color: var(--primary-red);
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards 1s;
+    }
+
+    .scroll-title::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-red);
+      animation: brush 0.5s ease-out forwards 1.3s;
+    }
+
+    .scroll-divider {
+      height: 1px;
+      background-color: var(--primary-red);
+      margin: 1rem 0;
+      position: relative;
+      width: 0;
+      animation: brush 0.8s ease-out forwards 1.2s;
+    }
+
+    .scroll-divider::before {
+      content: "❖";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--stone);
+      padding: 0 10px;
+      color: var(--primary-red);
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards 1.5s;
+    }
+
+    .scroll-text {
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .scroll-text:nth-child(3) {
+      animation-delay: 1.6s;
+    }
+
+    .scroll-text:nth-child(4) {
+      animation-delay: 1.8s;
+    }
+
+    .scroll-text:nth-child(6) {
+      animation-delay: 2s;
+    }
+
+    .japanese-symbol {
+      position: absolute;
+      font-size: 6rem;
+      color: var(--primary-red);
+      opacity: 0;
+      z-index: 1;
+      animation: fadeIn 1s ease-out forwards 2s;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .dark-mode .japanese-symbol {
+      color: var(--dm-primary-red);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .symbol-top-right {
+      top: 10%;
+      right: 10%;
+      transform: rotate(15deg);
+      animation-name: rotateIn;
+    }
+
+    .symbol-bottom-left {
+      bottom: 10%;
+      left: 10%;
+      transform: rotate(-10deg);
+      animation-name: rotateIn;
+      animation-delay: 2.2s;
+    }
+
+    /* Cherry blossom petals floating in hero section */
+    .cherry-petals {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeIn 2s ease-out forwards 1.5s;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .petal {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: rgba(255, 183, 197, 0.8);
+      border-radius: 150% 0 150% 0;
+      animation: floatPetal 15s linear infinite, rotatePetal 10s linear infinite;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes floatPetal {
+      0% {
+        transform: translateX(0) translateY(-10px) rotate(45deg);
+      }
+
+      25% {
+        transform: translateX(100px) translateY(200px) rotate(90deg);
+      }
+
+      50% {
+        transform: translateX(50px) translateY(400px) rotate(135deg);
+      }
+
+      75% {
+        transform: translateX(-50px) translateY(600px) rotate(180deg);
+      }
+
+      100% {
+        transform: translateX(0) translateY(800px) rotate(225deg);
+      }
+    }
+
+    @keyframes rotatePetal {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg) rotate(45deg);
+      }
+
+      100% {
+        transform: rotateX(360deg) rotateY(360deg) rotate(225deg);
+      }
+    }
+
+    .red-seal {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background-color: var(--primary-red);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1rem;
+      bottom: 80px;
+      right: 80px;
+      transform: rotate(-15deg) scale(0);
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+      animation: scaleIn 0.5s ease-out forwards 2.4s, pulse 3s infinite ease-in-out 3s;
+    }
+
+    .red-seal::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+    }
+
+    /* ----- TRAGIC ORIGIN SECTION ----- */
+    .village-scene {
+      position: relative;
+      width: 100%;
+      overflow: visible;
+      margin-bottom: 1.5rem;
+      border: 2px solid var(--ink);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .village-scene img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: none;
+    }
+
+    .village-scene.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .flames-bg::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232E2B2A' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+      z-index: 1;
+    }
+
+    .flames-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q 15 5, 20 20 T 40 15 T 60 20 T 80 10 T 100 20 V 30 Z' fill='%232E2B2A' fill-opacity='0.8'/%3E%3C/svg%3E");
+      background-size: 100px 70px;
+      background-repeat: repeat-x;
+      z-index: 2;
+      transform: translateY(70px);
+      transition: transform 0.8s ease 0.6s;
+    }
+
+    .village-scene.animate .flames-silhouette {
+      transform: translateY(0);
+    }
+
+    .cherry-blossoms {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='3' cy='3' r='2' fill='%23FFB7C5' fill-opacity='0.7'/%3E%3Ccircle cx='13' cy='13' r='2' fill='%23FFB7C5' fill-opacity='0.7'/%3E%3Ccircle cx='17' cy='5' r='1' fill='%23FFB7C5' fill-opacity='0.7'/%3E%3Ccircle cx='7' cy='15' r='1' fill='%23FFB7C5' fill-opacity='0.7'/%3E%3C/svg%3E");
+      opacity: 0;
+      animation: fallDown 10s linear infinite;
+      z-index: 2;
+      transition: opacity 0.6s ease 0.9s;
+    }
+
+    .village-scene.animate .cherry-blossoms {
+      opacity: 0.6;
+    }
+
+    @keyframes fallDown {
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: 0 100px;
+      }
+    }
+
+    /* ----- ARC STYLING ----- */
+    .arc-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .arc-header.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .arc-number {
+      font-size: 2.5rem;
+      color: var(--primary-red);
+      margin-right: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .arc-number:hover {
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    .arc-title {
+      font-size: 1.8rem;
+      color: var(--ink);
+      position: relative;
+    }
+
+    .dark-mode .arc-title {
+      color: var(--dm-text);
+    }
+
+    .arc-title::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-red);
+      transition: width 0.6s ease;
+    }
+
+    .dark-mode .arc-title::after {
+      background-color: var(--dm-light-red);
+    }
+
+    .arc-header.animate .arc-title::after {
+      width: 100%;
+      transition-delay: 0.3s;
+    }
+
+    /* ----- SPEECH BUBBLES ----- */
+    .speech-bubble {
+      position: relative;
+      background-color: white;
+      border: 2px solid var(--ink);
+      padding: 1rem;
+      margin: 1rem 0;
+      max-width: 80%;
+      border-radius: 20px;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .speech-bubble.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .speech-bubble::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 12px solid transparent;
+    }
+
+    .speech-right {
+      margin-left: auto;
+    }
+
+    .speech-right::before {
+      right: -22px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: var(--ink);
+    }
+
+    .speech-left {
+      margin-right: auto;
+    }
+
+    .speech-left::before {
+      left: -22px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: var(--ink);
+    }
+
+    .speech-text {
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      letter-spacing: 0.5px;
+    }
+
+    /* ----- VISUAL EFFECTS ----- */
+    .action-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .panel.animate .action-lines {
+      opacity: 1;
+      transition-delay: 0.3s;
+    }
+
+    .lines-radial {
+      background: radial-gradient(circle at center, transparent 60%, rgba(155, 34, 38, 0.1) 100%);
+    }
+
+    .lines-speed {
+      background-image: repeating-linear-gradient(-45deg,
+          transparent,
+          transparent 5px,
+          rgba(46, 43, 42, 0.05) 5px,
+          rgba(46, 43, 42, 0.05) 10px);
+      animation: sword-shine 3s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    .lines-impact {
+      background-image: radial-gradient(circle at center,
+          rgba(155, 34, 38, 0.2) 0%,
+          transparent 40%);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .emotion-indicator {
+      position: absolute;
+      font-size: 2rem;
+      color: var(--primary-red);
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .panel.animate .emotion-indicator {
+      opacity: 1;
+      transform: scale(1);
+      transition-delay: 0.6s;
+    }
+
+    .emotion-surprise {
+      top: 10px;
+      right: 10px;
+      animation: shake 0.5s ease-in-out 1s;
+    }
+
+    .emotion-excitement {
+      bottom: 10px;
+      left: 10px;
+    }
+
+    .emotion-sadness {
+      bottom: 10px;
+      right: 10px;
+      animation: fadeInOut 3s ease infinite 1s;
+    }
+
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0.2;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 0.2;
+      }
+    }
+
+    .sound-effect {
+      position: absolute;
+      font-family: 'Bangers', cursive;
+      font-size: 2.5rem;
+      color: var(--primary-red);
+      text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
+      transform: rotate(-10deg) scale(0);
+      z-index: 5;
+      letter-spacing: 2px;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .panel.animate .sound-effect {
+      transform: rotate(-10deg) scale(1);
+      transition-delay: 0.6s;
+    }
+
+    .sound-top-right {
+      top: 20px;
+      right: 30px;
+    }
+
+    .sound-bottom-left {
+      bottom: 20px;
+      left: 30px;
+    }
+
+    /* ----- RAIN EFFECT ----- */
+    .rain-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+      background-size: 1px 10px;
+      animation: rain 0.5s linear infinite;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .panel.animate .rain-effect {
+      opacity: 0.5;
+      transition-delay: 0.3s;
+    }
+
+    @keyframes rain {
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: 0 10px;
+      }
+    }
+
+    /* ----- ENCOUNTER PANEL STYLING ----- */
+    .encounter-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .encounter-image-container {
+      margin: 0.5rem 0 1rem;
+      border: 2px solid var(--ink);
+      overflow: hidden;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .encounter-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .encounter-image:hover {
+      transform: scale(1.05);
+    }
+
+    .encounter-text-container {
+      margin-top: auto;
+    }
+
+    .dark-mode .encounter-image-container {
+      border-color: var(--dm-border);
+      box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* ----- CHARACTER EVOLUTION ----- */
+    .character-evolution {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2rem 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .character-evolution.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .character-stage {
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      width: calc(33.33% - 20px);
+    }
+
+    .character-evolution.animate .character-stage {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .character-evolution.animate .character-stage:nth-child(1) {
+      transition-delay: 0.2s;
+    }
+
+    .character-evolution.animate .character-stage:nth-child(2) {
+      transition-delay: 0.4s;
+    }
+
+    .character-evolution.animate .character-stage:nth-child(3) {
+      transition-delay: 0.6s;
+    }
+
+    .character-stage:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%) scale(0);
+      font-size: 2rem;
+      color: var(--primary-red);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .character-evolution.animate .character-stage:not(:last-child)::after {
+      transform: translateY(-50%) scale(1);
+      transition-delay: 0.8s;
+    }
+
+    .character-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      margin: 0 auto 0.8rem;
+      transform: scale(1);
+    }
+
+    .character-evolution.animate .character-image {
+      transform: scale(1);
+      transition-delay: 0.6s;
+    }
+
+    .character-image:hover {
+      transform: perspective(500px) translateZ(50px) scale(1.5);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      border-color: var(--primary-red);
+    }
+
+    .dark-mode .character-image:hover {
+      border-color: var(--dm-light-red);
+    }
+
+    .character-name {
+      font-size: 0.9rem;
+      color: var(--ink);
+      font-family: 'Bangers', cursive;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .dark-mode .character-name {
+      color: var(--dm-text);
+    }
+
+    .character-evolution.animate .character-name {
+      opacity: 1;
+      transition-delay: 0.7s;
+    }
+
+    /* ----- TIMELINE NODES ----- */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin: 1rem 0;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 25px;
+      top: 30px;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--ink);
+      z-index: 0;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.8s ease;
+    }
+
+    .timeline.animate .timeline-line {
+      transform: scaleY(1);
+    }
+
+    .timeline-node {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .timeline.animate .timeline-node {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .timeline.animate .timeline-node:nth-child(2) {
+      transition-delay: 0.4s;
+    }
+
+    .timeline.animate .timeline-node:nth-child(3) {
+      transition-delay: 0.8s;
+    }
+
+    .node-icon {
+      background-color: white;
+      color: var(--primary-red);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      font-family: 'Bangers', cursive;
+      border: 2px solid var(--ink);
+      margin-right: 1rem;
+      flex-shrink: 0;
+      transform: scale(0.8);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .timeline.animate .node-icon {
+      transform: scale(1);
+      transition-delay: 0.2s;
+    }
+
+    .node-icon:hover {
+      animation: pulse 1s infinite ease-in-out;
+    }
+
+    .node-content {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--ink);
+      flex-grow: 1;
+      transform: translateX(20px);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .timeline.animate .node-content {
+      transform: translateX(0);
+      opacity: 1;
+      transition-delay: 0.4s;
+    }
+
+    .node-content h3 {
+      color: var(--primary-red);
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .dark-mode .node-content h3 {
+      color: var(--dm-light-red);
+    }
+
+    .node-content h3::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-red);
+      transition: width 0.6s ease;
+    }
+
+    .dark-mode .node-content h3::after {
+      background-color: var(--dm-light-red);
+    }
+
+    .timeline.animate .node-content h3::after {
+      width: 100%;
+      transition-delay: 0.6s;
+    }
+
+    .node-content p {
+      font-size: 1rem;
+      color: var(--ink);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .timeline.animate .node-content p {
+      opacity: 1;
+      transition-delay: 0.8s;
+    }
+
+    /* ----- TOKENOMICS ----- */
+    .tokenomics-container {
+      width: 100%;
+      padding: 1.5rem;
+      background-color: white;
+      border: 2px solid var(--ink);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      margin-top: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .tokenomics-container.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tokenomics-title {
+      text-align: center;
+      font-size: 1.8rem;
+      color: var(--primary-red);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .dark-mode .tokenomics-title {
+      color: var(--dm-light-red);
+    }
+
+    .tokenomics-container.animate .tokenomics-title {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+
+    .distribution-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background-color: var(--stone);
+      border: 1px solid var(--ink);
+      position: relative;
+      transform: translateX(-20px);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .tokenomics-container.animate .distribution-row {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .tokenomics-container.animate .distribution-row:nth-child(2) {
+      transition-delay: 0.3s;
+    }
+
+    .tokenomics-container.animate .distribution-row:nth-child(3) {
+      transition-delay: 0.4s;
+    }
+
+    .tokenomics-container.animate .distribution-row:nth-child(4) {
+      transition-delay: 0.5s;
+    }
+
+    .tokenomics-container.animate .distribution-row:nth-child(5) {
+      transition-delay: 0.6s;
+    }
+
+    .tokenomics-container.animate .distribution-row:nth-child(6) {
+      transition-delay: 0.7s;
+    }
+
+    .distribution-row::before {
+      content: "★";
+      position: absolute;
+      left: 10px;
+      color: var(--primary-red);
+      font-size: 1rem;
+      transform: scale(0);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .tokenomics-container.animate .distribution-row::before {
+      transform: scale(1);
+      transition-delay: 0.8s;
+    }
+
+    .distribution-label {
+      flex: 1;
+      padding-left: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--ink);
+    }
+
+    .distribution-value {
+      width: 60px;
+      text-align: center;
+      background-color: var(--primary-red);
+      color: white;
+      padding: 0.3rem;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 1rem;
+      transform: scale(0.8);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .tokenomics-container.animate .distribution-value {
+      transform: scale(1);
+      transition-delay: 0.9s;
+    }
+
+    /* ----- ZEN TEMPLE ----- */
+    .zen-temple {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .temple-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      z-index: 0;
+      transition: opacity 1s ease;
+    }
+
+    .zen-temple.animate .temple-bg {
+      opacity: 0.8;
+      /* Increased opacity to make image more visible */
+    }
+
+    .temple-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.85);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .dark-mode .temple-content {
+      background-color: rgba(26, 26, 26, 0.85);
+    }
+
+    .zen-temple.animate .temple-content {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+    }
+
+    /* Removed cherry-blossoms-gentle class and styles */
+    .circular-panel {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      margin: 1.5rem auto;
+      position: relative;
+      background-color: rgba(155, 34, 38, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      transform: scale(0);
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: float 5s infinite ease-in-out;
+      animation-play-state: paused;
+    }
+
+    .zen-temple.animate .circular-panel {
+      transform: scale(1);
+      transition-delay: 0.6s;
+      animation-play-state: running;
+    }
+
+    .circular-panel::after {
+      content: "道";
+      position: absolute;
+      color: var(--ink);
+      font-size: 3rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .zen-temple.animate .circular-panel::after {
+      opacity: 1;
+      transition-delay: 1s;
+    }
+
+    /* ----- COMMUNITY ----- */
+    .allies-gathering {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .allies-gathering.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ally-card {
+      background-color: white;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    .allies-gathering.animate .ally-card {
+      transform: translateY(0);
+      opacity: 1;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .allies-gathering.animate .ally-card:nth-child(1) {
+      transition-delay: 0.2s;
+    }
+
+    .allies-gathering.animate .ally-card:nth-child(2) {
+      transition-delay: 0.4s;
+    }
+
+    .ally-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 3px 8px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .ally-icon {
+      height: 80px;
+      background-color: var(--pale-blue);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      color: var(--navy);
+      border-radius: 50%;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      margin: 0 auto;
+      width: 80px;
+      /* Fixed width to ensure consistent sizing */
+    }
+
+    .ally-icon i,
+    .ally-icon img {
+      transition: transform 0.3s ease;
+    }
+
+    .ally-icon:hover i,
+    .ally-icon:hover img {
+      transform: scale(1.2);
+    }
+
+    .ally-card:hover .ally-icon {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.5);
+      background-color: var(--light-navy);
+    }
+
+    .dark-mode .ally-icon {
+      background-color: var(--dm-light-navy);
+      color: var(--dm-text);
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .dark-mode .ally-card:hover .ally-icon {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.2);
+      background-color: var(--dm-primary-red);
+    }
+
+    .ally-info {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .ally-name {
+      font-size: 1.2rem;
+      font-family: 'Bangers', cursive;
+      color: var(--primary-red);
+    }
+
+    .dark-mode .ally-name {
+      color: var(--dm-light-red);
+    }
+
+    /* ----- ROADMAP SECTION ----- */
+    .roadmap {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin: 3rem 0;
+    }
+
+    .roadmap-line {
+      position: absolute;
+      left: 25px;
+      top: 30px;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--primary-red);
+      z-index: 0;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.8s ease;
+    }
+
+    .roadmap.animate .roadmap-line {
+      transform: scaleY(1);
+    }
+
+    .roadmap-node {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .roadmap.animate .roadmap-node {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .roadmap.animate .roadmap-node:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .roadmap.animate .roadmap-node:nth-child(3) {
+      transition-delay: 0.4s;
+    }
+
+    .roadmap.animate .roadmap-node:nth-child(4) {
+      transition-delay: 0.6s;
+    }
+
+    .roadmap.animate .roadmap-node:nth-child(5) {
+      transition-delay: 0.8s;
+    }
+
+    .roadmap.animate .roadmap-node:nth-child(6) {
+      transition-delay: 1s;
+    }
+
+    .roadmap-symbol {
+      background-color: white;
+      color: var(--primary-red);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      font-family: 'Bangers', cursive;
+      border: 2px solid var(--primary-red);
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+      transform: scale(0.8);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .roadmap.animate .roadmap-symbol {
+      transform: scale(1);
+      transition-delay: 0.1s;
+    }
+
+    .roadmap-symbol:hover {
+      animation: pulse 1s infinite ease-in-out;
+    }
+
+    .roadmap-content {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 2px solid var(--primary-red);
+      flex-grow: 1;
+      transform: translateX(20px);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .roadmap.animate .roadmap-content {
+      transform: translateX(0);
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+
+    .roadmap-title {
+      color: var(--primary-red);
+      margin-bottom: 0.8rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .roadmap-title span.status {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+    }
+
+    .status-completed {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .status-progress {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .status-upcoming {
+      background-color: #9E9E9E;
+      color: white;
+    }
+
+    .roadmap-text {
+      color: var(--ink);
+      margin-top: 1rem;
+    }
+
+    .roadmap-list {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .roadmap-list li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .roadmap-list li::before {
+      content: "⚡";
+      position: absolute;
+      left: 0;
+      color: var(--primary-red);
+    }
+
+    .dark-mode .roadmap-list li::before {
+      color: var(--dm-primary-red);
+    }
+
+    /* ----- COMMUNITY SECTION ENHANCEMENT ----- */
+    .community-section {
+      margin: 5rem 0;
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .community-card {
+      background-color: white;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .community-card.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .community-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 10px 15px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .community-avatar {
+      width: 100%;
+      height: 180px;
+      background-color: var(--pale-blue);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 5rem;
+      color: var(--navy);
+      overflow: hidden;
+    }
+
+    .community-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .community-card:hover .community-avatar img {
+      transform: scale(1.1);
+    }
+
+    .community-info {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .community-title {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      color: var(--primary-red);
+      margin-bottom: 0.5rem;
+    }
+
+    .community-role {
+      font-size: 1rem;
+      color: var(--ink);
+      opacity: 0.8;
+      margin-bottom: 1rem;
+    }
+
+    .community-bio {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .community-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .community-links a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-red);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .community-links a:hover {
+      background-color: var(--light-red);
+      transform: translateY(-3px);
+    }
+
+    .community-intro {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .community-intro.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .community-join {
+      margin-top: 3rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .community-join.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .community-join h3 {
+      margin-bottom: 1.5rem;
+    }
+
+    /* ----- BUTTONS ----- */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      font-family: 'Bangers', cursive;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: 2px solid var(--ink);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-red {
+      background-color: var(--primary-red);
+      color: white;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-red::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      transition: all 0.6s ease;
+      z-index: 1;
+    }
+
+    .btn-red:hover::before {
+      left: 100%;
+    }
+
+    .btn-red:hover {
+      background-color: var(--light-red);
+      transform: translateY(-3px);
+      box-shadow: 3px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* ----- BUY PANEL ----- */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .overlay.fade-in {
+      opacity: 1;
+    }
+
+    .buy-panel {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      z-index: 1001;
+      background-color: var(--stone);
+      border: 3px solid var(--ink);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      padding: 2rem;
+      color: var(--ink);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .buy-panel.fade-in {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .buy-panel::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid var(--primary-red);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .panel-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--primary-red);
+      z-index: 1;
+      transform: scale(0);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .buy-panel.fade-in .panel-corner {
+      transform: scale(1);
+    }
+
+    .corner-top-left {
+      top: 10px;
+      left: 10px;
+      border-right: none;
+      border-bottom: none;
+      transition-delay: 0.1s;
+    }
+
+    .corner-top-right {
+      top: 10px;
+      right: 10px;
+      border-left: none;
+      border-bottom: none;
+      transition-delay: 0.2s;
+    }
+
+    .corner-bottom-left {
+      bottom: 10px;
+      left: 10px;
+      border-right: none;
+      border-top: none;
+      transition-delay: 0.3s;
+    }
+
+    .corner-bottom-right {
+      bottom: 10px;
+      right: 10px;
+      border-left: none;
+      border-top: none;
+      transition-delay: 0.4s;
+    }
+
+    .buy-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--primary-red);
+      position: relative;
+    }
+
+    .buy-panel-header::after {
+      content: "❖";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%) scale(0);
+      background-color: var(--stone);
+      padding: 0 10px;
+      color: var(--primary-red);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .buy-panel.fade-in .buy-panel-header::after {
+      transform: translateX(-50%) scale(1);
+      transition-delay: 0.5s;
+    }
+
+    .buy-panel-title {
+      font-size: 2rem;
+      color: var(--primary-red);
+      margin: 0;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .buy-panel.fade-in .buy-panel-title {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.2s;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    .buy-panel.fade-in .close-btn {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.3s;
+    }
+
+    .close-btn:hover {
+      color: var(--primary-red);
+      transform: rotate(90deg);
+    }
+
+    .buy-panel-section {
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    /* Fixed Buy Panel section visibility */
+    .buy-panel.fade-in .buy-panel-section {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+    }
+
+    .buy-panel-subtitle {
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin-bottom: 1rem;
+      text-align: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .buy-panel-subtitle::before,
+    .buy-panel-subtitle::after {
+      content: "—";
+      color: var(--primary-red);
+      margin: 0 1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .buy-panel.fade-in .buy-panel-subtitle::before,
+    .buy-panel.fade-in .buy-panel-subtitle::after {
+      opacity: 1;
+      transition-delay: 0.7s;
+    }
+
+    /* Buy options layout */
+    .buy-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .buy-option {
+      background-color: white;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .buy-option:hover {
+      transform: translateY(-5px);
+      box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .buy-option-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .buy-option-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      font-family: 'Bangers', cursive;
+      color: var(--primary-red);
+    }
+
+    .buy-option-description {
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      color: var(--ink);
+      flex-grow: 1;
+    }
+
+    .buy-option-action {
+      margin-top: auto;
+    }
+
+    /* Contract address container */
+    .contract-address-container {
+      background-color: white;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .contract-address-label {
+      font-size: 1.2rem;
+      font-family: 'Bangers', cursive;
+      color: var(--primary-red);
+      margin-bottom: 0.5rem;
+    }
+
+    .contract-address {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      background-color: var(--stone);
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      color: var(--primary-red);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* How to buy section */
+    .how-to-buy {
+      background-color: white;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .how-to-buy h4 {
+      font-size: 1.2rem;
+      color: var(--primary-red);
+      margin: 1rem 0 0.5rem;
+    }
+
+    .how-to-buy ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .how-to-buy li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Title image container */
+    .title-image-container {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .title-image {
+      max-width: 90%;
+      border: 2px solid var(--ink);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .title-image:hover {
+      transform: perspective(500px) translateZ(30px);
+      box-shadow: 8px 15px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Journey reflection */
+    .journey-reflection {
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .reflection-text {
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* ----- FOOTER ----- */
+    .footer {
+      background-color: var(--navy);
+      color: white;
+      padding: 3rem 1rem;
+      text-align: center;
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+    }
+
+    .footer.animate {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .footer.animate .footer-logo {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary-red);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      margin: 0 0.5rem;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .footer.animate .social-link {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .footer.animate .social-link:nth-child(1) {
+      transition-delay: 0.3s;
+    }
+
+    .footer.animate .social-link:nth-child(2) {
+      transition-delay: 0.4s;
+    }
+
+    .footer.animate .social-link:nth-child(3) {
+      transition-delay: 0.5s;
+    }
+
+    .footer.animate .social-link:nth-child(4) {
+      transition-delay: 0.6s;
+    }
+
+    .social-link:hover {
+      background-color: var(--light-red);
+      transform: translateY(-5px);
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .footer.animate .copyright {
+      opacity: 0.8;
+      transition-delay: 0.7s;
+    }
+
+    /* ----- INK DROP EFFECT ----- */
+    .ink-splash {
+      position: absolute;
+      background-color: var(--primary-red);
+      border-radius: 50%;
+      z-index: 5;
+      pointer-events: none;
+      animation: ink-drop 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* ----- JAPANESE WOODBLOCK STAMP ----- */
+    .japanese-stamp {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 2rem auto;
+      transform: rotate(-5deg);
+      opacity: 0;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .japanese-stamp.animate {
+      opacity: 1;
+      transform: rotate(-5deg) scale(1);
+    }
+
+    .stamp-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .stamp-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-red);
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-mode .stamp-bg {
+      background-color: var(--dm-primary-red);
+    }
+
+    .stamp-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: 'Bangers', cursive;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      padding: 1rem;
+    }
+
+    .stamp-text::before {
+      content: "武士";
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .stamp-text::after {
+      content: "RONIN";
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+    }
+
+    /* ----- ENLIGHTENED MONK STYLING ----- */
+    .enlightened-monk {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .monk-image-container {
+      position: relative;
+      margin: 0.5rem 0 1rem;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .dark-mode .monk-image-container {
+      border-color: var(--dm-border);
+    }
+
+    .monk-image {
+      width: 100%;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    .monk-image-container:hover .monk-image {
+      transform: scale(1.05);
+    }
+
+    .monk-image-container:hover {
+      box-shadow: 8px 10px 15px rgba(0, 0, 0, 0.3);
+      border-color: var(--primary-red);
+    }
+
+    .dark-mode .monk-image-container:hover {
+      border-color: var(--dm-light-red);
+    }
+
+    .wisdom-scroll {
+      background-color: var(--stone);
+      border: 1px solid var(--ink);
+      border-left: 4px solid var(--primary-red);
+      padding: 1rem;
+      margin-top: 1rem;
+      font-style: italic;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .wisdom-scroll:hover {
+      transform: translateY(-3px);
+      box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .dark-mode .wisdom-scroll {
+      background-color: var(--dm-panel);
+      border-color: var(--dm-border);
+      border-left-color: var(--dm-light-red);
+    }
+
+    .wisdom-scroll p {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .wisdom-signature {
+      display: block;
+      text-align: right;
+      font-family: 'Bangers', cursive;
+      color: var(--primary-red);
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .dark-mode .wisdom-signature {
+      color: var(--dm-light-red);
+    }
+
+    /* ----- WARRIOR SHOWCASE STYLING ----- */
+    .warrior-showcase {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .warrior-image-container {
+      position: relative;
+      margin: 0.5rem 0;
+      overflow: hidden;
+      border: 3px solid var(--ink);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .warrior-image {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    .warrior-image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,
+          rgba(0, 0, 0, 0) 60%,
+          rgba(0, 0, 0, 0.7) 100%);
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .warrior-image-overlay span {
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
+      transform: translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-family: 'Bangers', cursive;
+    }
+
+    .warrior-image-container:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 8px 15px 15px rgba(0, 0, 0, 0.3);
+      border-color: var(--primary-red);
+    }
+
+    .warrior-image-container:hover .warrior-image {
+      transform: scale(1.1);
+    }
+
+    .warrior-image-container:hover .warrior-image-overlay {
+      opacity: 1;
+    }
+
+    .warrior-image-container:hover .warrior-image-overlay span {
+      transform: translateY(0);
+    }
+
+    .warrior-caption {
+      margin-top: 0.8rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .dark-mode .warrior-image-container {
+      border-color: var(--dm-border);
+    }
+
+    .dark-mode .warrior-image-container:hover {
+      border-color: var(--dm-primary-red);
+    }
+
+    /* ----- EMBEDDED LOGO STYLE ----- */
+    .embedded-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: white;
+      padding: 8px;
+      margin: 0 auto;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode .embedded-logo {
+      background-color: var(--dm-panel);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+
+    .embedded-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .embedded-logo:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3),
+        inset 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .exchange-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 10px;
+    }
+
+    .exchange-logo span {
+      margin-top: 5px;
+      font-size: 0.8rem;
+      color: var(--ink);
+    }
+
+    .dark-mode .exchange-logo span {
+      color: var(--dm-text);
+    }
+
+    .exchange-logos-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+    }
+
+    /* ----- MEDIA QUERIES ----- */
+    @media (max-width: 768px) {
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--navy);
+        padding: 0.8rem;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .menu-toggle {
+        display: block;
+        margin-left: auto;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 60px;
+        /* Height of nav bar */
+        left: 0;
+        width: 100%;
+        background-color: var(--navy);
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-menu.active {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-item {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+
+      .nav-item::before {
+        display: none;
+      }
+
+      /* Make sure Buy button stays outside dropdown */
+      .nav-item.nav-buy-container {
+        display: none;
+      }
+
+      /* Show floating buy button on mobile */
+      .floating-buy-btn {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        z-index: 1000;
+        animation: none;
+        transform: scale(1) !important;
+      }
+
+      /* Adjust container padding for fixed nav */
+      .container {
+        padding-top: 80px;
+      }
+
+      .hero {
+        flex-direction: column;
+        padding: 1.5rem;
+      }
+
+      .hero-character {
+        width: 80%;
+        margin-bottom: 2rem;
+      }
+
+      .hero-scroll {
+        width: 100%;
+      }
+
+      .panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-sm,
+      .panel-md,
+      .panel-lg,
+      .panel-xl {
+        grid-column: 1 / -1;
+      }
+
+      .character-evolution {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .character-stage {
+        width: 100%;
+      }
+
+      .character-stage:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -1.5rem;
+        transform: translateX(50%);
+      }
+
+      .character-evolution.animate .character-stage:not(:last-child)::after {
+        transform: translateX(50%) scale(1);
+      }
+
+      .buy-panel {
+        width: 95%;
+        padding: 1.5rem;
+      }
+
+      .buy-options {
+        grid-template-columns: 1fr;
+      }
+
+      /* Mobile-specific fixes to prevent overlapping elements */
+      .emotion-indicator,
+      .sound-effect {
+        font-size: 1.5rem;
+        top: 5px;
+        right: 5px;
+      }
+
+      .sound-bottom-left {
+        bottom: 10px;
+        left: 10px;
+        top: auto;
+        right: auto;
+      }
+
+      .temple-content {
+        width: 100%;
+        padding: 0.5rem;
+      }
+
+      .circular-panel {
+        width: 100px;
+        height: 100px;
+        margin: 1rem auto;
+      }
+
+      .circular-panel::after {
+        font-size: 2rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+      }
+
+      .arc-title {
+        font-size: 1.4rem;
+      }
+
+      /* Ensure character evolution images don't expand too much on mobile */
+      .character-image:hover {
+        transform: scale(1.2);
+      }
+
+      /* Mobile optimizations for roadmap */
+      .roadmap-content {
+        padding: 1rem;
+      }
+
+      .roadmap-title {
+        font-size: 1.2rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .roadmap-title span.status {
+        margin-top: 0.5rem;
+      }
+
+      /* Mobile optimizations for community section */
+      .community-grid {
+        grid-template-columns: 1fr;
+      }
+
+      /* Splash screen adjustments */
+      .splash-title {
+        font-size: 2rem;
+      }
+
+      .splash-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .loading-bar-container {
+        width: 90%;
+      }
+    }
+
+    /* Fix for dark mode text visibility in hero scroll */
+    .dark-mode .scroll-text {
+      color: var(--dm-text);
+    }
+
+    /* Additional responsive adjustments for very small screens */
+    @media (max-width: 480px) {
+      .dark-mode-toggle {
+        bottom: 95px;
+        /* Position above buy button */
+        left: 20px;
+      }
+
+      .floating-buy-btn {
+        bottom: 20px;
+        right: 20px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .arc-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.8rem;
+      }
+
+      .arc-title {
+        font-size: 1.2rem;
+      }
+
+      .japanese-symbol {
+        font-size: 4rem;
+      }
+
+      .character-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      .red-seal {
+        width: 60px;
+        height: 60px;
+        bottom: 40px;
+        right: 40px;
+      }
+
+      .japanese-stamp {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    /* Improved Dark Mode Toggle Button */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-red);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .dark-mode .dark-mode-toggle {
+      background-color: var(--dm-primary-red);
+    }
+
+    /* Add to your existing CSS */
+    .error-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-red);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      z-index: 2000;
+      animation: fadeInUp 0.3s ease-out;
+    }
+
+    .wallet-btn.connected {
+      background-color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .dark-mode .wallet-btn.connected {
+      background-color: var(--dm-navy);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">忠</div>
+    <div class="japanese-symbol japanese-symbol-splash symbol-bottom-left-splash">誠</div>
+    <h1 class="splash-title">NAZUMI RONIN</h1>
+    <p class="splash-subtitle">Loading the path of the warrior...</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-logo">NAZUMI RONIN</div>
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item" style="--item-index: 1;"><a href="#origin" class="nav-link">Origin</a></li>
+      <li class="nav-item" style="--item-index: 2;"><a href="#training" class="nav-link">Training</a></li>
+      <li class="nav-item" style="--item-index: 3;"><a href="#awakening" class="nav-link">Awakening</a></li>
+      <li class="nav-item" style="--item-index: 4;"><a href="#enlightenment" class="nav-link">Enlightenment</a></li>
+      <li class="nav-item" style="--item-index: 5;"><a href="#roadmap" class="nav-link">Journey</a></li>
+      <li class="nav-item" style="--item-index: 6;"><a href="#community" class="nav-link">Community</a></li>
+      <li class="nav-item nav-buy-container" style="--item-index: 7;"><a href="#" id="buyButton" class="nav-buy">Buy Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- Floating Buy Button (Mobile Only) -->
+  <button class="floating-buy-btn pulse" id="floatingBuyBtn">
+    <i class="fas fa-coins"></i>
+  </button>
+
+  <!-- Dark Mode Toggle (fixed position) -->
+  <button class="dark-mode-toggle" id="darkModeToggle" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="japanese-symbol symbol-top-right">忠</div>
+      <div class="japanese-symbol symbol-bottom-left">誠</div>
+
+      <!-- Cherry blossom petals -->
+      <div class="cherry-petals">
+        <div class="petal" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="petal" style="top: 5%; left: 40%; animation-delay: 2s;"></div>
+        <div class="petal" style="top: 15%; left: 60%; animation-delay: 3.5s;"></div>
+        <div class="petal" style="top: 8%; left: 80%; animation-delay: 1s;"></div>
+        <div class="petal" style="top: 20%; left: 10%; animation-delay: 4s;"></div>
+        <div class="petal" style="top: 25%; left: 30%; animation-delay: 2.5s;"></div>
+        <div class="petal" style="top: 17%; left: 50%; animation-delay: 1.5s;"></div>
+        <div class="petal" style="top: 12%; left: 70%; animation-delay: 3s;"></div>
+        <div class="petal" style="top: 28%; left: 90%; animation-delay: 0.5s;"></div>
+        <div class="petal" style="top: 35%; left: 25%; animation-delay: 4.5s;"></div>
+        <div class="petal" style="top: 5%; left: 65%; animation-delay: 2.3s;"></div>
+        <div class="petal" style="top: 18%; left: 85%; animation-delay: 3.2s;"></div>
+      </div>
+
+      <div class="hero-character">
+        <div class="hero-character-frame">
+          <img src="https://i.imgur.com/nD9J9A7.jpg" alt="Nazumi Ronin Character" class="hero-character-img">
+        </div>
+      </div>
+
+      <div class="hero-scroll">
+        <div class="scroll-title">NAZUMI RONIN</div>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text">From the ashes of tragedy rises a warrior of honor. Orphaned by war, forged in suffering, Nazumi wields his sword with purpose.</div>
+        <div class="scroll-text">Vengeance. Redemption. Enlightenment.</div>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text">Follow the path of the ronin as he seeks meaning in a world of chaos.</div>
+      </div>
+
+      <div class="red-seal">
+        運命
+      </div>
+    </section>
+    <!-- The Hero Section -->
+
+    <!-- The Tragic Origin -->
+    <section id="origin" class="manga-section">
+      <h2 class="section-title">THE TRAGIC ORIGIN</h2>
+
+      <div class="panel-grid">
+        <div class="panel panel-md">
+          <div class="arc-header">
+            <div class="arc-number">壱</div>
+            <div class="arc-title">Village in Flames</div>
+          </div>
+
+          <div class="village-scene">
+            <img src="https://i.imgur.com/A4d1rv6.jpg" alt="Burning Village" class="village-image">
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">The peaceful village of Musouka, reduced to ashes in a single night of terror. Young Nazumi's innocence died with his family, replaced by an unquenchable thirst for justice.</div>
+          </div>
+        </div>
+
+        <div class="panel panel-sm encounter-panel">
+          <div class="action-lines lines-speed"></div>
+          <div class="emotion-indicator emotion-surprise">!</div>
+          <!-- The Tragic Origin -->
+
+          <!-- The Encounter -->
+          <div class="arc-header">
+            <div class="arc-number">弐</div>
+            <div class="arc-title">The Encounter</div>
+          </div>
+
+          <div class="encounter-image-container">
+            <img src="https://i.imgur.com/tmlEUmC.jpg" alt="Samurai Encounter" class="encounter-image">
+          </div>
+
+          <div class="encounter-text-container">
+            <div class="speech-bubble speech-left" style="margin-bottom: 0.5rem;">
+              <div class="speech-text">The enemy samurai Takashi found the child hiding in the ruins. Instead of striking him down, he saw a reflection of his own lost humanity.</div>
+            </div>
+
+            <div class="speech-bubble speech-right" style="margin-top: 0;">
+              <div class="speech-text">"I will teach you the way of the sword, young one. Not for vengeance, but for protection."</div>
+            </div>
+          </div>
+        </div>
+        <!-- The Encounter -->
+
+        <!-- The First Lesson -->
+        <div class="panel panel-sm">
+          <div class="arc-header">
+            <div class="arc-number">忍</div>
+            <div class="arc-title">The First Lesson</div>
+          </div>
+
+          <div class="speech-bubble speech-left">
+            <div class="speech-text">Under the crimson sunset, Takashi placed a wooden sword in Nazumi's trembling hands.</div>
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">"A sword is neither good nor evil. Like its wielder, it simply... is. Remember this as your first lesson."</div>
+          </div>
+
+          <div class="sound-effect sound-bottom-left">WISDOM</div>
+        </div>
+        <!-- The First Lesson -->
+
+        <!-- The Journey Begins -->
+        <div class="panel panel-sm">
+          <div class="arc-header">
+            <div class="arc-number">参</div>
+            <div class="arc-title">The Journey Begins</div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-node">
+              <div class="node-icon">始</div>
+              <div class="node-content">
+                <h3>THE DEPARTURE</h3>
+                <p>Nazumi leaves his destroyed home, following the warrior who spared his life.</p>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon">路</div>
+              <div class="node-content">
+                <h3>THE PATH</h3>
+                <p>Through mountains and valleys, the reluctant master and his young apprentice travel toward an uncertain future.</p>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon">誓</div>
+              <div class="node-content">
+                <h3>THE PROMISE</h3>
+                <p>Master Takashi makes a solemn vow: "I will forge you into a warrior who protects, not destroys. This is my atonement."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- The Journey Begins -->
+
+        <!-- The Mountain Temple -->
+        <div class="panel panel-sm zen-temple mountain-temple-panel" style="position: relative; overflow: hidden; min-height: 350px;">
+          <div class="temple-bg parallax-bg" style="
+    background-image: url('https://i.imgur.com/OB2EODq.jpg');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    transform: translateY(0);
+    z-index: 0;
+  "></div>
+
+          <div class="arc-header" style="position: relative; z-index: 2;">
+            <div class="arc-number">修</div>
+            <div class="arc-title">The Mountain Temple</div>
+          </div>
+
+          <div class="speech-bubble speech-left temple-speech" style="
+    margin: 0;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+  ">
+            <div class="speech-text">"This sacred place will be our home for many seasons. Here, you will learn not only to fight, but to understand why we fight."</div>
+          </div>
+
+          <script>
+            // Parallax scrolling effect
+            document.addEventListener('DOMContentLoaded', function() {
+              const parallaxBg = document.querySelector('.parallax-bg');
+
+              function updateParallax() {
+                const scrollPosition = window.pageYOffset;
+                const element = parallaxBg.parentElement;
+                const rect = element.getBoundingClientRect();
+                // Only apply parallax when element is in viewport
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                  const offset = scrollPosition * 0.3 - (element.offsetTop * 0.3);
+                  // Use transform for better performance
+                  parallaxBg.style.transform = `translateY(${offset}px)`;
+                }
+              }
+              // Initial update
+              updateParallax();
+              // Update on scroll
+              window.addEventListener('scroll', updateParallax);
+              // Update on resize (important for mobile)
+              window.addEventListener('resize', updateParallax);
+            });
+          </script>
+
+          <style>
+            /* Light mode styles */
+            .mountain-temple-panel {
+              background-color: white !important;
+              border: 3px solid var(--ink) !important;
+              box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .mountain-temple-panel .arc-title {
+              color: var(--ink) !important;
+            }
+
+            .temple-speech {
+              background-color: rgba(255, 255, 255, 0.85) !important;
+              border: 2px solid var(--ink) !important;
+              box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .temple-speech .speech-text {
+              color: var(--ink) !important;
+            }
+
+            /* Dark mode styles */
+            .dark-mode .mountain-temple-panel {
+              background-color: var(--dm-panel) !important;
+              border-color: var(--dm-border) !important;
+              box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05) !important;
+            }
+
+            .dark-mode .mountain-temple-panel .arc-title {
+              color: var(--dm-text) !important;
+            }
+
+            .dark-mode .temple-speech {
+              background-color: rgba(26, 26, 26, 0.85) !important;
+              border-color: var(--dm-border) !important;
+              box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.05) !important;
+            }
+
+            .dark-mode .temple-speech .speech-text {
+              color: var(--dm-text) !important;
+            }
+
+            /* Additional mobile optimization */
+            @media (max-width: 768px) {
+              .temple-speech {
+                bottom: 1rem !important;
+                left: 1rem !important;
+                right: 1rem !important;
+                padding: 0.75rem !important;
+              }
+
+              .temple-speech .speech-text {
+                font-size: 0.95rem !important;
+              }
+            }
+          </style>
+        </div>
+        <!-- The Mountain Temple -->
+
+        <!-- The Warrior -->
+        <div class="panel panel-sm warrior-panel" style="position: relative; overflow: hidden;">
+          <!-- Background with parallax -->
+          <div class="warrior-bg" style="
+    background-image: url('https://i.imgur.com/VsnU0Lb.jpg');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    z-index: 0;
+  "></div>
+
+          <!-- Content container with proper z-index -->
+          <div style="position: relative; z-index: 2; padding-top: 180px;">
+            <div class="journey-reflection" style="
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    ">
+              <p class="reflection-text">A decade of training forged the orphan into a warrior of unparalleled skill. Yet the void left by his master's passing would lead Nazumi down an unexpected path—one that would test not only his blade, but his spirit.</p>
+            </div>
+
+            <!-- Square stamp with aspect ratio preserved using padding technique -->
+            <div class="japanese-stamp" style="
+      margin: 0 auto 1rem;
+      width: 120px;
+      max-width: 30%;
+      position: relative;
+    ">
+              <div style="padding-top: 100%; /* This maintains aspect ratio */"></div>
+              <div class="stamp-container" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      ">
+                <div class="stamp-bg"></div>
+                <div class="stamp-text"></div>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            // Simple parallax effect
+            document.addEventListener('DOMContentLoaded', function() {
+              const bg = document.querySelector('.warrior-bg');
+              if (!bg) return;
+
+              function moveParallax() {
+                const scrolled = window.pageYOffset;
+                const panel = bg.closest('.panel');
+                const panelTop = panel.getBoundingClientRect().top + window.pageYOffset;
+                const panelHeight = panel.offsetHeight;
+                // Only apply when in viewport
+                if (scrolled > panelTop - window.innerHeight && scrolled < panelTop + panelHeight) {
+                  const yPos = (scrolled - panelTop) * 0.3;
+                  bg.style.transform = `translateY(${yPos}px)`;
+                }
+              }
+              window.addEventListener('scroll', moveParallax);
+              moveParallax(); // Initial position
+            });
+          </script>
+
+          <style>
+            /* Light mode styles */
+            .warrior-panel {
+              background-color: white !important;
+              border: 3px solid var(--ink) !important;
+              box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .journey-reflection {
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+              border: 1px solid var(--ink) !important;
+            }
+
+            .reflection-text {
+              color: var(--ink) !important;
+              font-style: italic !important;
+            }
+
+            /* Dark mode support with proper styling */
+            .dark-mode .warrior-panel {
+              background-color: var(--dm-panel) !important;
+              border-color: var(--dm-border) !important;
+              box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05) !important;
+            }
+
+            .dark-mode .journey-reflection {
+              background-color: rgba(26, 26, 26, 0.9) !important;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+              border-color: var(--dm-border) !important;
+            }
+
+            .dark-mode .reflection-text {
+              color: var(--dm-text) !important;
+            }
+
+            .dark-mode .stamp-bg {
+              background-color: var(--dm-primary-red) !important;
+            }
+
+            /* Ensure the stamp maintains its ratio on all devices */
+            @media (max-width: 768px) {
+              .japanese-stamp {
+                width: 80px !important;
+                /* Smaller on mobile but aspect ratio is preserved */
+              }
+            }
+          </style>
+        </div>
+        <!-- The Warrior -->
+
+        <!-- The Masterless Warrior -->
+        <div class="panel panel-sm warrior-showcase">
+          <div class="arc-header">
+            <div class="arc-number">侍</div>
+            <div class="arc-title">The Masterless Warrior</div>
+          </div>
+
+          <div class="warrior-image-container">
+            <img src="https://i.imgur.com/qdGqEx2.jpg" alt="Nazumi - A Warrior Without a Master" class="warrior-image">
+            <div class="warrior-image-overlay">
+              <span>無主</span>
+            </div>
+          </div>
+
+          <div class="warrior-caption">
+            <p>With technique forged in hardship and a spirit tempered by loss, Nazumi emerges as a ronin—bound by honor to a code without a master.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Masterless Warrior -->
+
+    <!-- The Training -->
+    <section id="training" class="manga-section">
+      <h2 class="section-title">FORGING THE WARRIOR</h2>
+      <div class="panel-grid">
+        <div class="panel panel-lg">
+          <div class="action-lines lines-speed"></div>
+          <div class="sound-effect sound-bottom-left">SLASH!</div>
+
+          <div class="arc-header">
+            <div class="arc-number">四</div>
+            <div class="arc-title">Years of Training</div>
+          </div>
+
+          <div class="character-evolution" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin: 2rem 0; flex-wrap: wrap;">
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/41jyzmZ.jpg" alt="Young Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Orphan</div>
+            </div>
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/Wy4YMbC.jpg" alt="Training Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Student</div>
+            </div>
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="https://i.imgur.com/P1kjylS.jpg" alt="Warrior Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+              <div class="character-name">The Warrior</div>
+            </div>
+          </div>
+
+          <div class="speech-bubble">
+            <div class="speech-text">Through bitter winters and scorching summers, Nazumi's spirit hardened like the steel of his blade. His eyes grew cold, his strikes precise, his heart locked away.</div>
+          </div>
+        </div>
+
+        <div class="panel panel-sm">
+          <div class="emotion-indicator emotion-sadness">💧</div>
+          <div class="rain-effect"></div>
+
+          <div class="arc-header">
+            <div class="arc-number">五</div>
+            <div class="arc-title">The Masterless Path</div>
+          </div>
+
+          <div class="title-image-container">
+            <img src="https://i.imgur.com/p49CxJb.jpg" alt="Nazumi - Warrior Without a Master" class="title-image">
+          </div>
+
+          <div class="speech-bubble speech-left">
+            <div class="speech-text">"Live with honor, Nazumi. Protect... the innocent..."</div>
+          </div>
+
+          <div class="speech-bubble speech-right">
+            <div class="speech-text">Master Takashi's last words echoed in Nazumi's mind as he buried his mentor. Now he walked the path of a ronin – masterless, purposeless, alone.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Training -->
+
+    <!-- AWAKENING section -->
+    <section id="awakening" class="manga-section">
+      <h2 class="section-title">THE AWAKENING</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md awakening-panel" style="
+      position: relative;
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      padding: 2rem;
+      ">
+          <!-- Background image with parallax effect -->
+          <div class="parallax-bg awakening-bg" style="
+          position: absolute;
+          top: -20px;
+          left: 0;
+          width: 100%;
+          height: 120%;
+          background-image: url('https://i.imgur.com/wmY44Ld.jpg');
+          background-size: cover;
+          background-position: center;
+          opacity: 0.9;
+          z-index: 0;
+          transform: translateY(0);
+      "></div>
+
+          <!-- Light overlay in light mode -->
+          <div class="awakening-overlay" style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.7);
+          z-index: 1;
+      "></div>
+
+          <!-- Japanese symbols -->
+          <div class="japanese-symbol symbol-top-right" style="
+          position: absolute;
+          top: 10%;
+          right: 10%;
+          font-size: 4rem;
+          color: var(--primary-red);
+          z-index: 2;
+          transform: rotate(15deg);
+      ">悟</div>
+
+          <div class="japanese-symbol symbol-bottom-left" style="
+          position: absolute;
+          bottom: 10%;
+          left: 10%;
+          font-size: 4rem;
+          color: var(--primary-red);
+          z-index: 2;
+          transform: rotate(-10deg);
+      ">覚</div>
+
+          <!-- Cherry blossom petals -->
+          <div class="cherry-petals" style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          pointer-events: none;
+      ">
+            <div class="petal" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+            <div class="petal" style="top: 5%; left: 40%; animation-delay: 2s;"></div>
+            <div class="petal" style="top: 15%; left: 60%; animation-delay: 3.5s;"></div>
+            <div class="petal" style="top: 8%; left: 80%; animation-delay: 1s;"></div>
+            <div class="petal" style="top: 20%; left: 10%; animation-delay: 4s;"></div>
+          </div>
+
+          <div class="action-lines lines-radial" style="z-index: 2; position: relative;"></div>
+          <div class="sound-effect sound-top-right" style="z-index: 3; position: relative;">悟り!</div>
+
+          <div class="arc-header" style="z-index: 2; position: relative; margin-bottom: 1.5rem;">
+            <div class="arc-number">六</div>
+            <div class="arc-title">Rediscovering Purpose</div>
+          </div>
+
+          <!-- Speech bubble -->
+          <div class="speech-bubble awakening-speech" style="
+          z-index: 2; 
+          position: relative; 
+          max-width: 90%;
+          margin: 0 auto 1.5rem;
+      ">
+            <div class="speech-text">In saving a child from bandits, Nazumi saw himself in the boy's frightened eyes. The walls around his heart began to crumble. "Perhaps the sword can protect as well as destroy."</div>
+          </div>
+
+          <!-- Tokenomics container -->
+          <div class="tokenomics-container awakening-tokenomics" style="
+          z-index: 2; 
+          position: relative; 
+          max-width: 95%;
+          margin: 0 auto;
+      ">
+            <h3 class="tokenomics-title">The Token's Path</h3>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Community Treasury</div>
+              <div class="distribution-value">50%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Liquidity Pool</div>
+              <div class="distribution-value">20%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Development</div>
+              <div class="distribution-value">15%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Marketing</div>
+              <div class="distribution-value">10%</div>
+            </div>
+
+            <div class="distribution-row">
+              <div class="distribution-label">Team</div>
+              <div class="distribution-value">5%</div>
+            </div>
+          </div>
+
+          <!-- Red seal -->
+          <div class="red-seal" style="
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          background-color: var(--primary-red);
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-size: 1rem;
+          bottom: 20px;
+          right: 20px;
+          transform: rotate(-15deg);
+          box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+          z-index: 3;
+      ">
+            悟空
+          </div>
+        </div>
+      </div>
+
+      <style>
+        /* Light mode styling */
+        .awakening-panel {
+          background-color: white !important;
+        }
+
+        .awakening-speech {
+          background-color: white !important;
+          border: 2px solid var(--ink) !important;
+          box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .speech-text {
+          color: var(--ink) !important;
+        }
+
+        .awakening-tokenomics {
+          background-color: white !important;
+          border: 2px solid var(--ink) !important;
+          box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .tokenomics-title {
+          color: var(--primary-red) !important;
+        }
+
+        .distribution-row {
+          background-color: var(--stone) !important;
+          border: 1px solid var(--ink) !important;
+          padding: 0.75rem !important;
+          margin-bottom: 1rem !important;
+        }
+
+        .distribution-label {
+          color: var(--ink) !important;
+          flex: 1 !important;
+          padding-left: 1.5rem !important;
+        }
+
+        .distribution-value {
+          background-color: var(--primary-red) !important;
+          color: white !important;
+          width: 60px !important;
+          text-align: center !important;
+          padding: 0.3rem !important;
+          border-radius: 4px !important;
+        }
+
+        /* Dark mode styling */
+        .dark-mode .awakening-panel {
+          background-color: var(--dm-panel) !important;
+        }
+
+        .dark-mode .awakening-overlay {
+          background: rgba(10, 10, 10, 0.5) !important;
+        }
+
+        .dark-mode .arc-title {
+          color: var(--dm-text) !important;
+        }
+
+        .dark-mode .japanese-symbol {
+          color: var(--dm-primary-red) !important;
+        }
+
+        .dark-mode .awakening-speech {
+          background-color: var(--dm-panel) !important;
+          border-color: var(--dm-border) !important;
+          box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .dark-mode .speech-text {
+          color: var(--dm-text) !important;
+        }
+
+        .dark-mode .awakening-tokenomics {
+          background-color: var(--dm-panel) !important;
+          border-color: var(--dm-primary-red) !important;
+          box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .dark-mode .tokenomics-title {
+          color: var(--dm-light-red) !important;
+        }
+
+        .dark-mode .distribution-row {
+          background-color: rgba(77, 128, 230, 0.1) !important;
+          border-color: var(--dm-border) !important;
+        }
+
+        .dark-mode .distribution-label {
+          color: var(--dm-text) !important;
+        }
+
+        .dark-mode .distribution-value {
+          background-color: var(--dm-primary-red) !important;
+        }
+
+        .dark-mode .red-seal {
+          background-color: var(--dm-primary-red) !important;
+        }
+
+        /* Animation for petals */
+        @keyframes floatPetal {
+          0% {
+            transform: translateX(0) translateY(-10px) rotate(45deg);
+          }
+
+          50% {
+            transform: translateX(50px) translateY(150px) rotate(135deg);
+          }
+
+          100% {
+            transform: translateX(0) translateY(300px) rotate(225deg);
+          }
+        }
+
+        @keyframes rotatePetal {
+          0% {
+            transform: rotateX(0deg) rotateY(0deg) rotate(45deg);
+          }
+
+          100% {
+            transform: rotateX(360deg) rotateY(360deg) rotate(225deg);
+          }
+        }
+
+        .petal {
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background-color: rgba(255, 183, 197, 0.8);
+          border-radius: 150% 0 150% 0;
+          animation: floatPetal 15s linear infinite, rotatePetal 10s linear infinite;
+          transform: rotate(45deg);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .parallax-bg.awakening-bg {
+            height: 100% !important;
+            background-size: 100% auto !important;
+            background-position: top center !important;
+          }
+
+          .japanese-symbol {
+            font-size: 3rem !important;
+          }
+
+          .red-seal {
+            width: 50px !important;
+            height: 50px !important;
+            font-size: 0.8rem !important;
+            bottom: 10px !important;
+            right: 10px !important;
+          }
+        }
+      </style>
+
+      <script>
+        // Parallax scrolling effect for awakening background
+        document.addEventListener('DOMContentLoaded', function() {
+          const awakeningBg = document.querySelector('.awakening-bg');
+          if (!awakeningBg) return;
+
+          function updateAwakeningParallax() {
+            const scrollPosition = window.pageYOffset;
+            const section = document.getElementById('awakening');
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            // Only apply when in viewport
+            if (scrollPosition > sectionTop - window.innerHeight &&
+              scrollPosition < sectionTop + sectionHeight) {
+              const yPos = (scrollPosition - sectionTop) * 0.3;
+              awakeningBg.style.transform = `translateY(${yPos}px)`;
+            }
+          }
+          // Initial update
+          updateAwakeningParallax();
+          // Update on scroll
+          window.addEventListener('scroll', updateAwakeningParallax);
+          // Update on resize
+          window.addEventListener('resize', updateAwakeningParallax);
+        });
+      </script>
+    </section>
+    <!-- The AWAKENING section -->
+
+    <!-- The Enlightenment -->
+<section id="enlightenment" class="manga-section">
+  <h2 class="section-title">THE ENLIGHTENMENT</h2>
+  <div class="panel-grid">
+    <!-- First panel (Inner Peace) with parallax scrolling -->
+    <div class="panel panel-sm zen-temple" style="position: relative; overflow: hidden;">
+      <div class="temple-bg parallax-bg" style="
+        background-image: url('https://i.imgur.com/go2g6R9.jpg');
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        z-index: 0;
+      "></div>
+      
+      <div class="arc-header" style="position: relative; z-index: 2;">
+        <div class="arc-number">七</div>
+        <div class="arc-title">Inner Peace</div>
+      </div>
+      
+      <div class="circular-panel" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 1;"></div>
+      
+      <!-- Speech bubble directly on background (no temple-content box) -->
+      <div class="speech-bubble speech-left" style="
+        margin: 0;
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        z-index: 2;
+      ">
+        <div class="speech-text">At the mountain temple, Nazumi found what his heart had sought. Not vengeance, but balance. Not power, but wisdom.</div>
+      </div>
+    </div>
+
+    <!-- Second panel (Join the Path) - unchanged -->
+    <div class="panel panel-sm">
+      <div class="emotion-indicator emotion-excitement">✨</div>
+      <div class="sound-effect sound-bottom-left">JOIN!</div>
+      <div class="arc-header">
+        <div class="arc-number">八</div>
+        <div class="arc-title">Join the Path</div>
+      </div>
+      <div class="speech-bubble speech-right">
+        <div class="speech-text">Like Nazumi, our token seeks balance in the chaotic crypto world. Join our community of warriors seeking a better path.</div>
+      </div>
+      <div class="allies-gathering">
+        <div class="ally-card">
+          <div class="ally-icon">
+            <i class="fab fa-telegram-plane" style="color: #0088cc;"></i>
+          </div>
+          <div class="ally-info">
+            <div class="ally-name">TELEGRAM</div>
+          </div>
+        </div>
+        <div class="ally-card">
+          <div class="ally-icon" style="background-color: #000;">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 50%; height: auto;">
+          </div>
+          <div class="ally-info">
+            <div class="ally-name">X</div>
+          </div>
+        </div>
+      </div>
+      <div class="japanese-stamp">
+        <div class="stamp-container">
+          <div class="stamp-bg"></div>
+          <div class="stamp-text"></div>
+        </div>
+      </div>
+      <a href="#" id="buyButtonPanel" class="btn btn-red" style="margin-top: 1.5rem;">
+        JOIN THE RONIN PATH <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- Third panel (Path of Enlightenment) - unchanged -->
+    <div class="panel panel-sm enlightened-monk">
+      <div class="arc-header">
+        <div class="arc-number">九</div>
+        <div class="arc-title">Path of Enlightenment</div>
+      </div>
+      <div class="monk-image-container">
+        <img src="https://i.imgur.com/awM1v2v.jpg" alt="Nazumi as Zen Monk" class="monk-image">
+      </div>
+      <div class="wisdom-scroll">
+        <p>In solitude, Nazumi found truth. The past was a teacher, not a burden. His sword now rests beside him, a reminder of the journey rather than a tool for vengeance.</p>
+        <span class="wisdom-signature">- Master Nazumi</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Parallax scrolling effect for the temple background
+    document.addEventListener('DOMContentLoaded', function() {
+      const parallaxBg = document.querySelector('.parallax-bg');
+      if (!parallaxBg) return;
+      
+      function updateParallax() {
+        const scrollPosition = window.pageYOffset;
+        const element = parallaxBg.parentElement;
+        const rect = element.getBoundingClientRect();
+        // Only apply parallax when element is in viewport
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = (scrollPosition - (rect.top + window.pageYOffset)) * 0.3;
+          // Use transform for better performance
+          parallaxBg.style.transform = `translateY(${offset}px)`;
+        }
+      }
+      
+      // Initial update
+      updateParallax();
+      // Update on scroll
+      window.addEventListener('scroll', updateParallax);
+      // Update on resize
+      window.addEventListener('resize', updateParallax);
+    });
+  </script>
+</section>
+    <!-- Third panel (Path of Enlightenment) -->
+
+    <!-- The Path Ahead (Roadmap) -->
+    <section id="roadmap" class="manga-section">
+      <h2 class="section-title">THE PATH AHEAD</h2>
+      <div class="roadmap">
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">道</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q2 2025: Genesis
+              <span class="status status-completed">COMPLETED</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Token launch on SOL blockchain</li>
+                <li>Initial liquidity pool establishment</li>
+                <li>Community building initiatives</li>
+                <li>Social media presence expansion</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">修</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q3 2025: Training Arc
+              <span class="status status-progress">IN PROGRESS</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Whitepaper v2.0 release</li>
+                <li>Strategic partnerships with aligned projects</li>
+                <li>First major exchange listing</li>
+                <li>Community governance implementation</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">剣</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q4 2025: Warrior's Ascension
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>NFT collection launch</li>
+                <li>Creation of DAO treasury</li>
+                <li>Community rewards program</li>
+                <li>Major marketing campaign</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">悟</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Q1 2026: Enlightenment
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Launch of Nazumi ecosystem</li>
+                <li>Decentralized application release</li>
+                <li>Cross-chain integration</li>
+                <li>Partnership with major brands</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-node">
+          <div class="roadmap-symbol">遺</div>
+          <div class="roadmap-content">
+            <h3 class="roadmap-title">
+              Beyond: Legacy
+              <span class="status status-upcoming">UPCOMING</span>
+            </h3>
+            <div class="roadmap-text">
+              <ul class="roadmap-list">
+                <li>Global adoption initiatives</li>
+                <li>Charitable foundation establishment</li>
+                <li>Advanced technological integrations</li>
+                <li>"The journey continues..."</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- The Path Ahead (Roadmap) -->
+
+    <!-- Community Section -->
+    <section id="community" class="manga-section community-section">
+      <h2 class="section-title">OUR COMMUNITY</h2>
+      <div class="community-intro">
+        <p>Nazumi's journey is not a solitary one. Join our growing community of warriors, each bringing unique skills and perspectives to our collective path. Together, we forge a stronger future.</p>
+      </div>
+
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/p49CxJb.jpg" alt="Sensei Khan">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Sensei Khan</h3>
+            <div class="community-role">Founder & Lead Developer</div>
+            <div class="community-bio">Former blockchain architect with 8+ years experience. Leads technical development with vision and precision.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/Wy4YMbC.jpg" alt="Sakura">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Sakura</h3>
+            <div class="community-role">Marketing Strategist</div>
+            <div class="community-bio">Marketing wizard with experience at leading crypto projects. Brings creativity and strategic thinking to every campaign.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/awM1v2v.jpg" alt="Takumi">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Takumi</h3>
+            <div class="community-role">Community Manager</div>
+            <div class="community-bio">Heart and soul of our community. Creates engaging events and ensures everyone feels welcome on the path.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-discord"></i></a>
+              <a href="#"><i class="fab fa-reddit"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-avatar">
+            <img src="https://i.imgur.com/JyHxv0n.jpg" alt="Rei">
+          </div>
+          <div class="community-info">
+            <h3 class="community-title">Rei</h3>
+            <div class="community-role">Financial Strategist</div>
+            <div class="community-bio">Financial expert with deep knowledge of DeFi ecosystems. Ensures project stability and sustainable growth.</div>
+            <div class="community-links">
+              <a href="#"><i class="fab fa-telegram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-medium"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="community-join">
+        <h3>Join the Ronin Clan</h3>
+        <p>Become part of our growing community as we walk the path together.</p>
+        <div class="social-links" style="margin-top: 1.5rem;">
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 60%; height: auto;">
+          </a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+        </div>
+      </div>
+    </section>
+    <!-- Community Section -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">NAZUMI RONIN</div>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link">
+            <img src="https://i.imgur.com/UMB8Jem.png" alt="X logo" style="width: 60%; height: auto;">
+          </a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+        </div>
+
+        <div class="copyright">
+          &copy; 2025 Nazumi Ronin. All rights reserved. The path of the warrior is eternal.
+        </div>
+      </div>
+    </footer>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Buy Panel -->
+    <div class="buy-panel" id="buyPanel">
+      <div class="panel-corner corner-top-left"></div>
+      <div class="panel-corner corner-top-right"></div>
+      <div class="panel-corner corner-bottom-left"></div>
+      <div class="panel-corner corner-bottom-right"></div>
+
+      <div class="buy-panel-header">
+        <h2 class="buy-panel-title">ACQUIRE NAZUMI RONIN</h2>
+        <button class="close-btn" id="closeBuyPanel">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Contract Address -->
+      <div class="contract-address-container">
+        <span class="contract-address-label">Contract Address:</span>
+        <div class="contract-address">
+          <span>0xNazu4528...mi7892Ron</span>
+          <button class="copy-btn" id="copyAddress">
+            <i class="fa-solid fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Path to Acquisition</h3>
+        <div class="how-to-buy">
+          <h4>Step 1: Acquire SOL</h4>
+          <ul>
+            <li>Purchase SOL from a reputable exchange:</li>
+          </ul>
+          <div class="exchange-logos-container">
+            <a href="https://www.binance.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/f5ZDwkE.png" alt="Binance logo">
+              </div>
+              <span>Binance</span>
+            </a>
+            <a href="https://www.coinbase.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/utxctgK.png" alt="Coinbase logo">
+              </div>
+              <span>Coinbase</span>
+            </a>
+            <a href="https://www.kraken.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/imVg7Cq.png" alt="Kraken logo">
+              </div>
+              <span>Kraken</span>
+            </a>
+            <a href="https://www.kucoin.com" target="_blank" class="exchange-logo">
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/6hy8hIL.jpg" alt="KuCoin logo">
+              </div>
+              <span>KuCoin</span>
+            </a>
+          </div>
+          <ul>
+            <li>Transfer SOL to your preferred wallet (Phantom, Solflare, or Backpack)</li>
+            <li>Reserve a small amount of SOL for transaction fees (~0.01 SOL)</li>
+          </ul>
+
+          <h4>Step 2: Connect Your Wallet</h4>
+          <ul>
+            <li>Install a compatible wallet extension</li>
+            <li>Connect your wallet to the chosen exchange</li>
+            <li>Verify the connection is secure</li>
+          </ul>
+
+          <h4>Step 3: Acquire NAZUMI</h4>
+          <ul>
+            <li>Use one of the exchanges below to swap SOL for NAZUMI</li>
+            <li>Set slippage to 1-2% to ensure transaction success</li>
+            <li>Confirm the transaction in your wallet</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Exchange Dojos</h3>
+        <div class="buy-options">
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Jupiter Swap</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/ebKfiAL.jpg" alt="Jupiter Swap logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The grand aggregator of the Solana realm. Find the best path for your token journey.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://jup.ag" target="_blank" class="btn btn-red">
+                Trade on Jupiter <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Raydium</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/th5k1tr.jpg" alt="Raydium logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The warrior's trading ground with deep liquidity pools and swift execution.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://raydium.io/swap" target="_blank" class="btn btn-red">
+                Swap on Raydium <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Pump.fun</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/0xuFyZC.jpg" alt="Pump.fun logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The birthplace of legends. Where meme tokens begin their heroic journeys.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://pump.fun" target="_blank" class="btn btn-red">
+                Buy on Pump.fun <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Warrior Wallets</h3>
+        <div class="buy-options">
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Phantom</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/D2IgwWd.png" alt="Phantom Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The phantom guardian of your digital assets. Swift, secure, and widely trusted.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://phantom.app/download" target="_blank" class="btn btn-red">
+                Download Phantom <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Solflare</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/eUK9cvW.png" alt="Solflare Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The flaring torch that illuminates the Solana path. Powerful and versatile.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://solflare.com/download" target="_blank" class="btn btn-red">
+                Download Solflare <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="buy-option">
+            <div class="buy-option-header">
+              <span class="buy-option-name">Backpack</span>
+              <div class="embedded-logo">
+                <img src="https://i.imgur.com/zNlY0IQ.png" alt="Backpack Wallet logo" />
+              </div>
+            </div>
+            <p class="buy-option-description">
+              The traveler's companion on the crypto journey. Modern, sleek, and feature-rich.
+            </p>
+            <div class="buy-option-action">
+              <a href="https://www.backpack.app/download" target="_blank" class="btn btn-red">
+                Download Backpack <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="japanese-stamp" style="margin-top: 2rem;">
+            <div class="stamp-container">
+              <div class="stamp-bg"></div>
+              <div class="stamp-text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add AOS JS for scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+      // NAZUMI RONIN V6 - Enhanced Performance & Splash Screen
+      document.addEventListener('DOMContentLoaded', function() {
+        // Splash screen simulation
+        const splashScreen = document.getElementById('splashScreen');
+        const loadingBar = document.getElementById('loadingBar');
+        const body = document.body;
+        // Simulate loading progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += 2;
+          loadingBar.style.width = `${progress}%`;
+          if (progress >= 100) {
+            clearInterval(progressInterval);
+            // Hide splash screen with fade effect
+            setTimeout(() => {
+              splashScreen.style.opacity = 0;
+              setTimeout(() => {
+                splashScreen.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Enable scrolling after splash screen is gone
+              }, 500);
+            }, 500);
+          }
+        }, 40);
+        // Lock body scroll during splash screen
+        document.body.style.overflow = 'hidden';
+        // Main functionality
+        const buyButton = document.getElementById('buyButton');
+        const buyButtonPanel = document.getElementById('buyButtonPanel');
+        const floatingBuyBtn = document.getElementById('floatingBuyBtn');
+        const overlay = document.getElementById('overlay');
+        const buyPanel = document.getElementById('buyPanel');
+        const closeBuyPanel = document.getElementById('closeBuyPanel');
+        const copyAddress = document.getElementById('copyAddress');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        // Toggle mobile menu
+        menuToggle.addEventListener('click', function() {
+          navMenu.classList.toggle('active');
+          menuToggle.innerHTML = navMenu.classList.contains('active') ?
+            '<i class="fas fa-times"></i>' :
+            '<i class="fas fa-bars"></i>';
+        });
+        // Close mobile menu when a nav item is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', function() {
+            navMenu.classList.remove('active');
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+          });
+        });
+        // Dark Mode Toggle
+        darkModeToggle.addEventListener('click', function() {
+          body.classList.toggle('dark-mode');
+          // Save preference to localStorage
+          if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          } else {
+            localStorage.setItem('darkMode', 'disabled');
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          }
+        });
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          body.classList.add('dark-mode');
+          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        // Ink splash effect
+        document.addEventListener('click', function(e) {
+          // Create a new ink splash element
+          const splash = document.createElement('div');
+          splash.className = 'ink-splash';
+          // Set its position to the click coordinates
+          splash.style.width = '10px';
+          splash.style.height = '10px';
+          splash.style.left = (e.pageX - 5) + 'px';
+          splash.style.top = (e.pageY - 5) + 'px';
+          // Add it to the body
+          document.body.appendChild(splash);
+          // Remove it after the animation completes
+          setTimeout(() => {
+            splash.remove();
+          }, 800);
+        });
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+          const sections = document.querySelectorAll('.section-title, .panel, .arc-header, .speech-bubble, .village-scene, .character-evolution, .timeline, .tokenomics-container, .zen-temple, .allies-gathering, .btn, .japanese-stamp, .footer, .title-image-container, .journey-reflection, .roadmap, .roadmap-node, .community-card, .community-intro, .community-join');
+          sections.forEach(section => {
+            // Calculate position of each element
+            const sectionTop = section.getBoundingClientRect().top;
+            const triggerPoint = window.innerHeight * 0.8;
+            // Add animate class when section is in view
+            if (sectionTop < triggerPoint) {
+              section.classList.add('animate');
+            }
+          });
+        };
+        // Listen for scroll to trigger animations
+        window.addEventListener('scroll', animateOnScroll);
+        // Initial call to animate elements in view on page load
+        window.addEventListener('load', function() {
+          animateOnScroll();
+          // Animate AOS elements
+          AOS.init({
+            duration: 800,
+            easing: 'ease-out',
+            once: false,
+            offset: 120, // Trigger animations a bit earlier for smoother appearance
+            delay: 100, // Small delay to ensure proper initialization
+            mirror: false // No animation on scroll up
+          });
+          // Mark as V5 in console
+          console.log('NAZUMI RONIN V5 - Enhanced with splash screen and floating action button');
+        });
+        // Open Buy Panel functions
+        const openBuyPanel = function() {
+          overlay.style.display = 'block';
+          buyPanel.style.display = 'block';
+          document.body.style.overflow = 'hidden'; // Prevent scrolling
+          // Add fade-in classes after a brief delay
+          setTimeout(() => {
+            overlay.classList.add('fade-in');
+            buyPanel.classList.add('fade-in');
+          }, 10);
+        };
+        // Open Buy Panel from various buttons
+        buyButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          openBuyPanel();
+        });
+        if (buyButtonPanel) {
+          buyButtonPanel.addEventListener('click', function(e) {
+            e.preventDefault();
+            openBuyPanel();
+          });
+        }
+        if (floatingBuyBtn) {
+          floatingBuyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openBuyPanel();
+          });
+        }
+        // Close Buy Panel
+        closeBuyPanel.addEventListener('click', function() {
+          overlay.classList.remove('fade-in');
+          buyPanel.classList.remove('fade-in');
+          // Delay hiding to allow animation to complete
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            buyPanel.style.display = 'none';
+            document.body.style.overflow = ''; // Re-enable scrolling
+          }, 300);
+        });
+        // Close Buy Panel when clicking outside
+        overlay.addEventListener('click', function() {
+          overlay.classList.remove('fade-in');
+          buyPanel.classList.remove('fade-in');
+          // Delay hiding to allow animation to complete
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            buyPanel.style.display = 'none';
+            document.body.style.overflow = ''; // Re-enable scrolling
+          }, 300);
+        });
+        // Copy Contract Address
+        copyAddress.addEventListener('click', function() {
+          const addressText = '0xNazu4528...mi7892Ron';
+          navigator.clipboard.writeText(addressText).then(function() {
+            const originalHtml = copyAddress.innerHTML;
+            copyAddress.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+              copyAddress.innerHTML = originalHtml;
+            }, 2000);
+          });
+        });
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') return;
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              window.scrollTo({
+                top: target.offsetTop - 70,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+        // Add smooth scrolling for all elements
+        document.querySelectorAll('.zen-temple.animate .circular-panel').forEach(panel => {
+          panel.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+        // Toggle floating buy button visibility based on scroll position
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 500) {
+            floatingBuyBtn.classList.add('pulse');
+          } else {
+            floatingBuyBtn.classList.remove('pulse');
+          }
+        });
+      });
+      // Preload critical images for better performance
+      const preloadImages = () => {
+        const criticalImages = [
+          'https://i.imgur.com/6rxfmNY.jpg',
+          'https://i.imgur.com/nD9J9A7.jpg',
+          'https://i.imgur.com/VsnU0Lb.jpg',
+          'https://i.imgur.com/p49CxJb.jpg',
+          'https://i.imgur.com/go2g6R9.jpg',
+          'https://i.imgur.com/wmY44Ld.jpg'
+        ];
+        criticalImages.forEach(src => {
+          const img = new Image();
+          img.src = src;
+        });
+      };
+      // Run preload
+      preloadImages();
+
+      // Wallet Connection System
+      const walletConnection = {
+          // Store connected wallet state
+          currentWallet: null,
+          
+          // Initialize wallet connection system
+          init() {
+              // Add wallet connect button handlers
+              document.querySelectorAll('.wallet-option').forEach(button => {
+                  button.addEventListener('click', async (e) => {
+                      const walletType = e.currentTarget.dataset.wallet;
+                      await this.connectWallet(walletType);
+                  });
+              });
+
+              // Check for existing connections
+              this.checkExistingConnections();
+          },
+
+          // Connect to selected wallet
+          async connectWallet(walletType) {
+              try {
+                  let wallet;
+                  switch (walletType) {
+                      case 'phantom':
+                          wallet = await this.connectPhantom();
+                          break;
+                      case 'solflare':
+                          wallet = await this.connectSolflare();
+                          break;
+                      case 'backpack':
+                          wallet = await this.connectBackpack();
+                          break;
+                      default:
+                          throw new Error('Unsupported wallet type');
+                  }
+
+                  if (wallet) {
+                      this.currentWallet = wallet;
+                      this.updateUI(walletType, wallet.publicKey);
+                      // Store connection info
+                      localStorage.setItem('lastConnectedWallet', walletType);
+                  }
+              } catch (error) {
+                  console.error('Wallet connection error:', error);
+                  this.showError('Failed to connect wallet. Please try again.');
+              }
+          },
+
+          // Phantom connection
+          async connectPhantom() {
+              if (!window.solana?.isPhantom) {
+                  window.open('https://phantom.app/', '_blank');
+                  throw new Error('Phantom wallet not installed');
+              }
+
+              try {
+                  const resp = await window.solana.connect();
+                  return {
+                      type: 'phantom',
+                      publicKey: resp.publicKey.toString()
+                  };
+              } catch (err) {
+                  throw new Error('Phantom connection failed');
+              }
+          },
+
+          // Solflare connection
+          async connectSolflare() {
+              if (!window.solflare?.isSolflare) {
+                  window.open('https://solflare.com/', '_blank');
+                  throw new Error('Solflare wallet not installed');
+              }
+
+              try {
+                  await window.solflare.connect();
+                  return {
+                      type: 'solflare',
+                      publicKey: window.solflare.publicKey.toString()
+                  };
+              } catch (err) {
+                  throw new Error('Solflare connection failed');
+              }
+          },
+
+          // Backpack connection
+          async connectBackpack() {
+              if (!window.backpack?.isBackpack) {
+                  window.open('https://www.backpack.app/', '_blank');
+                  throw new Error('Backpack wallet not installed');
+              }
+
+              try {
+                  const resp = await window.backpack.connect();
+                  return {
+                      type: 'backpack',
+                      publicKey: resp.publicKey.toString()
+                  };
+              } catch (err) {
+                  throw new Error('Backpack connection failed');
+              }
+          },
+
+          // Update UI after successful connection
+          updateUI(walletType, publicKey) {
+              const connectButton = document.getElementById('connectWalletBtn');
+              const shortAddress = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
+              connectButton.innerHTML = `
+                  <img src="https://i.imgur.com/${this.getWalletIcon(walletType)}" 
+                      alt="${walletType}" 
+                      style="width: 20px; height: 20px; margin-right: 8px;">
+                  ${shortAddress}
+              `;
+              connectButton.classList.add('connected');
+              
+              // Hide wallet options
+              document.getElementById('walletOptions').classList.remove('show');
+          },
+
+          // Get wallet icon
+          getWalletIcon(walletType) {
+              const icons = {
+                  phantom: 'D2IgwWd.png',
+                  solflare: 'eUK9cvW.png',
+                  backpack: 'zNlY0IQ.png'
+              };
+              return icons[walletType];
+          },
+
+          // Check for existing connections
+          async checkExistingConnections() {
+              const lastWallet = localStorage.getItem('lastConnectedWallet');
+              if (lastWallet) {
+                  try {
+                      await this.connectWallet(lastWallet);
+                  } catch (error) {
+                      localStorage.removeItem('lastConnectedWallet');
+                  }
+              }
+          },
+
+          // Show error message
+          showError(message) {
+              // Create and show error toast
+              const toast = document.createElement('div');
+              toast.className = 'error-toast';
+              toast.textContent = message;
+              document.body.appendChild(toast);
+              
+              // Remove after 3 seconds
+              setTimeout(() => {
+                  toast.remove();
+              }, 3000);
+          }
+      };
+
+      // Initialize wallet connection system
+      document.addEventListener('DOMContentLoaded', () => {
+          walletConnection.init();
+      });
+    </script>
+</body>
+
+</html>
