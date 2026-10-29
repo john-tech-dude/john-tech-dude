@@ -278,6 +278,36 @@ body.dark-mode {
   background-color: var(--dm-light-red);
 }
 
+.btn-outline {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid var(--primary-red);
+  background-color: transparent;
+  color: var(--primary-red);
+  text-align: center;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-red);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.dark-mode .btn-outline {
+  border-color: var(--dm-primary-red);
+  color: var(--dm-primary-red);
+}
+
+.dark-mode .btn-outline:hover {
+  background-color: var(--dm-primary-red);
+  color: white;
+}
+
 .dark-mode .nav-buy {
   background-color: var(--dm-primary-red);
   border-color: var(--dm-text);
@@ -462,6 +492,17 @@ html {
 
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 

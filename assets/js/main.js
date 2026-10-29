@@ -218,48 +218,78 @@ const preloadImages = () => {
 // Run preload
 preloadImages();
 
-// Wallet Connection System
+// Real Solana Wallet Connection System
 const walletConnection = {
-    // Store connected wallet state
-    currentWallet: null,
-    
-    // Initialize wallet connection system
-    init() {
+    wallet: null,
+    publicKey: null,
+    connected: false,
+
+    // Initialize wallet connection
+    async init() {
         // Add wallet connect button handlers
-        document.querySelectorAll('.wallet-option').forEach(button => {
+        document.querySelectorAll('.wallet-connect-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
                 const walletType = e.currentTarget.dataset.wallet;
                 await this.connectWallet(walletType);
             });
         });
 
-        // Check for existing connections
-        this.checkExistingConnections();
+        // Auto-connect if previously connected
+        const lastWallet = localStorage.getItem('lastConnectedWallet');
+        if (lastWallet) {
+            await this.connectWallet(lastWallet);
+        }
     },
 
-    // Connect to selected wallet
+    // Connect to wallet
     async connectWallet(walletType) {
         try {
-            let wallet;
+            let response;
+
             switch (walletType) {
                 case 'phantom':
-                    wallet = await this.connectPhantom();
+                    if (window.solana && window.solana.isPhantom) {
+                        response = await window.solana.connect();
+                        this.wallet = window.solana;
+                    } else {
+                        window.open('https://phantom.app/', '_blank');
+                        this.showError('Please install Phantom wallet');
+                        return;
+                    }
                     break;
+
                 case 'solflare':
-                    wallet = await this.connectSolflare();
+                    if (window.solflare && window.solflare.isSolflare) {
+                        response = await window.solflare.connect();
+                        this.wallet = window.solflare;
+                    } else {
+                        window.open('https://solflare.com/', '_blank');
+                        this.showError('Please install Solflare wallet');
+                        return;
+                    }
                     break;
+
                 case 'backpack':
-                    wallet = await this.connectBackpack();
+                    if (window.backpack) {
+                        response = await window.backpack.connect();
+                        this.wallet = window.backpack;
+                    } else {
+                        window.open('https://backpack.app/', '_blank');
+                        this.showError('Please install Backpack wallet');
+                        return;
+                    }
                     break;
+
                 default:
                     throw new Error('Unsupported wallet type');
             }
 
-            if (wallet) {
-                this.currentWallet = wallet;
-                this.updateUI(walletType, wallet.publicKey);
-                // Store connection info
+            if (response && response.publicKey) {
+                this.publicKey = response.publicKey.toString();
+                this.connected = true;
+                this.updateUI(walletType, this.publicKey);
                 localStorage.setItem('lastConnectedWallet', walletType);
+                this.showSuccess('Wallet connected successfully!');
             }
         } catch (error) {
             console.error('Wallet connection error:', error);
@@ -267,110 +297,95 @@ const walletConnection = {
         }
     },
 
-    // Phantom connection
-    async connectPhantom() {
-        if (!window.solana?.isPhantom) {
-            window.open('https://phantom.app/', '_blank');
-            throw new Error('Phantom wallet not installed');
-        }
-
+    // Disconnect wallet
+    async disconnect() {
         try {
-            const resp = await window.solana.connect();
-            return {
-                type: 'phantom',
-                publicKey: resp.publicKey.toString()
-            };
-        } catch (err) {
-            throw new Error('Phantom connection failed');
-        }
-    },
-
-    // Solflare connection
-    async connectSolflare() {
-        if (!window.solflare?.isSolflare) {
-            window.open('https://solflare.com/', '_blank');
-            throw new Error('Solflare wallet not installed');
-        }
-
-        try {
-            await window.solflare.connect();
-            return {
-                type: 'solflare',
-                publicKey: window.solflare.publicKey.toString()
-            };
-        } catch (err) {
-            throw new Error('Solflare connection failed');
-        }
-    },
-
-    // Backpack connection
-    async connectBackpack() {
-        if (!window.backpack?.isBackpack) {
-            window.open('https://www.backpack.app/', '_blank');
-            throw new Error('Backpack wallet not installed');
-        }
-
-        try {
-            const resp = await window.backpack.connect();
-            return {
-                type: 'backpack',
-                publicKey: resp.publicKey.toString()
-            };
-        } catch (err) {
-            throw new Error('Backpack connection failed');
+            if (this.wallet) {
+                await this.wallet.disconnect();
+            }
+            this.wallet = null;
+            this.publicKey = null;
+            this.connected = false;
+            localStorage.removeItem('lastConnectedWallet');
+            this.updateUI(null, null);
+            this.showSuccess('Wallet disconnected');
+        } catch (error) {
+            console.error('Wallet disconnect error:', error);
         }
     },
 
     // Update UI after successful connection
     updateUI(walletType, publicKey) {
         const connectButton = document.getElementById('connectWalletBtn');
-        const shortAddress = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-        connectButton.innerHTML = `
-            <img src="https://i.imgur.com/${this.getWalletIcon(walletType)}" 
-                alt="${walletType}" 
-                style="width: 20px; height: 20px; margin-right: 8px;">
-            ${shortAddress}
-        `;
-        connectButton.classList.add('connected');
-        
-        // Hide wallet options
-        document.getElementById('walletOptions').classList.remove('show');
-    },
+        if (!connectButton) return;
 
-    // Get wallet icon
-    getWalletIcon(walletType) {
-        const icons = {
-            phantom: 'D2IgwWd.png',
-            solflare: 'eUK9cvW.png',
-            backpack: 'zNlY0IQ.png'
-        };
-        return icons[walletType];
-    },
+        const shortAddress = publicKey ? `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}` : 'Connect Wallet';
 
-    // Check for existing connections
-    async checkExistingConnections() {
-        const lastWallet = localStorage.getItem('lastConnectedWallet');
-        if (lastWallet) {
-            try {
-                await this.connectWallet(lastWallet);
-            } catch (error) {
-                localStorage.removeItem('lastConnectedWallet');
-            }
+        if (this.connected) {
+            connectButton.innerHTML = `
+                <i class="fas fa-wallet" style="margin-right: 8px;"></i>
+                ${shortAddress}
+            `;
+            connectButton.classList.add('connected');
+            connectButton.onclick = () => this.disconnect();
+        } else {
+            connectButton.innerHTML = 'Connect Wallet';
+            connectButton.classList.remove('connected');
+            connectButton.onclick = () => {
+                const walletOptions = document.getElementById('walletOptions');
+                if (walletOptions) {
+                    walletOptions.classList.toggle('show');
+                }
+            };
         }
+
+        // Hide wallet options
+        const walletOptions = document.getElementById('walletOptions');
+        if (walletOptions) {
+            walletOptions.classList.remove('show');
+        }
+    },
+
+    // Show success message
+    showSuccess(message) {
+        const toast = document.createElement('div');
+        toast.className = 'success-toast';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #10B981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     },
 
     // Show error message
     showError(message) {
-        // Create and show error toast
         const toast = document.createElement('div');
         toast.className = 'error-toast';
         toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #EF4444;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
         document.body.appendChild(toast);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
+        setTimeout(() => toast.remove(), 3000);
     }
 };
 
