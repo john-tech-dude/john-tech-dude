@@ -433,14 +433,14 @@
     <section id="awakening" class="manga-section">
       <h2 class="section-title">THE AWAKENING</h2>
       <div class="panel-grid">
-        <div class="panel panel-md awakening-panel" style="
+        <div class="panel panel-xl awakening-panel" style="
       position: relative;
-      min-height: 550px;
+      min-height: 600px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       overflow: hidden;
-      padding: 2rem;
+      padding: 3rem;
       ">
           <!-- Background image with parallax effect -->
           <div class="parallax-bg awakening-bg" style="
@@ -452,7 +452,7 @@
           background-image: url('https://i.imgur.com/wmY44Ld.jpg');
           background-size: cover;
           background-position: center;
-          opacity: 0.9;
+          opacity: 1;
           z-index: 0;
           transform: translateY(0);
       "></div>
@@ -464,7 +464,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.4);
           z-index: 1;
       "></div>
 
@@ -516,20 +516,26 @@
 
           <!-- Speech bubble -->
           <div class="speech-bubble awakening-speech" style="
-          z-index: 2; 
-          position: relative; 
-          max-width: 90%;
-          margin: 0 auto 1.5rem;
+          z-index: 2;
+          position: relative;
+          max-width: 700px;
+          margin: 0 auto 2rem;
+          background-color: rgba(255, 255, 255, 0.95);
+          border: 3px solid var(--ink);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       ">
-            <div class="speech-text">In saving a child from bandits, Nazumi saw himself in the boy's frightened eyes. The walls around his heart began to crumble. "Perhaps the sword can protect as well as destroy."</div>
+            <div class="speech-text" style="color: var(--ink);">In saving a child from bandits, Nazumi saw himself in the boy's frightened eyes. The walls around his heart began to crumble. "Perhaps the sword can protect as well as destroy."</div>
           </div>
 
           <!-- Tokenomics container -->
           <div class="tokenomics-container awakening-tokenomics" style="
-          z-index: 2; 
-          position: relative; 
-          max-width: 95%;
+          z-index: 2;
+          position: relative;
+          max-width: 500px;
           margin: 0 auto;
+          background-color: rgba(255, 255, 255, 0.95);
+          border: 3px solid var(--ink);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       ">
             <h3 class="tokenomics-title">The Token's Path</h3>
 
@@ -579,6 +585,39 @@
       ">
             悟空
           </div>
+
+          <!-- Dark mode overrides -->
+          <style>
+            .dark-mode .awakening-overlay {
+              background: rgba(10, 10, 10, 0.5) !important;
+            }
+            .dark-mode .awakening-speech {
+              background-color: rgba(26, 26, 26, 0.95) !important;
+              border-color: var(--dm-border) !important;
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+            }
+            .dark-mode .awakening-speech .speech-text {
+              color: var(--dm-text) !important;
+            }
+            .dark-mode .awakening-tokenomics {
+              background-color: rgba(26, 26, 26, 0.95) !important;
+              border-color: var(--dm-border) !important;
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+            }
+            .dark-mode .tokenomics-title {
+              color: var(--dm-primary-red) !important;
+            }
+            .dark-mode .distribution-row {
+              background-color: rgba(77, 128, 230, 0.1) !important;
+              border-color: var(--dm-border) !important;
+            }
+            .dark-mode .distribution-label {
+              color: var(--dm-text) !important;
+            }
+            .dark-mode .distribution-value {
+              background-color: var(--dm-primary-red) !important;
+            }
+          </style>
         </div>
       </div>
 
