@@ -34,49 +34,18 @@
 </head>
 
 <body>
-  <!-- Password Gate -->
-  <div id="passwordGate" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #2E4057 0%, #121820 100%); display: flex; justify-content: center; align-items: center; z-index: 10000;">
-    <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 3rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 2px solid rgba(155, 34, 38, 0.5); text-align: center; max-width: 400px; width: 90%;">
-      <h2 style="color: #E5383B; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">NAZUMI RONIN</h2>
-      <p style="color: #E0E0E0; font-family: 'Oswald', sans-serif; margin-bottom: 1.5rem;">Enter password to access</p>
-      <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 2px solid #9B2226; border-radius: 5px; background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; outline: none; box-sizing: border-box;">
-      <button onclick="checkPassword()" style="width: 100%; padding: 0.75rem; background: #9B2226; color: white; border: none; border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.3s;">Enter</button>
-      <p id="errorMessage" style="color: #FF6B6E; margin-top: 1rem; font-size: 0.9rem; display: none;">Incorrect password. Please try again.</p>
-    </div>
-  </div>
-
-  <script>
-    function checkPassword() {
-      const password = document.getElementById('passwordInput').value;
-      if (password === '5665') {
-        localStorage.setItem('nazumiAuthenticated', 'true');
-        document.getElementById('passwordGate').style.display = 'none';
-      } else {
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('passwordInput').value = '';
-      }
-    }
-
-    // Check if already authenticated
-    if (localStorage.getItem('nazumiAuthenticated') === 'true') {
-      document.getElementById('passwordGate').style.display = 'none';
-    }
-
-    // Allow Enter key to submit
-    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        checkPassword();
-      }
-    });
-  </script>
-
   <!-- Splash Screen -->
   <div class="splash-screen" id="splashScreen">
     <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">忠</div>
     <div class="japanese-symbol japanese-symbol-splash symbol-bottom-left-splash">誠</div>
     <h1 class="splash-title">NAZUMI RONIN</h1>
-    <p class="splash-subtitle">Version 1.1 · In development</p>
-    <div class="loading-bar-container">
+    <form class="splash-gate" id="splashGate" autocomplete="off">
+      <p>Enter password to access</p>
+      <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
+      <button type="submit">Enter</button>
+      <p class="splash-error" id="errorMessage" hidden>Incorrect password. Please try again.</p>
+    </form>
+    <div class="loading-bar-container" id="splashLoading" hidden>
       <div class="loading-bar" id="loadingBar"></div>
     </div>
   </div>
@@ -94,7 +63,7 @@
       <li class="nav-item" style="--item-index: 4;"><a href="#enlightenment" class="nav-link">Enlightenment</a></li>
       <li class="nav-item" style="--item-index: 5;"><a href="#roadmap" class="nav-link">Journey</a></li>
       <li class="nav-item" style="--item-index: 6;"><a href="#community" class="nav-link">Community</a></li>
-      <li class="nav-item nav-buy-container" style="--item-index: 7;"><a href="#" id="buyButton" class="nav-buy">Coming Soon</a></li>
+      <li class="nav-item nav-buy-container" style="--item-index: 7;"><a href="#" id="buyButton" class="nav-buy">Buy Now</a></li>
     </ul>
   </nav>
 
@@ -142,7 +111,7 @@
         <div class="scroll-title">NAZUMI RONIN</div>
         <p class="scroll-version">V1.1 · In development</p>
         <div class="scroll-divider"></div>
-        <div class="scroll-text">From the ashes of tragedy rises a warrior of honor. Orphaned by war, forged in suffering, Nazumi wields his sword with purpose.</div>
+        <div class="scroll-text">From the ashes of Musouka rises a mouse of honor. Orphaned by clan war, forged in suffering, Nazumi wields a needle-blade with purpose.</div>
         <div class="scroll-text">Vengeance. Redemption. Enlightenment.</div>
         <div class="scroll-divider"></div>
         <div class="scroll-text">Follow the path of the ronin as he seeks meaning in a world of chaos.</div>
@@ -170,7 +139,7 @@
           </div>
 
           <div class="speech-bubble speech-right">
-            <div class="speech-text">Musouka's granaries under the floorboards burned that night. Kage-Nezumi—black crescent, the clan that takes by night—had come. Nazumi watched from the temple eaves.</div>
+            <div class="speech-text">Musouka's mice lived beneath the granary floorboards. That night the granaries burned. Kage-Nezumi (black crescent, the clan that takes by night) had come. Nazumi, a pup, watched from the temple eaves.</div>
           </div>
         </div>
 
@@ -191,12 +160,14 @@
 
           <div class="encounter-text-container">
             <div class="speech-bubble speech-left" style="margin-bottom: 0.5rem;">
-              <div class="speech-text">Takashi of Kage-Nezumi found the child in the ruins. He had burned Musouka—yet in the boy's eyes, he saw his own lost humanity.</div>
+              <div class="speech-text">Takashi of Kage-Nezumi found the pup in the ruins. A debt rides with him. He has not named it.</div>
             </div>
 
-            <div class="speech-bubble speech-right" style="margin-top: 0;">
-              <div class="speech-text">"I will teach you the sword. Not for vengeance."</div>
-            </div>
+            <blockquote class="pull-quote">
+              <span class="pull-mark" aria-hidden="true">弐</span>
+              <p>I will teach you the needle-blade, pup. Not for vengeance. So the small can live.</p>
+              <cite>Takashi</cite>
+            </blockquote>
           </div>
         </div>
         <!-- The Encounter -->
@@ -209,12 +180,22 @@
           </div>
 
           <div class="speech-bubble speech-left">
-            <div class="speech-text">At sunset, under the eaves, Takashi set a wooden blade in Nazumi's hands.</div>
+            <div class="speech-text">At sunset, under the rafters, Takashi set a wooden needle-blade in Nazumi's hands.</div>
           </div>
 
           <div class="speech-bubble speech-right">
-            <div class="speech-text">"A sword is neither good nor evil. Like its wielder, it simply... is."</div>
+            <div class="speech-text">Nazumi's paw closed to strike. The wood shook. Ash still clung to his fur, and he aimed the point at the smoke.</div>
           </div>
+
+          <div class="speech-bubble speech-left">
+            <div class="speech-text">Takashi turned the blade down and set the tip in the dust between them. The paw had to learn the weight before it learned the cut.</div>
+          </div>
+
+          <blockquote class="pull-quote">
+            <span class="pull-mark" aria-hidden="true">参</span>
+            <p>A sword is neither good nor evil. Like its wielder, it simply... is.</p>
+            <cite>Takashi</cite>
+          </blockquote>
 
           <div class="sound-effect sound-bottom-left">WISDOM</div>
         </div>
@@ -234,7 +215,7 @@
               <div class="node-icon">始</div>
               <div class="node-content">
                 <h3>THE DEPARTURE</h3>
-                <p>Nazumi leaves the burned granaries, following the warrior who spared his life.</p>
+                <p>Nazumi leaves the burned granaries, following the swordsman who spared his life.</p>
               </div>
             </div>
 
@@ -269,13 +250,11 @@
             <div class="speech-text">Musouka's smoke faded behind the rafters. Nazumi followed the master into the peaks, clutching the wooden blade.</div>
           </div>
 
-          <div class="journey-reflection" style="margin: 0.5rem 0;">
-            <p class="reflection-text">"We walk a road of atonement, Nazumi. I cannot undo what was done."</p>
-          </div>
-
-          <div class="speech-bubble speech-right" style="margin-top: 0.5rem;">
-            <div class="speech-text">"Leave your hatred in the ashes. It will consume you."</div>
-          </div>
+          <blockquote class="pull-quote">
+            <span class="pull-mark" aria-hidden="true">誓</span>
+            <p>Some ash will not wash off my paws, Nazumi. Walk with me. Learn a blade that keeps, not one that takes.</p>
+            <cite>Takashi</cite>
+          </blockquote>
         </div>
         <!-- The Traveler's Vow -->
       </div>
@@ -284,7 +263,7 @@
 
     <!-- The Training -->
     <section id="training" class="manga-section">
-      <h2 class="section-title">FORGING THE WARRIOR</h2>
+      <h2 class="section-title">FORGING THE SWORDSMOUSE</h2>
       <div class="panel-grid">
         <!-- The Mountain Temple -->
         <div class="panel panel-sm zen-temple mountain-temple-panel" style="position: relative; overflow: hidden; min-height: 350px;">
@@ -314,8 +293,14 @@
     right: 1.5rem;
     z-index: 2;
   ">
-            <div class="speech-text">"These eaves are home until the winters turn. You will learn the blade here—how it feels, and when to set it down."</div>
+            <div class="speech-text">These rafters are home until the winters turn.</div>
           </div>
+
+          <blockquote class="pull-quote">
+            <span class="pull-mark" aria-hidden="true">五</span>
+            <p>You will learn the needle-blade here, pup: how it sits in a small paw, and when to set it down.</p>
+            <cite>Takashi</cite>
+          </blockquote>
         </div>
         <!-- The Mountain Temple -->
 
@@ -340,12 +325,12 @@
             </div>
             <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 140px; margin: 0 auto 1.5rem;">
               <img src="assets/images/character-warrior.jpg" alt="Warrior Nazumi" class="character-image" style="width: 140px; height: 140px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
-              <div class="character-name">The Warrior</div>
+              <div class="character-name">The Swordsman</div>
             </div>
           </div>
 
           <div class="speech-bubble">
-            <div class="speech-text">Winters under the eaves. A wild rat snapped his needle-blade in a duel and stood over him. Nazumi stayed in the dust until he saw the opening, then stood.</div>
+            <div class="speech-text">Winters in the temple beams. A wild rat snapped his needle-blade in a duel and stood over him. Nazumi stayed in the dust until he saw the opening, then stood.</div>
           </div>
         </div>
         <!-- Years of Training -->
@@ -364,12 +349,14 @@
             <img src="assets/images/training-panel.jpg" alt="Nazumi - Warrior Without a Master" class="title-image">
           </div>
 
-          <div class="speech-bubble speech-left">
-            <div class="speech-text">"Nazumi. I served the Kage-Nezumi. I burned Musouka."</div>
-          </div>
+          <blockquote class="pull-quote">
+            <span class="pull-mark" aria-hidden="true">七</span>
+            <p>Nazumi. I served the Kage-Nezumi. I burned Musouka.</p>
+            <cite>Takashi</cite>
+          </blockquote>
 
           <div class="speech-bubble speech-right">
-            <div class="speech-text">Then, barely: "Live with honor... protect the innocent." Takashi's paw went still on the words. Nazumi buried him under the temple eaves and did not let them go.</div>
+            <div class="speech-text">Then, barely: "Live with honor... protect the innocent." Takashi's paw went still on the words. Nazumi buried him under the temple beams and did not let them go.</div>
           </div>
         </div>
         <!-- The Masterless Path -->
@@ -396,12 +383,14 @@
             </div>
 
             <div class="journey-reflection" style="margin: 1.5rem 0;">
-              <p class="reflection-text">A decade under the eaves. The master who taught him had burned Musouka. Nazumi held the sword a long moment, then looked at his own hands.</p>
+              <p class="reflection-text">A decade in the temple. The master who taught him had burned Musouka. Nazumi held the sword a long moment, then looked at his own hands.</p>
             </div>
 
-            <div class="speech-bubble speech-right" style="margin: 0;">
-              <div class="speech-text">"I will not become Kage-Nezumi. I will protect what they would destroy."</div>
-            </div>
+            <blockquote class="pull-quote">
+              <span class="pull-mark" aria-hidden="true">八</span>
+              <p>I will not become what destroyed my home. I will become what can protect it.</p>
+              <cite>Nazumi</cite>
+            </blockquote>
           </div>
         </div>
         <!-- The Ronin's Reflection -->
@@ -421,7 +410,7 @@
           </div>
 
           <div class="warrior-image-container">
-            <img src="assets/images/warrior-showcase.jpg" alt="Nazumi - A Warrior Without a Master" class="warrior-image">
+            <img src="assets/images/warrior-showcase.jpg" alt="Nazumi - A Swordsman Without a Master" class="warrior-image">
             <div class="warrior-image-overlay">
               <span>無主</span>
             </div>
@@ -519,8 +508,14 @@
           border: 3px solid var(--ink);
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       ">
-            <div class="speech-text" style="color: var(--ink);">A Kage-Nezumi warrior lay at his mercy, blade at the throat. Behind him, an Iwane pup trembled—the cracked-millstone mark on its fur. Nazumi saw Musouka in those eyes, stepped between them, and did not kill.</div>
+            <div class="speech-text" style="color: var(--ink);">A Kage-Nezumi warrior lay at his mercy, needle-blade at the throat. Behind him, an Iwane pup trembled—the cracked-millstone mark on its fur. Nazumi saw Musouka in those eyes, stepped between them, and did not kill.</div>
           </div>
+
+          <blockquote class="pull-quote">
+            <span class="pull-mark" aria-hidden="true">悟</span>
+            <p>The sword does not seek vengeance. The sword protects.</p>
+            <cite>Nazumi</cite>
+          </blockquote>
 
           <!-- Tokenomics container -->
           <div class="tokenomics-container awakening-tokenomics" style="
@@ -652,14 +647,14 @@
         right: 1.5rem;
         z-index: 2;
       ">
-        <div class="speech-text">He returned to the temple alone, set the blade on the wood, and watched the dust settle. The wish to burn had gone quiet.</div>
+        <div class="speech-text">He returned to the temple alone, set the blade on the stone floor, and watched the dust settle. The wish to burn had gone quiet.</div>
       </div>
     </div>
 
     <!-- Second panel (Path of Enlightenment) -->
     <div class="panel panel-sm enlightened-monk">
       <div class="arc-header">
-        <div class="arc-number">十一</div>
+        <div class="arc-number arc-number-long">十一</div>
         <div class="arc-title">Master of the Path</div>
       </div>
       <div class="monk-image-container">
@@ -667,8 +662,12 @@
       </div>
       <div class="wisdom-scroll">
         <p>He sat in the dust where Takashi once sat. The blade rested by his hand, sheathed. He kept it for the small, and when he spoke, the raw edge was gone.</p>
-        <span class="wisdom-signature">— Nazumi</span>
       </div>
+      <blockquote class="pull-quote">
+        <span class="pull-mark" aria-hidden="true">拾壱</span>
+        <p>I keep it for the small.</p>
+        <cite>Nazumi</cite>
+      </blockquote>
     </div>
 
     <!-- Third panel (Join the Path) -->
@@ -676,11 +675,15 @@
       <div class="emotion-indicator emotion-excitement">✨</div>
       <div class="sound-effect sound-bottom-left">JOIN!</div>
       <div class="arc-header">
-        <div class="arc-number">十二</div>
+        <div class="arc-number arc-number-long">十二</div>
         <div class="arc-title">Join the Clan</div>
       </div>
+      <blockquote class="pull-quote">
+        <span class="pull-mark" aria-hidden="true">拾弐</span>
+        <p>The small survive by standing together.</p>
+      </blockquote>
       <div class="speech-bubble speech-right">
-        <div class="speech-text">The small survive by standing together. Nazumi protects the small, so holders protect each other.</div>
+        <div class="speech-text">Nazumi protects the small, so holders protect each other.</div>
       </div>
       <div class="allies-gathering">
         <div class="ally-card">
@@ -717,7 +720,7 @@
     <!-- The Path Ahead (Roadmap) -->
     <section id="roadmap" class="manga-section">
       <h2 class="section-title">THE PATH AHEAD</h2>
-      <p class="roadmap-note">Nazumi Ronin V1.1 is in development. The phases below have not launched.</p>
+      <p class="roadmap-note">Nazumi Ronin V1.1 is in development. The phases below have not launched. All items are targets, not commitments.</p>
       <div class="roadmap">
         <div class="roadmap-line"></div>
 
@@ -725,7 +728,7 @@
           <div class="roadmap-symbol">道</div>
           <div class="roadmap-content">
             <h3 class="roadmap-title">
-              Q4 2026: In Development
+              In Development
               <span class="status status-progress">IN DEVELOPMENT</span>
             </h3>
             <div class="roadmap-text">
@@ -743,15 +746,15 @@
           <div class="roadmap-symbol">修</div>
           <div class="roadmap-content">
             <h3 class="roadmap-title">
-              Q1 2027: Genesis
+              Genesis
               <span class="status status-upcoming">UPCOMING</span>
             </h3>
             <div class="roadmap-text">
               <ul class="roadmap-list">
-                <li>Target: Token launch on SOL blockchain</li>
-                <li>Target: Initial liquidity pool establishment</li>
-                <li>Target: Community building initiatives</li>
-                <li>Target: Social media presence expansion</li>
+                <li>Token launch on SOL blockchain</li>
+                <li>Initial liquidity pool establishment</li>
+                <li>Community building initiatives</li>
+                <li>Social media presence expansion</li>
               </ul>
             </div>
           </div>
@@ -761,15 +764,15 @@
           <div class="roadmap-symbol">剣</div>
           <div class="roadmap-content">
             <h3 class="roadmap-title">
-              Q2 2027: Training Arc
+              Training Arc
               <span class="status status-upcoming">UPCOMING</span>
             </h3>
             <div class="roadmap-text">
               <ul class="roadmap-list">
-                <li>Target: Whitepaper release</li>
-                <li>Goal: partnerships with aligned projects</li>
-                <li>Goal: first major exchange listing</li>
-                <li>Target: Community governance implementation</li>
+                <li>Whitepaper release</li>
+                <li>Partnerships with aligned projects</li>
+                <li>First major exchange listing</li>
+                <li>Community governance implementation</li>
               </ul>
             </div>
           </div>
@@ -779,15 +782,15 @@
           <div class="roadmap-symbol">悟</div>
           <div class="roadmap-content">
             <h3 class="roadmap-title">
-              Q3 2027: Warrior's Ascension
+              Warrior's Ascension
               <span class="status status-upcoming">UPCOMING</span>
             </h3>
             <div class="roadmap-text">
               <ul class="roadmap-list">
-                <li>Target: NFT collection launch</li>
-                <li>Target: Creation of DAO treasury</li>
-                <li>Target: Community rewards program</li>
-                <li>Target: Major marketing campaign</li>
+                <li>NFT collection launch</li>
+                <li>Creation of DAO treasury</li>
+                <li>Community rewards program</li>
+                <li>Major marketing campaign</li>
               </ul>
             </div>
           </div>
@@ -797,14 +800,14 @@
           <div class="roadmap-symbol">遺</div>
           <div class="roadmap-content">
             <h3 class="roadmap-title">
-              Beyond: Legacy
+              Beyond
               <span class="status status-upcoming">UPCOMING</span>
             </h3>
             <div class="roadmap-text">
               <ul class="roadmap-list">
-                <li>Goal: Nazumi ecosystem, app, and cross-chain work</li>
+                <li>Nazumi ecosystem, app, and cross-chain work</li>
                 <li>Charitable foundation establishment</li>
-                <li>Goal: partnerships with aligned brands</li>
+                <li>Partnerships with aligned projects</li>
                 <li>"The journey continues..."</li>
               </ul>
             </div>
@@ -877,7 +880,7 @@
           <div class="community-info">
             <h3 class="community-title">Rei</h3>
             <div class="community-role">Financial Strategist</div>
-            <div class="community-bio">Goal: support project stability and sustainable growth.</div>
+            <div class="community-bio">Supports project stability and sustainable growth.</div>
             <div class="community-links">
               <a href="#"><i class="fab fa-telegram"></i></a>
               <a href="#"><i class="fab fa-twitter"></i></a>
@@ -889,7 +892,7 @@
 
       <div class="community-join">
         <h3>Join the Ronin Clan</h3>
-        <p>Become part of our growing community as we walk the path together.</p>
+        <p>Join the clan as we walk the path together.</p>
         <div class="social-links" style="margin-top: 1.5rem;">
           <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
           <a href="#" class="social-link">
@@ -916,7 +919,7 @@
         </div>
 
         <div class="copyright">
-          &copy; 2026 Nazumi Ronin V1.1. All rights reserved. The path of the warrior is eternal.
+          &copy; 2026 Nazumi Ronin V1.1. All rights reserved. The path of the swordsman is eternal.
         </div>
       </div>
     </footer>

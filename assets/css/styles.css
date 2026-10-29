@@ -70,9 +70,63 @@ body.dark-mode {
   font-size: 3rem;
   color: white;
   text-shadow: 3px 3px 0 var(--primary-red);
-  margin-bottom: 3rem;
+  margin-bottom: 1.25rem;
   text-align: center;
   letter-spacing: 2px;
+}
+
+.splash-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: min(90%, 320px);
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.splash-gate[hidden],
+.loading-bar-container[hidden] {
+  display: none !important;
+}
+
+.splash-gate p {
+  font-family: 'Oswald', sans-serif;
+  color: white;
+  margin: 0;
+  letter-spacing: 0.4px;
+}
+
+.splash-gate input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--primary-red);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  outline: none;
+}
+
+.splash-gate button {
+  padding: 0.75rem 1rem;
+  background: var(--primary-red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.splash-gate button:hover {
+  background: var(--dark-red);
+}
+
+.splash-error {
+  color: #FF6B6E;
+  font-size: 0.9rem;
 }
 
 .splash-subtitle {
@@ -1317,7 +1371,9 @@ html {
 }
 
 .arc-number {
+  font-family: "Hiragino Mincho ProN", "YuMincho", "Yu Mincho", "Noto Serif CJK JP", serif;
   font-size: 2.5rem;
+  line-height: 1;
   color: var(--primary-red);
   margin-right: 1rem;
   display: flex;
@@ -1330,6 +1386,12 @@ html {
   background-color: white;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.arc-number-long {
+  font-size: 1.15rem;
+  letter-spacing: -0.04em;
 }
 
 .arc-number:hover {
@@ -1841,6 +1903,10 @@ html {
 .timeline.animate .node-content p {
   opacity: 1;
   transition-delay: 0.8s;
+}
+
+.dark-mode .node-content p {
+  color: var(--dm-text);
 }
 
 /* ----- TOKENOMICS ----- */
@@ -3511,6 +3577,10 @@ html {
     font-size: 1.8rem;
   }
 
+  .arc-number-long {
+    font-size: 0.95rem;
+  }
+
   .arc-title {
     font-size: 1.2rem;
   }
@@ -3603,4 +3673,140 @@ html {
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+/* Version mark and sayings kept outside the manga panels */
+.nav-version,
+.scroll-version {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 1px;
+}
+
+.nav-version {
+  font-size: 0.95rem;
+  margin-left: 0.4rem;
+  opacity: 0.9;
+}
+
+.scroll-version {
+  text-align: center;
+  color: var(--primary-red);
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0.2rem;
+}
+
+.dark-mode .scroll-version {
+  color: var(--dm-light-red);
+}
+
+.roadmap-note {
+  text-align: center;
+  max-width: 720px;
+  margin: -1rem auto 2rem;
+  font-size: 1.05rem;
+}
+
+/* Pull-quotes live inside their story panels and reveal with the panel */
+.pull-quote {
+  position: relative;
+  margin: 0.35rem 0 0;
+  padding: 0.22rem 1.85rem 0.28rem 0.72rem;
+  border-left: 2px solid var(--primary-red);
+  background: rgba(255, 255, 255, 0.9);
+  max-width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.panel.animate .pull-quote {
+  opacity: 1;
+  transform: none;
+}
+
+.pull-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.05rem;
+  left: 0.18rem;
+  font-family: 'Bangers', cursive;
+  font-size: 1.65rem;
+  line-height: 1;
+  color: var(--primary-red);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.pull-quote p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  font-style: italic;
+  font-size: 0.86rem;
+  line-height: 1.22;
+  color: var(--ink);
+}
+
+.pull-quote cite {
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin-top: 0.12rem;
+  font-family: 'Oswald', sans-serif;
+  font-style: normal;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary-red);
+}
+
+.pull-quote .pull-mark {
+  position: absolute;
+  right: 0.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Bangers', cursive;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--primary-red);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark-mode .pull-quote {
+  background: rgba(26, 26, 26, 0.9);
+  border-left-color: var(--dm-light-red);
+}
+
+.dark-mode .pull-quote::before,
+.dark-mode .pull-quote cite,
+.dark-mode .pull-quote .pull-mark {
+  color: var(--dm-light-red);
+}
+
+.dark-mode .pull-quote p {
+  color: var(--dm-text);
+}
+
+.mountain-temple-panel .pull-quote {
+  z-index: 3;
+  margin: 0.25rem 0 7.5rem;
+}
+
+.awakening-panel .pull-quote {
+  z-index: 2;
+  max-width: 480px;
+  margin: 0 auto 0.45rem;
+}
+
+.warrior-panel .pull-quote {
+  margin-top: 0;
+}
+
+/* Keep the corner sound effect off the quote on a short panel */
+.pull-quote:has(+ .sound-bottom-left) {
+  margin-bottom: 4.75rem;
 }

@@ -1,28 +1,53 @@
 // NAZUMI RONIN V6 - Enhanced Performance & Splash Screen
 document.addEventListener('DOMContentLoaded', function() {
-  // Splash screen simulation
+  // Splash screen stays up until the password is entered
   const splashScreen = document.getElementById('splashScreen');
   const loadingBar = document.getElementById('loadingBar');
+  const splashGate = document.getElementById('splashGate');
+  const splashLoading = document.getElementById('splashLoading');
   const body = document.body;
-  // Simulate loading progress
-  let progress = 0;
-  const progressInterval = setInterval(() => {
-    progress += 2;
-    loadingBar.style.width = `${progress}%`;
-    if (progress >= 100) {
-      clearInterval(progressInterval);
-      // Hide splash screen with fade effect
-      setTimeout(() => {
-        splashScreen.style.opacity = 0;
-        setTimeout(() => {
-          splashScreen.style.display = 'none';
-          document.body.style.overflow = 'auto'; // Enable scrolling after splash screen is gone
-        }, 500);
-      }, 500);
-    }
-  }, 40);
-  // Lock body scroll during splash screen
   document.body.style.overflow = 'hidden';
+
+  function dismissSplash() {
+    splashScreen.style.opacity = 0;
+    setTimeout(() => {
+      splashScreen.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }, 500);
+  }
+
+  function runSplash() {
+    splashGate.hidden = true;
+    splashLoading.hidden = false;
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 2;
+      loadingBar.style.width = `${progress}%`;
+      if (progress >= 100) {
+        clearInterval(progressInterval);
+        setTimeout(dismissSplash, 500);
+      }
+    }, 40);
+  }
+
+  splashGate.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const input = document.getElementById('passwordInput');
+    const error = document.getElementById('errorMessage');
+    if (input.value === '5665') {
+      localStorage.setItem('nazumiAuthenticated', 'true');
+      error.hidden = true;
+      runSplash();
+    } else {
+      error.hidden = false;
+      input.value = '';
+      input.focus();
+    }
+  });
+
+  if (localStorage.getItem('nazumiAuthenticated') === 'true') {
+    runSplash();
+  }
   // Main functionality
   const buyButton = document.getElementById('buyButton');
   const buyButtonPanel = document.getElementById('buyButtonPanel');
@@ -234,11 +259,6 @@ const walletConnection = {
             });
         });
 
-        // Auto-connect if previously connected
-        const lastWallet = localStorage.getItem('lastConnectedWallet');
-        if (lastWallet) {
-            await this.connectWallet(lastWallet);
-        }
     },
 
     // Connect to wallet
@@ -360,8 +380,14 @@ const walletConnection = {
         }
     },
 
+    splashIsOpen() {
+        const splash = document.getElementById('splashScreen');
+        return splash && getComputedStyle(splash).display !== 'none';
+    },
+
     // Show success message
     showSuccess(message) {
+        if (this.splashIsOpen()) return;
         const toast = document.createElement('div');
         toast.className = 'success-toast';
         toast.textContent = message;
@@ -383,6 +409,7 @@ const walletConnection = {
 
     // Show error message
     showError(message) {
+        if (this.splashIsOpen()) return;
         const toast = document.createElement('div');
         toast.className = 'error-toast';
         toast.textContent = message;
