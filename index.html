@@ -269,9 +269,25 @@
       padding: 1.5rem;
       margin-bottom: 1.5rem;
       border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 2px solid var(--ink);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     ">
-              <p class="reflection-text">A decade of training forged the orphan into a warrior of unparalleled skill. Yet the void left by his master's passing would lead Nazumi down an unexpected path—one that would test not only his blade, but his spirit.</p>
+              <p class="reflection-text" style="color: var(--ink); text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">A decade of training forged the orphan into a warrior of unparalleled skill. Yet the void left by his master's passing would lead Nazumi down an unexpected path—one that would test not only his blade, but his spirit.</p>
             </div>
+
+            <!-- Dark mode override for warrior panel -->
+            <style>
+              .dark-mode .journey-reflection {
+                background-color: rgba(26, 26, 26, 0.95) !important;
+                border-color: var(--dm-border) !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+              }
+              .dark-mode .reflection-text {
+                color: var(--dm-text) !important;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+              }
+            </style>
 
             <!-- Square stamp with aspect ratio preserved using padding technique -->
             <div class="japanese-stamp" style="

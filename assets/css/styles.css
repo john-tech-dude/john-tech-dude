@@ -2797,11 +2797,30 @@ html {
 .journey-reflection {
   padding: 1rem;
   margin-top: 1rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .journey-reflection {
+  background-color: rgba(26, 26, 26, 0.95);
+  border-color: var(--dm-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .reflection-text {
   font-style: italic;
   text-align: center;
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.dark-mode .reflection-text {
+  color: var(--dm-text);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* ----- FOOTER ----- */
