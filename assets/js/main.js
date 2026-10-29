@@ -270,9 +270,23 @@ const walletConnection = {
                     break;
 
                 case 'backpack':
+                    // Backpack uses a different API
                     if (window.backpack) {
-                        response = await window.backpack.connect();
-                        this.wallet = window.backpack;
+                        try {
+                            response = await window.backpack.connect();
+                            this.wallet = window.backpack;
+                        } catch (err) {
+                            // Try alternative Backpack connection method
+                            if (window.solana && window.solana.isBackpack) {
+                                response = await window.solana.connect();
+                                this.wallet = window.solana;
+                            } else {
+                                throw new Error('Backpack connection failed');
+                            }
+                        }
+                    } else if (window.solana && window.solana.isBackpack) {
+                        response = await window.solana.connect();
+                        this.wallet = window.solana;
                     } else {
                         window.open('https://backpack.app/', '_blank');
                         this.showError('Please install Backpack wallet');
