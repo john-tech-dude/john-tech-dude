@@ -34,6 +34,42 @@
 </head>
 
 <body>
+  <!-- Password Gate -->
+  <div id="passwordGate" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #2E4057 0%, #121820 100%); display: flex; justify-content: center; align-items: center; z-index: 10000;">
+    <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 3rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 2px solid rgba(155, 34, 38, 0.5); text-align: center; max-width: 400px; width: 90%;">
+      <h2 style="color: #E5383B; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">NAZUMI RONIN</h2>
+      <p style="color: #E0E0E0; font-family: 'Oswald', sans-serif; margin-bottom: 1.5rem;">Enter password to access</p>
+      <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 2px solid #9B2226; border-radius: 5px; background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; outline: none; box-sizing: border-box;">
+      <button onclick="checkPassword()" style="width: 100%; padding: 0.75rem; background: #9B2226; color: white; border: none; border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.3s;">Enter</button>
+      <p id="errorMessage" style="color: #FF6B6E; margin-top: 1rem; font-size: 0.9rem; display: none;">Incorrect password. Please try again.</p>
+    </div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const password = document.getElementById('passwordInput').value;
+      if (password === '5665') {
+        localStorage.setItem('nazumiAuthenticated', 'true');
+        document.getElementById('passwordGate').style.display = 'none';
+      } else {
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+      }
+    }
+
+    // Check if already authenticated
+    if (localStorage.getItem('nazumiAuthenticated') === 'true') {
+      document.getElementById('passwordGate').style.display = 'none';
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+  </script>
+
   <!-- Splash Screen -->
   <div class="splash-screen" id="splashScreen">
     <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">忠</div>
