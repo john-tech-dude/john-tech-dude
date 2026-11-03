@@ -389,6 +389,8 @@ body.dark-mode {
 
 .dark-mode .ally-card {
   border-color: var(--dm-primary-red);
+  background-color: var(--dm-panel);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Fix for dark mode text visibility */
@@ -2440,6 +2442,22 @@ html {
 .community-info {
   padding: 1.5rem;
   text-align: center;
+  position: relative;
+}
+
+.kanji-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'Bangers', cursive;
+  font-size: 2.5rem;
+  color: white;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 10px;
 }
 
 .community-title {
