@@ -306,14 +306,19 @@ const walletConnection = {
     // Connect to wallet
     async connectWallet(walletType) {
         try {
+            console.log('Attempting to connect to wallet:', walletType);
             let response;
 
             switch (walletType) {
                 case 'phantom':
+                    console.log('Checking Phantom availability...');
                     if (window.solana && window.solana.isPhantom) {
+                        console.log('Phantom detected, connecting...');
                         response = await window.solana.connect();
                         this.wallet = window.solana;
+                        console.log('Phantom response:', response);
                     } else {
+                        console.log('Phantom not detected');
                         window.open('https://phantom.app/', '_blank');
                         this.showError('Please install Phantom wallet');
                         return;
@@ -321,10 +326,14 @@ const walletConnection = {
                     break;
 
                 case 'solflare':
+                    console.log('Checking Solflare availability...');
                     if (window.solflare && window.solflare.isSolflare) {
+                        console.log('Solflare detected, connecting...');
                         response = await window.solflare.connect();
                         this.wallet = window.solflare;
+                        console.log('Solflare response:', response);
                     } else {
+                        console.log('Solflare not detected');
                         window.open('https://solflare.com/', '_blank');
                         this.showError('Please install Solflare wallet');
                         return;
@@ -332,24 +341,32 @@ const walletConnection = {
                     break;
 
                 case 'backpack':
+                    console.log('Checking Backpack availability...');
                     // Backpack uses a different API
                     if (window.backpack) {
                         try {
+                            console.log('Backpack detected via window.backpack, connecting...');
                             response = await window.backpack.connect();
                             this.wallet = window.backpack;
+                            console.log('Backpack response:', response);
                         } catch (err) {
+                            console.log('Backpack direct connection failed, trying Solana adapter:', err);
                             // Try alternative Backpack connection method
                             if (window.solana && window.solana.isBackpack) {
                                 response = await window.solana.connect();
                                 this.wallet = window.solana;
+                                console.log('Backpack via Solana adapter response:', response);
                             } else {
                                 throw new Error('Backpack connection failed');
                             }
                         }
                     } else if (window.solana && window.solana.isBackpack) {
+                        console.log('Backpack detected via Solana adapter, connecting...');
                         response = await window.solana.connect();
                         this.wallet = window.solana;
+                        console.log('Backpack via Solana adapter response:', response);
                     } else {
+                        console.log('Backpack not detected');
                         window.open('https://backpack.app/', '_blank');
                         this.showError('Please install Backpack wallet');
                         return;
@@ -366,10 +383,13 @@ const walletConnection = {
                 this.updateUI(walletType, this.publicKey);
                 localStorage.setItem('lastConnectedWallet', walletType);
                 this.showSuccess('Wallet connected successfully!');
+            } else {
+                console.error('No publicKey in response:', response);
+                this.showError('Connection failed: No public key returned');
             }
         } catch (error) {
             console.error('Wallet connection error:', error);
-            this.showError('Failed to connect wallet. Please try again.');
+            this.showError('Failed to connect wallet: ' + error.message);
         }
     },
 
