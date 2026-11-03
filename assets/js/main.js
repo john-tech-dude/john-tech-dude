@@ -266,10 +266,17 @@ const walletConnection = {
 
     // Detect which wallets are installed
     detectWallets() {
+        console.log('Detecting wallets...');
+        console.log('window.solana:', window.solana);
+        console.log('window.solflare:', window.solflare);
+        console.log('window.backpack:', window.backpack);
+
         // Check Phantom
         const phantomBtn = document.getElementById('wallet-btn-phantom');
         if (phantomBtn) {
-            if (window.solana && window.solana.isPhantom) {
+            const isPhantom = window.solana && window.solana.isPhantom;
+            console.log('Phantom detected:', isPhantom);
+            if (isPhantom) {
                 phantomBtn.innerHTML = 'Connect';
                 phantomBtn.classList.remove('btn-red');
                 phantomBtn.classList.add('btn-green');
@@ -281,7 +288,9 @@ const walletConnection = {
         // Check Solflare
         const solflareBtn = document.getElementById('wallet-btn-solflare');
         if (solflareBtn) {
-            if (window.solflare && window.solflare.isSolflare) {
+            const isSolflare = window.solflare && window.solflare.isSolflare;
+            console.log('Solflare detected:', isSolflare);
+            if (isSolflare) {
                 solflareBtn.innerHTML = 'Connect';
                 solflareBtn.classList.remove('btn-red');
                 solflareBtn.classList.add('btn-green');
@@ -293,7 +302,9 @@ const walletConnection = {
         // Check Backpack
         const backpackBtn = document.getElementById('wallet-btn-backpack');
         if (backpackBtn) {
-            if (window.backpack || (window.solana && window.solana.isBackpack)) {
+            const isBackpack = window.backpack || (window.solana && window.solana.isBackpack);
+            console.log('Backpack detected:', isBackpack);
+            if (isBackpack) {
                 backpackBtn.innerHTML = 'Connect';
                 backpackBtn.classList.remove('btn-red');
                 backpackBtn.classList.add('btn-green');
@@ -312,14 +323,17 @@ const walletConnection = {
             switch (walletType) {
                 case 'phantom':
                     console.log('Checking Phantom availability...');
+                    console.log('window.solana exists:', !!window.solana);
+                    console.log('window.solana.isPhantom:', window.solana?.isPhantom);
+
                     if (window.solana && window.solana.isPhantom) {
                         console.log('Phantom detected, connecting...');
                         response = await window.solana.connect();
                         this.wallet = window.solana;
                         console.log('Phantom response:', response);
                     } else {
-                        console.log('Phantom not detected');
-                        window.open('https://phantom.app/', '_blank');
+                        console.log('Phantom not detected, opening install page');
+                        window.open('https://phantom.app/download', '_blank');
                         this.showError('Please install Phantom wallet');
                         return;
                     }
@@ -327,14 +341,17 @@ const walletConnection = {
 
                 case 'solflare':
                     console.log('Checking Solflare availability...');
+                    console.log('window.solflare exists:', !!window.solflare);
+                    console.log('window.solflare.isSolflare:', window.solflare?.isSolflare);
+
                     if (window.solflare && window.solflare.isSolflare) {
                         console.log('Solflare detected, connecting...');
                         response = await window.solflare.connect();
                         this.wallet = window.solflare;
                         console.log('Solflare response:', response);
                     } else {
-                        console.log('Solflare not detected');
-                        window.open('https://solflare.com/', '_blank');
+                        console.log('Solflare not detected, opening install page');
+                        window.open('https://solflare.com/download', '_blank');
                         this.showError('Please install Solflare wallet');
                         return;
                     }
@@ -342,6 +359,9 @@ const walletConnection = {
 
                 case 'backpack':
                     console.log('Checking Backpack availability...');
+                    console.log('window.backpack exists:', !!window.backpack);
+                    console.log('window.solana.isBackpack:', window.solana?.isBackpack);
+
                     // Backpack uses a different API
                     if (window.backpack) {
                         try {
@@ -366,8 +386,8 @@ const walletConnection = {
                         this.wallet = window.solana;
                         console.log('Backpack via Solana adapter response:', response);
                     } else {
-                        console.log('Backpack not detected');
-                        window.open('https://backpack.app/', '_blank');
+                        console.log('Backpack not detected, opening install page');
+                        window.open('https://backpack.app/download', '_blank');
                         this.showError('Please install Backpack wallet');
                         return;
                     }
