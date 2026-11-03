@@ -251,6 +251,9 @@ const walletConnection = {
 
     // Initialize wallet connection
     async init() {
+        // Detect wallet availability on page load
+        this.detectWallets();
+
         // Add wallet connect button handlers
         document.querySelectorAll('.wallet-action-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
@@ -263,6 +266,48 @@ const walletConnection = {
         const lastWallet = localStorage.getItem('lastConnectedWallet');
         if (lastWallet) {
             await this.connectWallet(lastWallet);
+        }
+    },
+
+    // Detect which wallets are installed
+    detectWallets() {
+        // Check Phantom
+        const phantomBtn = document.getElementById('wallet-btn-phantom');
+        if (phantomBtn) {
+            if (window.solana && window.solana.isPhantom) {
+                phantomBtn.innerHTML = 'Connect';
+                phantomBtn.classList.remove('btn-red');
+                phantomBtn.classList.add('btn-green');
+            } else {
+                phantomBtn.innerHTML = 'Install';
+                phantomBtn.onclick = () => window.open('https://phantom.app/download', '_blank');
+            }
+        }
+
+        // Check Solflare
+        const solflareBtn = document.getElementById('wallet-btn-solflare');
+        if (solflareBtn) {
+            if (window.solflare && window.solflare.isSolflare) {
+                solflareBtn.innerHTML = 'Connect';
+                solflareBtn.classList.remove('btn-red');
+                solflareBtn.classList.add('btn-green');
+            } else {
+                solflareBtn.innerHTML = 'Install';
+                solflareBtn.onclick = () => window.open('https://solflare.com/download', '_blank');
+            }
+        }
+
+        // Check Backpack
+        const backpackBtn = document.getElementById('wallet-btn-backpack');
+        if (backpackBtn) {
+            if (window.backpack || (window.solana && window.solana.isBackpack)) {
+                backpackBtn.innerHTML = 'Connect';
+                backpackBtn.classList.remove('btn-red');
+                backpackBtn.classList.add('btn-green');
+            } else {
+                backpackBtn.innerHTML = 'Install';
+                backpackBtn.onclick = () => window.open('https://backpack.app/download', '_blank');
+            }
         }
     },
 
@@ -298,6 +343,9 @@ const walletConnection = {
                     if (window.backpack) {
                         response = await window.backpack.connect();
                         this.wallet = window.backpack;
+                    } else if (window.solana && window.solana.isBackpack) {
+                        response = await window.solana.connect();
+                        this.wallet = window.solana;
                     } else {
                         window.open('https://backpack.app/', '_blank');
                         this.showError('Please install Backpack wallet');
