@@ -337,25 +337,26 @@ const walletConnection = {
                         } else {
                             console.log('Phantom not connected, requesting connection...');
                             try {
+                                // Try standard connect method
                                 response = await window.solana.connect();
                                 this.wallet = window.solana;
                                 console.log('Phantom response:', response);
                             } catch (connectError) {
                                 console.error('Phantom connect() error:', connectError);
-                                // Try alternative method
-                                if (window.solana.request) {
-                                    console.log('Trying alternative connect method via request()');
-                                    try {
-                                        const accounts = await window.solana.request({ method: 'connect' });
+                                // Try the newer provider API
+                                try {
+                                    if (window.solana.request) {
+                                        console.log('Trying provider request() method');
+                                        const accounts = await window.solana.request({ method: 'solana_connect' });
                                         response = { publicKey: accounts[0] };
                                         this.wallet = window.solana;
-                                        console.log('Phantom request() response:', response);
-                                    } catch (requestError) {
-                                        console.error('Phantom request() error:', requestError);
-                                        throw new Error('Phantom connection failed: ' + requestError.message);
+                                        console.log('Phantom provider response:', response);
+                                    } else {
+                                        throw new Error('No request method available');
                                     }
-                                } else {
-                                    throw connectError;
+                                } catch (providerError) {
+                                    console.error('Phantom provider error:', providerError);
+                                    throw new Error('Phantom connection failed. Please unlock your wallet and try again.');
                                 }
                             }
                         }
@@ -388,21 +389,7 @@ const walletConnection = {
                                 console.log('Solflare response:', response);
                             } catch (connectError) {
                                 console.error('Solflare connect() error:', connectError);
-                                // Try alternative method
-                                if (window.solflare.request) {
-                                    console.log('Trying alternative connect method via request()');
-                                    try {
-                                        const accounts = await window.solflare.request({ method: 'connect' });
-                                        response = { publicKey: accounts[0] };
-                                        this.wallet = window.solflare;
-                                        console.log('Solflare request() response:', response);
-                                    } catch (requestError) {
-                                        console.error('Solflare request() error:', requestError);
-                                        throw new Error('Solflare connection failed: ' + requestError.message);
-                                    }
-                                } else {
-                                    throw connectError;
-                                }
+                                throw new Error('Solflare connection failed. Please unlock your wallet and try again.');
                             }
                         }
                     } else {
