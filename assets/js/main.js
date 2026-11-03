@@ -251,9 +251,6 @@ const walletConnection = {
 
     // Initialize wallet connection
     async init() {
-        // Detect wallet availability on page load
-        this.detectWallets();
-
         // Add wallet connect button handlers
         document.querySelectorAll('.wallet-action-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
@@ -262,196 +259,47 @@ const walletConnection = {
             });
         });
 
-    },
-
-    // Detect which wallets are installed
-    detectWallets() {
-        console.log('Detecting wallets...');
-        console.log('window.solana:', window.solana);
-        console.log('window.solflare:', window.solflare);
-        console.log('window.backpack:', window.backpack);
-
-        // Check Phantom
-        const phantomBtn = document.getElementById('wallet-btn-phantom');
-        if (phantomBtn) {
-            const isPhantom = window.solana && window.solana.isPhantom;
-            console.log('Phantom detected:', isPhantom);
-            if (isPhantom) {
-                phantomBtn.innerHTML = 'Connect';
-                phantomBtn.classList.remove('btn-red');
-                phantomBtn.classList.add('btn-green');
-            } else {
-                phantomBtn.innerHTML = 'Install';
-            }
-        }
-
-        // Check Solflare
-        const solflareBtn = document.getElementById('wallet-btn-solflare');
-        if (solflareBtn) {
-            const isSolflare = window.solflare && window.solflare.isSolflare;
-            console.log('Solflare detected:', isSolflare);
-            if (isSolflare) {
-                solflareBtn.innerHTML = 'Connect';
-                solflareBtn.classList.remove('btn-red');
-                solflareBtn.classList.add('btn-green');
-            } else {
-                solflareBtn.innerHTML = 'Install';
-            }
-        }
-
-        // Check Backpack
-        const backpackBtn = document.getElementById('wallet-btn-backpack');
-        if (backpackBtn) {
-            const isBackpack = window.backpack || (window.solana && window.solana.isBackpack);
-            console.log('Backpack detected:', isBackpack);
-            if (isBackpack) {
-                backpackBtn.innerHTML = 'Connect';
-                backpackBtn.classList.remove('btn-red');
-                backpackBtn.classList.add('btn-green');
-            } else {
-                backpackBtn.innerHTML = 'Install';
-            }
+        // Auto-connect if previously connected
+        const lastWallet = localStorage.getItem('lastConnectedWallet');
+        if (lastWallet) {
+            await this.connectWallet(lastWallet);
         }
     },
 
     // Connect to wallet
     async connectWallet(walletType) {
         try {
-            console.log('Attempting to connect to wallet:', walletType);
             let response;
 
             switch (walletType) {
                 case 'phantom':
-                    console.log('Checking Phantom availability...');
-                    console.log('window.solana exists:', !!window.solana);
-                    console.log('window.solana.isPhantom:', window.solana?.isPhantom);
-
                     if (window.solana && window.solana.isPhantom) {
-                        console.log('Phantom detected, connecting...');
-
-                        // Check if already connected
-                        if (window.solana.isConnected && window.solana.publicKey) {
-                            console.log('Phantom already connected, using existing connection');
-                            response = { publicKey: window.solana.publicKey };
-                            this.wallet = window.solana;
-                        } else {
-                            console.log('Phantom not connected, requesting connection...');
-                            try {
-                                // Try standard connect method
-                                response = await window.solana.connect();
-                                this.wallet = window.solana;
-                                console.log('Phantom response:', response);
-                            } catch (connectError) {
-                                console.error('Phantom connect() error:', connectError);
-                                // Try the newer provider API
-                                try {
-                                    if (window.solana.request) {
-                                        console.log('Trying provider request() method');
-                                        const accounts = await window.solana.request({ method: 'solana_connect' });
-                                        response = { publicKey: accounts[0] };
-                                        this.wallet = window.solana;
-                                        console.log('Phantom provider response:', response);
-                                    } else {
-                                        throw new Error('No request method available');
-                                    }
-                                } catch (providerError) {
-                                    console.error('Phantom provider error:', providerError);
-                                    throw new Error('Phantom connection failed. Please unlock your wallet and try again.');
-                                }
-                            }
-                        }
+                        response = await window.solana.connect();
+                        this.wallet = window.solana;
                     } else {
-                        console.log('Phantom not detected, opening install page');
-                        window.open('https://phantom.app/download', '_blank');
+                        window.open('https://phantom.app/', '_blank');
                         this.showError('Please install Phantom wallet');
                         return;
                     }
                     break;
 
                 case 'solflare':
-                    console.log('Checking Solflare availability...');
-                    console.log('window.solflare exists:', !!window.solflare);
-                    console.log('window.solflare.isSolflare:', window.solflare?.isSolflare);
-
                     if (window.solflare && window.solflare.isSolflare) {
-                        console.log('Solflare detected, connecting...');
-
-                        // Check if already connected
-                        if (window.solflare.isConnected && window.solflare.publicKey) {
-                            console.log('Solflare already connected, using existing connection');
-                            response = { publicKey: window.solflare.publicKey };
-                            this.wallet = window.solflare;
-                        } else {
-                            console.log('Solflare not connected, requesting connection...');
-                            try {
-                                response = await window.solflare.connect();
-                                this.wallet = window.solflare;
-                                console.log('Solflare response:', response);
-                            } catch (connectError) {
-                                console.error('Solflare connect() error:', connectError);
-                                throw new Error('Solflare connection failed. Please unlock your wallet and try again.');
-                            }
-                        }
+                        response = await window.solflare.connect();
+                        this.wallet = window.solflare;
                     } else {
-                        console.log('Solflare not detected, opening install page');
-                        window.open('https://solflare.com/download', '_blank');
+                        window.open('https://solflare.com/', '_blank');
                         this.showError('Please install Solflare wallet');
                         return;
                     }
                     break;
 
                 case 'backpack':
-                    console.log('Checking Backpack availability...');
-                    console.log('window.backpack exists:', !!window.backpack);
-                    console.log('window.solana.isBackpack:', window.solana?.isBackpack);
-
-                    // Backpack uses a different API
                     if (window.backpack) {
-                        try {
-                            console.log('Backpack detected via window.backpack, connecting...');
-
-                            // Check if already connected
-                            if (window.backpack.isConnected && window.backpack.publicKey) {
-                                console.log('Backpack already connected, using existing connection');
-                                response = { publicKey: window.backpack.publicKey };
-                                this.wallet = window.backpack;
-                            } else {
-                                console.log('Backpack not connected, requesting connection...');
-                                response = await window.backpack.connect();
-                                this.wallet = window.backpack;
-                                console.log('Backpack response:', response);
-                            }
-                        } catch (err) {
-                            console.log('Backpack direct connection failed, trying Solana adapter:', err);
-                            // Try alternative Backpack connection method
-                            if (window.solana && window.solana.isBackpack) {
-                                if (window.solana.isConnected && window.solana.publicKey) {
-                                    console.log('Backpack via Solana already connected');
-                                    response = { publicKey: window.solana.publicKey };
-                                    this.wallet = window.solana;
-                                } else {
-                                    response = await window.solana.connect();
-                                    this.wallet = window.solana;
-                                    console.log('Backpack via Solana adapter response:', response);
-                                }
-                            } else {
-                                throw new Error('Backpack connection failed');
-                            }
-                        }
-                    } else if (window.solana && window.solana.isBackpack) {
-                        console.log('Backpack detected via Solana adapter, connecting...');
-                        if (window.solana.isConnected && window.solana.publicKey) {
-                            console.log('Backpack via Solana already connected');
-                            response = { publicKey: window.solana.publicKey };
-                            this.wallet = window.solana;
-                        } else {
-                            response = await window.solana.connect();
-                            this.wallet = window.solana;
-                            console.log('Backpack via Solana adapter response:', response);
-                        }
+                        response = await window.backpack.connect();
+                        this.wallet = window.backpack;
                     } else {
-                        console.log('Backpack not detected, opening install page');
-                        window.open('https://backpack.app/download', '_blank');
+                        window.open('https://backpack.app/', '_blank');
                         this.showError('Please install Backpack wallet');
                         return;
                     }
@@ -467,13 +315,10 @@ const walletConnection = {
                 this.updateUI(walletType, this.publicKey);
                 localStorage.setItem('lastConnectedWallet', walletType);
                 this.showSuccess('Wallet connected successfully!');
-            } else {
-                console.error('No publicKey in response:', response);
-                this.showError('Connection failed: No public key returned');
             }
         } catch (error) {
             console.error('Wallet connection error:', error);
-            this.showError('Failed to connect wallet: ' + error.message);
+            this.showError('Failed to connect wallet. Please try again.');
         }
     },
 
@@ -526,14 +371,8 @@ const walletConnection = {
         }
     },
 
-    splashIsOpen() {
-        const splash = document.getElementById('splashScreen');
-        return splash && getComputedStyle(splash).display !== 'none';
-    },
-
     // Show success message
     showSuccess(message) {
-        if (this.splashIsOpen()) return;
         const toast = document.createElement('div');
         toast.className = 'success-toast';
         toast.textContent = message;
@@ -555,7 +394,6 @@ const walletConnection = {
 
     // Show error message
     showError(message) {
-        if (this.splashIsOpen()) return;
         const toast = document.createElement('div');
         toast.className = 'error-toast';
         toast.textContent = message;
