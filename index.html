@@ -20,11 +20,8 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/nazumi-enhancements.css">
 
-  <!-- Wallet SDKs -->
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-  <script src="https://unpkg.com/@solflare-wallet/sdk"></script>
-  <script src="https://unpkg.com/@wallet-standard/wallet"></script>
-  <script src="https://unpkg.com/@phantom-labs/sdk"></script>
+  <!-- Solana web3. Wallet providers come from the browser extensions, not these script tags. -->
+  <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
 </head>
 
 <body>
@@ -1095,7 +1092,8 @@
               The phantom guardian of your digital assets. Swift, secure, and widely trusted.
             </p>
             <div class="buy-option-action">
-              <button class="btn btn-red wallet-action-btn"
+              <button type="button"
+                      class="btn btn-red wallet-action-btn"
                       data-wallet="phantom"
                       data-install-url="https://phantom.app/download"
                       id="wallet-btn-phantom">
@@ -1115,7 +1113,8 @@
               The flaring torch that illuminates the Solana path. Powerful and versatile.
             </p>
             <div class="buy-option-action">
-              <button class="btn btn-red wallet-action-btn"
+              <button type="button"
+                      class="btn btn-red wallet-action-btn"
                       data-wallet="solflare"
                       data-install-url="https://solflare.com/download"
                       id="wallet-btn-solflare">
@@ -1135,7 +1134,8 @@
               The traveler's companion on the crypto journey. Modern, sleek, and feature-rich.
             </p>
             <div class="buy-option-action">
-              <button class="btn btn-red wallet-action-btn"
+              <button type="button"
+                      class="btn btn-red wallet-action-btn"
                       data-wallet="backpack"
                       data-install-url="https://www.backpack.app/download"
                       id="wallet-btn-backpack">

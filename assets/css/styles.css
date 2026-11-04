@@ -3671,15 +3671,42 @@ html {
   animation: fadeInUp 0.3s ease-out;
 }
 
-.wallet-btn.connected {
+.wallet-btn.connected,
+.wallet-action-btn.connected {
   background-color: var(--navy);
-  display: flex;
+  color: white;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: 'Oswald', sans-serif;
 }
 
-.dark-mode .wallet-btn.connected {
+.dark-mode .wallet-btn.connected,
+.dark-mode .wallet-action-btn.connected {
+  background-color: var(--dm-navy);
+}
+
+.wallet-action-btn:disabled {
+  cursor: wait;
+}
+
+.success-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--navy);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  z-index: 2000;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.dark-mode .success-toast {
   background-color: var(--dm-navy);
 }
 

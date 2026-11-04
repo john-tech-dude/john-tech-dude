@@ -243,220 +243,382 @@ const preloadImages = () => {
 // Run preload
 preloadImages();
 
-// Real Solana Wallet Connection System
+// Solana wallet connection for the buy-panel buttons.
+// Providers are injected by the Phantom, Solflare, and Backpack extensions.
+const WALLET_PROVIDERS = {
+    phantom: {
+        name: 'Phantom',
+        installUrl: 'https://phantom.app/download',
+        getProvider() {
+            const provider = window.phantom?.solana;
+            if (provider?.isPhantom) return provider;
+            // window.solana is shared. Only use it when it is actually Phantom.
+            if (window.solana?.isPhantom && !window.solana.isBackpack) return window.solana;
+            return null;
+        }
+    },
+    solflare: {
+        name: 'Solflare',
+        installUrl: 'https://solflare.com/download',
+        getProvider() {
+            const provider = window.solflare;
+            if (provider?.isSolflare && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    backpack: {
+        name: 'Backpack',
+        installUrl: 'https://www.backpack.app/download',
+        getProvider() {
+            const provider = window.backpack;
+            if (provider?.isBackpack || (provider && typeof provider.connect === 'function' && provider.isPhantom !== true)) {
+                return provider;
+            }
+            if (window.solana?.isBackpack) return window.solana;
+            return null;
+        }
+    }
+};
+
+const ADDRESS_PATTERN = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+
 const walletConnection = {
     wallet: null,
+    walletType: null,
     publicKey: null,
     connected: false,
+    busy: false,
+    pendingType: null,
+    suppressEvents: false,
+    boundProvider: null,
+    onDisconnect: null,
+    onAccountChanged: null,
 
-    // Initialize wallet connection
     async init() {
-        // Detect wallet availability on page load
-        this.detectWallets();
+        this.bindButtons();
+        this.renderButtons();
+        this.watchForProviders();
+        await this.restoreSession();
+    },
 
-        // Add wallet connect button handlers
-        document.querySelectorAll('.wallet-action-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const walletType = e.currentTarget.dataset.wallet;
-                await this.connectWallet(walletType);
+    bindButtons() {
+        document.querySelectorAll('.wallet-action-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                this.onButtonClick(button);
             });
         });
+    },
 
-        // Auto-connect if previously connected
+    async onButtonClick(button) {
+        const walletType = button.dataset.wallet;
+        const config = WALLET_PROVIDERS[walletType];
+        if (!config || this.busy) return;
+
+        if (this.connected && this.walletType === walletType) {
+            await this.disconnect();
+            return;
+        }
+
+        if (!config.getProvider()) {
+            const url = button.dataset.installUrl || config.installUrl;
+            window.open(url, '_blank', 'noopener,noreferrer');
+            return;
+        }
+
+        await this.connectWallet(walletType);
+    },
+
+    watchForProviders() {
+        const refresh = () => {
+            if (!this.busy) this.renderButtons();
+        };
+        window.addEventListener('load', refresh);
+        window.addEventListener('focus', refresh);
+        window.addEventListener('solana#initialized', refresh);
+        window.addEventListener('phantom#initialized', refresh);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') refresh();
+        });
+
+        let tries = 0;
+        const timer = setInterval(() => {
+            tries += 1;
+            refresh();
+            const allFound = Object.keys(WALLET_PROVIDERS).every((type) => WALLET_PROVIDERS[type].getProvider());
+            if (allFound || tries >= 20) clearInterval(timer);
+        }, 200);
+    },
+
+    async restoreSession() {
         const lastWallet = localStorage.getItem('lastConnectedWallet');
-        if (lastWallet) {
-            await this.connectWallet(lastWallet);
-        }
-    },
+        if (!WALLET_PROVIDERS[lastWallet]) return;
 
-    // Detect which wallets are installed
-    detectWallets() {
-        // Check Phantom
-        const phantomBtn = document.getElementById('wallet-btn-phantom');
-        if (phantomBtn) {
-            if (window.solana && window.solana.isPhantom) {
-                phantomBtn.innerHTML = 'Connect';
-                phantomBtn.classList.remove('btn-red');
-                phantomBtn.classList.add('btn-green');
-            } else {
-                phantomBtn.innerHTML = 'Install';
-                phantomBtn.onclick = () => window.open('https://phantom.app/download', '_blank');
-            }
-        }
-
-        // Check Solflare
-        const solflareBtn = document.getElementById('wallet-btn-solflare');
-        if (solflareBtn) {
-            if (window.solflare && window.solflare.isSolflare) {
-                solflareBtn.innerHTML = 'Connect';
-                solflareBtn.classList.remove('btn-red');
-                solflareBtn.classList.add('btn-green');
-            } else {
-                solflareBtn.innerHTML = 'Install';
-                solflareBtn.onclick = () => window.open('https://solflare.com/download', '_blank');
-            }
-        }
-
-        // Check Backpack
-        const backpackBtn = document.getElementById('wallet-btn-backpack');
-        if (backpackBtn) {
-            if (window.backpack || (window.solana && window.solana.isBackpack)) {
-                backpackBtn.innerHTML = 'Connect';
-                backpackBtn.classList.remove('btn-red');
-                backpackBtn.classList.add('btn-green');
-            } else {
-                backpackBtn.innerHTML = 'Install';
-                backpackBtn.onclick = () => window.open('https://backpack.app/download', '_blank');
-            }
-        }
-    },
-
-    // Connect to wallet
-    async connectWallet(walletType) {
-        try {
-            let response;
-
-            switch (walletType) {
-                case 'phantom':
-                    if (window.solana && window.solana.isPhantom) {
-                        response = await window.solana.connect();
-                        this.wallet = window.solana;
-                    } else {
-                        window.open('https://phantom.app/', '_blank');
-                        this.showError('Please install Phantom wallet');
-                        return;
-                    }
-                    break;
-
-                case 'solflare':
-                    if (window.solflare && window.solflare.isSolflare) {
-                        response = await window.solflare.connect();
-                        this.wallet = window.solflare;
-                    } else {
-                        window.open('https://solflare.com/', '_blank');
-                        this.showError('Please install Solflare wallet');
-                        return;
-                    }
-                    break;
-
-                case 'backpack':
-                    if (window.backpack) {
-                        response = await window.backpack.connect();
-                        this.wallet = window.backpack;
-                    } else if (window.solana && window.solana.isBackpack) {
-                        response = await window.solana.connect();
-                        this.wallet = window.solana;
-                    } else {
-                        window.open('https://backpack.app/', '_blank');
-                        this.showError('Please install Backpack wallet');
-                        return;
-                    }
-                    break;
-
-                default:
-                    throw new Error('Unsupported wallet type');
-            }
-
-            if (response && response.publicKey) {
-                this.publicKey = response.publicKey.toString();
-                this.connected = true;
-                this.updateUI(walletType, this.publicKey);
-                localStorage.setItem('lastConnectedWallet', walletType);
-                this.showSuccess('Wallet connected successfully!');
-            }
-        } catch (error) {
-            console.error('Wallet connection error:', error);
-            this.showError('Failed to connect wallet. Please try again.');
-        }
-    },
-
-    // Disconnect wallet
-    async disconnect() {
-        try {
-            if (this.wallet) {
-                await this.wallet.disconnect();
-            }
-            this.wallet = null;
-            this.publicKey = null;
-            this.connected = false;
+        const provider = await this.waitForProvider(lastWallet, 2500);
+        if (!provider) {
             localStorage.removeItem('lastConnectedWallet');
-            this.updateUI(null, null);
-            this.showSuccess('Wallet disconnected');
+            this.renderButtons();
+            return;
+        }
+        if (this.connected || this.busy) return;
+
+        // onlyIfTrusted reconnects without a popup. A rejection means this site is not trusted.
+        await this.connectWallet(lastWallet, { onlyIfTrusted: true, announce: false });
+    },
+
+    waitForProvider(walletType, timeout) {
+        const existing = WALLET_PROVIDERS[walletType]?.getProvider();
+        if (existing) return Promise.resolve(existing);
+
+        return new Promise((resolve) => {
+            const started = Date.now();
+            const timer = setInterval(() => {
+                const provider = WALLET_PROVIDERS[walletType]?.getProvider() || null;
+                if (provider || Date.now() - started >= timeout) {
+                    clearInterval(timer);
+                    resolve(provider);
+                }
+            }, 100);
+        });
+    },
+
+    async connectWallet(walletType, { onlyIfTrusted = false, announce = true } = {}) {
+        const config = WALLET_PROVIDERS[walletType];
+        if (!config || this.busy) return;
+
+        const provider = config.getProvider();
+        if (!provider) {
+            if (!onlyIfTrusted) {
+                window.open(config.installUrl, '_blank', 'noopener,noreferrer');
+                this.showError(`Install ${config.name} to connect`);
+            }
+            return;
+        }
+
+        this.pendingType = walletType;
+        this.busy = true;
+        this.renderButtons();
+        try {
+            if (this.connected && this.walletType && this.walletType !== walletType) {
+                await this.disconnect({ announce: false, keepBusy: true });
+            }
+
+            const publicKey = await this.requestPublicKey(provider, { onlyIfTrusted });
+            if (!publicKey) throw new Error('Wallet did not return an address');
+
+            this.wallet = provider;
+            this.walletType = walletType;
+            this.publicKey = publicKey;
+            this.connected = true;
+            localStorage.setItem('lastConnectedWallet', walletType);
+            this.bindProvider(provider);
+            this.renderButtons();
+            if (announce) this.showSuccess(`${config.name} connected`);
+        } catch (error) {
+            if (onlyIfTrusted) {
+                if (!this.connected) localStorage.removeItem('lastConnectedWallet');
+            } else if (this.isRejection(error)) {
+                this.showError('Connection cancelled');
+            } else {
+                console.error('Wallet connection error:', error);
+                this.showError(this.messageFor(error, config.name));
+            }
+            this.renderButtons();
+        } finally {
+            this.busy = false;
+            this.pendingType = null;
+            this.renderButtons();
+        }
+    },
+
+    async requestPublicKey(provider, { onlyIfTrusted }) {
+        const response = onlyIfTrusted
+            ? await provider.connect({ onlyIfTrusted: true })
+            : await provider.connect();
+
+        const immediate = this.readPublicKey(provider, response);
+        if (immediate) return immediate;
+
+        return new Promise((resolve) => {
+            let settled = false;
+            const finish = () => {
+                if (settled) return;
+                settled = true;
+                resolve(this.readPublicKey(provider, response));
+            };
+            const timer = setTimeout(() => {
+                provider.removeListener?.('connect', onConnect);
+                provider.off?.('connect', onConnect);
+                finish();
+            }, 400);
+            const onConnect = () => {
+                clearTimeout(timer);
+                provider.removeListener?.('connect', onConnect);
+                provider.off?.('connect', onConnect);
+                finish();
+            };
+            if (typeof provider.once === 'function') provider.once('connect', onConnect);
+            else if (typeof provider.on === 'function') provider.on('connect', onConnect);
+            else finish();
+        });
+    },
+
+    readPublicKey(provider, response) {
+        return this.toAddress(response?.publicKey)
+            || this.toAddress(provider?.publicKey)
+            || this.toAddress(response);
+    },
+
+    toAddress(value) {
+        if (!value) return null;
+        let encoded = null;
+        if (typeof value === 'string') encoded = value;
+        else if (typeof value.toBase58 === 'function') encoded = value.toBase58();
+        else if (typeof value.toString === 'function' && value.toString !== Object.prototype.toString) {
+            encoded = value.toString();
+        }
+        if (!encoded || !ADDRESS_PATTERN.test(encoded)) return null;
+        return encoded;
+    },
+
+    bindProvider(provider) {
+        this.unbindProvider();
+        this.boundProvider = provider;
+        this.onDisconnect = () => {
+            if (this.suppressEvents) return;
+            this.clearSession({ announce: true });
+        };
+        this.onAccountChanged = (nextKey) => {
+            if (this.suppressEvents) return;
+            const nextAddress = this.toAddress(nextKey);
+            if (!nextAddress) {
+                this.clearSession({ announce: true });
+                return;
+            }
+            if (nextAddress === this.publicKey) return;
+            this.publicKey = nextAddress;
+            this.renderButtons();
+        };
+        provider.on?.('disconnect', this.onDisconnect);
+        provider.on?.('accountChanged', this.onAccountChanged);
+    },
+
+    unbindProvider() {
+        const provider = this.boundProvider;
+        if (provider) {
+            if (this.onDisconnect) {
+                provider.removeListener?.('disconnect', this.onDisconnect);
+                provider.off?.('disconnect', this.onDisconnect);
+            }
+            if (this.onAccountChanged) {
+                provider.removeListener?.('accountChanged', this.onAccountChanged);
+                provider.off?.('accountChanged', this.onAccountChanged);
+            }
+        }
+        this.boundProvider = null;
+        this.onDisconnect = null;
+        this.onAccountChanged = null;
+    },
+
+    async disconnect({ announce = true, keepBusy = false } = {}) {
+        if (!keepBusy) {
+            if (this.busy) return;
+            this.pendingType = null;
+            this.busy = true;
+            this.renderButtons();
+        }
+        const provider = this.wallet;
+        this.suppressEvents = true;
+        try {
+            if (typeof provider?.disconnect === 'function') await provider.disconnect();
         } catch (error) {
             console.error('Wallet disconnect error:', error);
+        } finally {
+            this.suppressEvents = false;
+            if (!keepBusy) this.busy = false;
         }
+        this.clearSession({ announce });
     },
 
-    // Update UI after successful connection
-    updateUI(walletType, publicKey) {
-        const connectButton = document.getElementById('connectWalletBtn');
-        if (!connectButton) return;
-
-        const shortAddress = publicKey ? `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}` : 'Connect Wallet';
-
-        if (this.connected) {
-            connectButton.innerHTML = `
-                <i class="fas fa-wallet" style="margin-right: 8px;"></i>
-                ${shortAddress}
-            `;
-            connectButton.classList.add('connected');
-            connectButton.onclick = () => this.disconnect();
-        } else {
-            connectButton.innerHTML = 'Connect Wallet';
-            connectButton.classList.remove('connected');
-            connectButton.onclick = () => {
-                const walletOptions = document.getElementById('walletOptions');
-                if (walletOptions) {
-                    walletOptions.classList.toggle('show');
-                }
-            };
-        }
-
-        // Hide wallet options
-        const walletOptions = document.getElementById('walletOptions');
-        if (walletOptions) {
-            walletOptions.classList.remove('show');
-        }
+    clearSession({ announce = false } = {}) {
+        const wasConnected = this.connected;
+        this.unbindProvider();
+        this.wallet = null;
+        this.walletType = null;
+        this.publicKey = null;
+        this.connected = false;
+        localStorage.removeItem('lastConnectedWallet');
+        this.renderButtons();
+        if (announce && wasConnected) this.showSuccess('Wallet disconnected');
     },
 
-    // Show success message
+    renderButtons() {
+        Object.keys(WALLET_PROVIDERS).forEach((walletType) => {
+            const button = document.getElementById(`wallet-btn-${walletType}`);
+            if (!button) return;
+
+            const config = WALLET_PROVIDERS[walletType];
+            const installed = Boolean(config.getProvider());
+            const isConnectedWallet = this.connected && this.walletType === walletType;
+
+            button.classList.remove('connected');
+            button.disabled = this.busy;
+            button.removeAttribute('title');
+            button.removeAttribute('aria-label');
+
+            if (this.busy && this.pendingType === walletType && !isConnectedWallet) {
+                button.textContent = 'Connecting…';
+                button.dataset.state = 'connecting';
+                return;
+            }
+
+            if (isConnectedWallet && this.publicKey) {
+                const shortAddress = `${this.publicKey.slice(0, 4)}…${this.publicKey.slice(-4)}`;
+                button.textContent = shortAddress;
+                button.classList.add('connected');
+                button.dataset.state = 'connected';
+                button.title = `Disconnect ${config.name}`;
+                button.setAttribute('aria-label', `Disconnect ${config.name}, ${shortAddress}`);
+                return;
+            }
+
+            button.removeAttribute('aria-label');
+            if (installed) {
+                button.textContent = 'Connect';
+                button.dataset.state = 'ready';
+            } else {
+                button.textContent = 'Install';
+                button.dataset.state = 'missing';
+            }
+        });
+    },
+
+    isRejection(error) {
+        const code = error?.code;
+        const message = String(error?.message || '');
+        return code === 4001 || /reject|cancel|denied/i.test(message);
+    },
+
+    messageFor(error, walletName) {
+        const code = error?.code;
+        const message = String(error?.message || '');
+        if (code === -32002 || /already pending|already processing/i.test(message)) {
+            return 'A connection request is already open in your wallet';
+        }
+        return `Couldn't connect ${walletName}. Try again.`;
+    },
+
     showSuccess(message) {
-        const toast = document.createElement('div');
-        toast.className = 'success-toast';
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #10B981;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-        `;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        this.showToast(message, 'success-toast');
     },
 
-    // Show error message
     showError(message) {
+        this.showToast(message, 'error-toast');
+    },
+
+    showToast(message, className) {
         const toast = document.createElement('div');
-        toast.className = 'error-toast';
+        toast.className = className;
         toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #EF4444;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-        `;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
