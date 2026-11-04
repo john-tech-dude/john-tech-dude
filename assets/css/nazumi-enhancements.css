@@ -1,0 +1,336 @@
+/* ═══════════════════════════════════════════════════════════════
+   NAZUMI RONIN — Design Enhancements V1.2
+   Layered on top of styles.css for richer manga aesthetic
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Color additions ── */
+:root {
+  --gold:        #C9943A;
+  --dark-gold:   #9B6F22;
+  --light-gold:  #E8C06A;
+  --dm-gold:     #E8C06A;
+  --ink-muted:   rgba(46, 43, 42, 0.55);
+}
+
+/* ── Section titles — more cinematic ── */
+.section-title {
+  font-size: 3.4rem;
+  letter-spacing: 0.06em;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.15), 0 0 40px rgba(155,34,38,0.15);
+}
+
+/* Brushstroke red line below each title */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 72px;
+  height: 5px;
+  background: var(--primary-red);
+  margin: 0.55rem auto 0;
+  border-radius: 2px;
+  box-shadow: 3px 3px 0 var(--dark-red);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.5s, width 0.5s ease 0.5s;
+}
+
+.section-title.animate::after {
+  opacity: 1;
+  width: 120px;
+}
+
+/* Remove the default em-dash pseudo-elements and replace with cleaner look */
+.section-title::before {
+  display: none;
+}
+
+.dark-mode .section-title {
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 0 50px rgba(229,56,59,0.2);
+}
+
+/* ── Manga panels — richer shadow & hover ── */
+.panel {
+  border-width: 3px;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.18);
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s ease;
+}
+
+.panel.animate:hover {
+  transform: translateY(-4px);
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.22);
+}
+
+.dark-mode .panel {
+  background-color: #1c1c1c;
+  border-color: #3a3a3a;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.45);
+}
+
+.dark-mode .panel.animate:hover {
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.6);
+}
+
+/* ── Arc headers — bolder ── */
+.arc-number {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.arc-title {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+/* ── Pull quotes — more dramatic ── */
+.pull-quote {
+  border-left: 4px solid var(--primary-red);
+  padding: 0.5rem 2rem 0.55rem 1rem;
+  background: rgba(155, 34, 38, 0.04);
+}
+
+.pull-quote p {
+  font-size: 0.95rem;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.pull-quote cite {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--primary-red);
+  margin-top: 0.25rem;
+}
+
+.pull-quote .pull-mark {
+  font-size: 2.2rem;
+  opacity: 0.08;
+}
+
+.dark-mode .pull-quote {
+  background: rgba(229, 56, 59, 0.06);
+  border-left-color: var(--dm-light-red);
+}
+
+/* ── Speech bubbles — crisper ── */
+.speech-bubble {
+  border: 2.5px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.dark-mode .speech-bubble {
+  background: #1e1e1e;
+  border-color: #444;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.35);
+}
+
+/* ── Sound effects — bigger pop ── */
+.sound-effect {
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.25);
+  -webkit-text-stroke: 1px var(--ink);
+}
+
+/* ── Character evolution images — subtle glow on hover ── */
+.character-image:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(155,34,38,0.25) !important;
+  border-color: var(--primary-red) !important;
+}
+
+/* ── Community cards — redesigned for code style ── */
+.community-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.4rem;
+  border: 3px solid var(--ink);
+  background: white;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.community-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.18);
+}
+
+.community-avatar {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.community-title {
+  font-family: 'Bangers', cursive;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  color: var(--primary-red);
+  margin-bottom: 0.2rem;
+}
+
+.community-role {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.4rem;
+}
+
+.community-bio {
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.dark-mode .community-card {
+  background: #1c1c1c;
+  border-color: #3a3a3a;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
+}
+
+.dark-mode .community-title {
+  color: var(--dm-light-red);
+}
+
+.dark-mode .community-bio {
+  color: var(--dm-text);
+}
+
+/* ── Timeline nodes — richer ── */
+.node-icon {
+  font-family: 'Bangers', cursive;
+  color: var(--primary-red);
+  font-size: 1.3rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+}
+
+.timeline-node h3 {
+  letter-spacing: 0.08em;
+}
+
+/* ── Warrior image overlay — Japanese label ── */
+.warrior-image-overlay {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.06em;
+  font-size: 1.4rem;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+
+/* ── Hero scroll — elevated ── */
+.scroll-title {
+  letter-spacing: 0.1em;
+  text-shadow: 5px 5px 0 var(--primary-red), 0 0 30px rgba(155,34,38,0.25);
+}
+
+.scroll-version {
+  letter-spacing: 0.2em;
+  opacity: 0.75;
+}
+
+.scroll-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ── Red seals — polish ── */
+.red-seal {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.05em;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.25) !important;
+}
+
+/* ── Roadmap symbols — gold accent ── */
+.roadmap-symbol {
+  color: white;
+  background: var(--primary-red);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.04em;
+}
+
+/* ── Splash screen — sharper title ── */
+.splash-title {
+  letter-spacing: 0.08em;
+  text-shadow: 4px 4px 0 var(--primary-red), 0 0 40px rgba(155,34,38,0.3);
+}
+
+/* ── Nav — slightly bolder ── */
+.nav-logo {
+  letter-spacing: 0.12em;
+}
+
+.nav-link {
+  letter-spacing: 0.08em;
+}
+
+/* ── Footer ── */
+.footer-logo {
+  letter-spacing: 0.12em;
+}
+
+/* ── Manga section spacing ── */
+.manga-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* ── Roadmap note ── */
+.roadmap-note {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
+
+/* ── Ally cards ── */
+.ally-card {
+  border: 2.5px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ally-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.15);
+}
+
+.dark-mode .ally-card {
+  background-color: var(--dm-panel);
+  border-color: var(--dm-primary-red);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.45);
+}
+
+.dark-mode .ally-card:hover {
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.6);
+}
+
+/* ── Tokenomics ── */
+.tokenomics-title {
+  letter-spacing: 0.06em;
+}
+
+.distribution-value {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.06em;
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  .community-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .community-avatar {
+    margin: 0 auto;
+  }
+}
