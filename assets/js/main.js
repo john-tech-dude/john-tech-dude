@@ -250,10 +250,22 @@ const WALLET_PROVIDERS = {
         name: 'Phantom',
         installUrl: 'https://phantom.app/download',
         getProvider() {
-            const provider = window.phantom?.solana;
+            // Check window.phantom.solana first (newer Phantom versions)
+            let provider = window.phantom?.solana;
             if (provider?.isPhantom) return provider;
-            // window.solana is shared. Only use it when it is actually Phantom.
-            if (window.solana?.isPhantom && !window.solana.isBackpack) return window.solana;
+
+            // Check window.solana (older Phantom, shared object)
+            provider = window.solana;
+            if (provider?.isPhantom && !provider.isBackpack) return provider;
+
+            // Fallback: check if window.solana exists and has connect method
+            if (window.solana && typeof window.solana.connect === 'function') {
+                // Check if it's not Backpack
+                if (!window.solana.isBackpack) {
+                    return window.solana;
+                }
+            }
+
             return null;
         }
     },
@@ -270,11 +282,19 @@ const WALLET_PROVIDERS = {
         name: 'Backpack',
         installUrl: 'https://www.backpack.app/download',
         getProvider() {
-            const provider = window.backpack;
-            if (provider?.isBackpack || (provider && typeof provider.connect === 'function' && provider.isPhantom !== true)) {
-                return provider;
+            // Check window.backpack first
+            let provider = window.backpack;
+            if (provider?.isBackpack) return provider;
+
+            // Check window.solana for Backpack
+            provider = window.solana;
+            if (provider?.isBackpack) return provider;
+
+            // Fallback: check if window.backpack has connect method
+            if (window.backpack && typeof window.backpack.connect === 'function') {
+                return window.backpack;
             }
-            if (window.solana?.isBackpack) return window.solana;
+
             return null;
         }
     }
