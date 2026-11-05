@@ -52,125 +52,92 @@ body.dark-mode {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--navy);
+  background-color: #fffaf2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.5s ease-in-out;
+  overflow: hidden;
+  transition: opacity 0.65s ease-in-out;
+}
+
+.splash-screen.is-leaving {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .dark-mode .splash-screen {
-  background-color: var(--dm-navy);
+  background-color: #141218;
 }
 
 .splash-title {
   font-family: 'Bangers', cursive;
   font-size: 3rem;
-  color: white;
+  color: #141218;
   text-shadow: 3px 3px 0 var(--primary-red);
-  margin-bottom: 1.25rem;
   text-align: center;
   letter-spacing: 2px;
 }
 
-.splash-gate {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: min(90%, 320px);
-  gap: 0.75rem;
-  text-align: center;
+.dark-mode .splash-title {
+  color: white;
 }
 
-.splash-gate[hidden],
 .loading-bar-container[hidden] {
   display: none !important;
 }
 
-.splash-gate p {
-  font-family: 'Oswald', sans-serif;
-  color: white;
-  margin: 0;
-  letter-spacing: 0.4px;
-}
-
-.splash-gate input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--primary-red);
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.25);
-  color: white;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  outline: none;
-}
-
-.splash-gate button {
-  padding: 0.75rem 1rem;
-  background: var(--primary-red);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-}
-
-.splash-gate button:hover {
-  background: var(--dark-red);
-}
-
-.splash-error {
-  color: #FF6B6E;
-  font-size: 0.9rem;
-}
-
 .splash-subtitle {
-  font-family: 'Bangers', cursive;
-  font-size: 1.5rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: #141218;
+}
+
+.dark-mode .splash-subtitle {
   color: white;
-  margin-bottom: 2rem;
 }
 
 .loading-bar-container {
-  width: 80%;
-  max-width: 400px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  width: min(72vw, 280px);
+  height: 3px;
+  background-color: rgba(20, 18, 24, 0.14);
   overflow: hidden;
-  border: 2px solid var(--primary-red);
   position: relative;
+}
+
+.dark-mode .loading-bar-container {
+  background-color: rgba(255, 255, 255, 0.14);
 }
 
 .loading-bar {
   height: 100%;
   width: 0%;
   background-color: var(--primary-red);
-  border-radius: 8px;
-  transition: width 4s ease-in-out;
 }
 
 .japanese-symbol-splash {
   position: absolute;
   font-size: 10rem;
+  color: #141218;
+  opacity: 0.12;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dark-mode .japanese-symbol-splash {
   color: var(--primary-red);
-  opacity: 0.1;
-  z-index: -1;
 }
 
 .symbol-top-right-splash {
-  top: 10%;
-  right: 10%;
+  top: 8%;
+  right: 8%;
 }
 
 .symbol-bottom-left-splash {
-  bottom: 10%;
-  left: 10%;
+  bottom: 8%;
+  left: 8%;
 }
 
 /* ----- FLOATING ACTION BUTTON ----- */
@@ -3557,15 +3524,11 @@ html {
 
   /* Splash screen adjustments */
   .splash-title {
-    font-size: 2rem;
+    font-size: 2.4rem;
   }
 
   .splash-subtitle {
-    font-size: 1.2rem;
-  }
-
-  .loading-bar-container {
-    width: 90%;
+    font-size: 0.78rem;
   }
 }
 
