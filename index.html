@@ -1103,11 +1103,18 @@
         <h3 class="buy-panel-subtitle">Instant Swap</h3>
         <div class="jupiter-swap-container">
           <div class="swap-input-group">
-            <label class="swap-label" id="swapInputLabel">From (SOL)</label>
+            <label class="swap-label">From</label>
             <div class="swap-input-wrapper">
               <input type="number" id="swapInputAmount" class="swap-input" placeholder="0.0" min="0" step="0.001">
               <div class="swap-token-info">
-                <span class="swap-token-symbol" id="swapInputSymbol">SOL</span>
+                <select id="swapInputToken" class="swap-token-select">
+                  <option value="SOL">SOL</option>
+                  <option value="USDC">USDC</option>
+                  <option value="USDT">USDT</option>
+                  <option value="BONK">BONK</option>
+                  <option value="WIF">WIF</option>
+                  <option value="NAZUMI">NAZUMI</option>
+                </select>
               </div>
             </div>
           </div>
@@ -1117,11 +1124,18 @@
           </div>
 
           <div class="swap-input-group">
-            <label class="swap-label" id="swapOutputLabel">To (NAZUMI)</label>
+            <label class="swap-label">To</label>
             <div class="swap-input-wrapper">
               <input type="number" id="swapOutputAmount" class="swap-input" placeholder="0.0" readonly>
               <div class="swap-token-info">
-                <span class="swap-token-symbol" id="swapOutputSymbol">NAZUMI</span>
+                <select id="swapOutputToken" class="swap-token-select">
+                  <option value="NAZUMI">NAZUMI</option>
+                  <option value="SOL">SOL</option>
+                  <option value="USDC">USDC</option>
+                  <option value="USDT">USDT</option>
+                  <option value="BONK">BONK</option>
+                  <option value="WIF">WIF</option>
+                </select>
               </div>
             </div>
           </div>

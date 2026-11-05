@@ -2875,6 +2875,28 @@ html {
   margin-left: 0.75rem;
 }
 
+.swap-token-select {
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: var(--primary-red);
+  font-family: 'Bangers', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.swap-token-select:hover {
+  background-color: rgba(155, 34, 38, 0.1);
+}
+
+.swap-token-select:focus {
+  background-color: rgba(155, 34, 38, 0.15);
+}
+
 .swap-token-symbol {
   font-weight: bold;
   color: var(--primary-red);
@@ -3018,6 +3040,18 @@ html {
 
 .dark-mode .swap-token-symbol {
   color: var(--dm-primary-red);
+}
+
+.dark-mode .swap-token-select {
+  color: var(--dm-primary-red);
+}
+
+.dark-mode .swap-token-select:hover {
+  background-color: rgba(155, 34, 38, 0.2);
+}
+
+.dark-mode .swap-token-select:focus {
+  background-color: rgba(155, 34, 38, 0.25);
 }
 
 .dark-mode .swap-quote-info {
