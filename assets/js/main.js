@@ -1,53 +1,20 @@
 // NAZUMI RONIN V6 - Enhanced Performance & Splash Screen
 document.addEventListener('DOMContentLoaded', function() {
-  // Splash screen stays up until the password is entered
+  // Splash screen plays a short loading animation, then opens the site
   const splashScreen = document.getElementById('splashScreen');
-  const loadingBar = document.getElementById('loadingBar');
-  const splashGate = document.getElementById('splashGate');
-  const splashLoading = document.getElementById('splashLoading');
   const body = document.body;
   document.body.style.overflow = 'hidden';
 
   function dismissSplash() {
-    splashScreen.style.opacity = 0;
+    splashScreen.classList.add('is-leaving');
     setTimeout(() => {
       splashScreen.style.display = 'none';
+      splashScreen.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = 'auto';
-    }, 500);
+    }, 650);
   }
 
-  function runSplash() {
-    splashGate.hidden = true;
-    splashLoading.hidden = false;
-    let progress = 0;
-    const progressInterval = setInterval(() => {
-      progress += 2;
-      loadingBar.style.width = `${progress}%`;
-      if (progress >= 100) {
-        clearInterval(progressInterval);
-        setTimeout(dismissSplash, 500);
-      }
-    }, 40);
-  }
-
-  splashGate.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const input = document.getElementById('passwordInput');
-    const error = document.getElementById('errorMessage');
-    if (input.value === '5665') {
-      localStorage.setItem('nazumiAuthenticated', 'true');
-      error.hidden = true;
-      runSplash();
-    } else {
-      error.hidden = false;
-      input.value = '';
-      input.focus();
-    }
-  });
-
-  if (localStorage.getItem('nazumiAuthenticated') === 'true') {
-    runSplash();
-  }
+  setTimeout(dismissSplash, 2500);
   // Main functionality
   const buyButton = document.getElementById('buyButton');
   const buyButtonPanel = document.getElementById('buyButtonPanel');
@@ -252,18 +219,15 @@ const WALLET_PROVIDERS = {
         getProvider() {
             // Check window.phantom.solana first (newer Phantom versions)
             let provider = window.phantom?.solana;
-            if (provider?.isPhantom) return provider;
+            if (provider && typeof provider.connect === 'function') return provider;
 
             // Check window.solana (older Phantom, shared object)
             provider = window.solana;
-            if (provider?.isPhantom && !provider.isBackpack) return provider;
-
-            // Fallback: check if window.solana exists and has connect method
-            if (window.solana && typeof window.solana.connect === 'function') {
-                // Check if it's not Backpack
-                if (!window.solana.isBackpack) {
-                    return window.solana;
-                }
+            if (provider && typeof provider.connect === 'function') {
+                // Try to identify if it's Phantom by checking isPhantom flag
+                if (provider.isPhantom === true) return provider;
+                // If no isPhantom flag, assume it might be Phantom if window.phantom exists
+                if (window.phantom) return provider;
             }
 
             return null;
@@ -274,7 +238,7 @@ const WALLET_PROVIDERS = {
         installUrl: 'https://solflare.com/download',
         getProvider() {
             const provider = window.solflare;
-            if (provider?.isSolflare && typeof provider.connect === 'function') return provider;
+            if (provider && typeof provider.connect === 'function') return provider;
             return null;
         }
     },
@@ -284,16 +248,11 @@ const WALLET_PROVIDERS = {
         getProvider() {
             // Check window.backpack first
             let provider = window.backpack;
-            if (provider?.isBackpack) return provider;
+            if (provider && typeof provider.connect === 'function') return provider;
 
-            // Check window.solana for Backpack
-            provider = window.solana;
-            if (provider?.isBackpack) return provider;
-
-            // Fallback: check if window.backpack has connect method
-            if (window.backpack && typeof window.backpack.connect === 'function') {
-                return window.backpack;
-            }
+            // Check window.backpack.solana
+            provider = window.backpack?.solana;
+            if (provider && typeof provider.connect === 'function') return provider;
 
             return null;
         }
