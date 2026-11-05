@@ -1100,6 +1100,56 @@
       </div>
 
       <div class="buy-panel-section">
+        <h3 class="buy-panel-subtitle">Instant Swap</h3>
+        <div class="jupiter-swap-container">
+          <div class="swap-input-group">
+            <label class="swap-label">From (SOL)</label>
+            <div class="swap-input-wrapper">
+              <input type="number" id="swapInputAmount" class="swap-input" placeholder="0.0" min="0" step="0.001">
+              <div class="swap-token-info">
+                <span class="swap-token-symbol">SOL</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="swap-arrow">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+
+          <div class="swap-input-group">
+            <label class="swap-label">To (NAZUMI)</label>
+            <div class="swap-input-wrapper">
+              <input type="number" id="swapOutputAmount" class="swap-input" placeholder="0.0" readonly>
+              <div class="swap-token-info">
+                <span class="swap-token-symbol">NAZUMI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="swap-quote-info" id="swapQuoteInfo" style="display: none;">
+            <div class="quote-row">
+              <span class="quote-label">Price:</span>
+              <span class="quote-value" id="quotePrice">-</span>
+            </div>
+            <div class="quote-row">
+              <span class="quote-label">Price Impact:</span>
+              <span class="quote-value" id="quotePriceImpact">-</span>
+            </div>
+            <div class="quote-row">
+              <span class="quote-label">Min. Received:</span>
+              <span class="quote-value" id="quoteMinReceived">-</span>
+            </div>
+          </div>
+
+          <button id="swapButton" class="btn btn-red swap-button" disabled>
+            <span id="swapButtonText">Connect Wallet to Swap</span>
+          </button>
+
+          <div class="swap-status" id="swapStatus"></div>
+        </div>
+      </div>
+
+      <div class="buy-panel-section">
         <h3 class="buy-panel-subtitle">Warrior Wallets</h3>
         <div class="buy-options">
 
