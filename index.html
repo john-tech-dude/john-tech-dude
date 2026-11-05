@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAZUMI RONIN V1.1 - The Legendary Warrior</title>
+  <title>NAZUMI RONIN V1.2 - The Arc of the Wandering Blade</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="assets/images/idr2g0H70M_1743216759084.jpeg">
@@ -26,18 +26,19 @@
 
 <body>
   <!-- Splash Screen -->
-  <div class="splash-screen" id="splashScreen">
+  <div class="splash-screen" id="splashScreen" role="dialog" aria-label="Nazumi Ronin">
+    <div class="splash-wash" aria-hidden="true"></div>
     <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">忠</div>
     <div class="japanese-symbol japanese-symbol-splash symbol-bottom-left-splash">誠</div>
-    <h1 class="splash-title">NAZUMI RONIN</h1>
-    <form class="splash-gate" id="splashGate" autocomplete="off">
-      <p>Enter password to access</p>
-      <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
-      <button type="submit">Enter</button>
-      <p class="splash-error" id="errorMessage" hidden>Incorrect password. Please try again.</p>
-    </form>
-    <div class="loading-bar-container" id="splashLoading" hidden>
-      <div class="loading-bar" id="loadingBar"></div>
+    <div class="splash-inner">
+      <div class="splash-seal" aria-hidden="true">運命</div>
+      <p class="splash-kicker">V1.2</p>
+      <h1 class="splash-title">NAZUMI RONIN</h1>
+      <span class="splash-rule" aria-hidden="true"></span>
+      <p class="splash-subtitle">The Arc of the Wandering Blade</p>
+      <div class="loading-bar-container" id="splashLoading">
+        <div class="loading-bar" id="loadingBar"></div>
+      </div>
     </div>
   </div>
 
@@ -299,16 +300,16 @@
           </div>
 
           <div class="character-evolution" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin: 2rem 0; flex-wrap: wrap;">
-            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 140px; margin: 0 auto 1.5rem;">
-              <img src="assets/images/character-young.jpg" alt="Young Nazumi" class="character-image" style="width: 140px; height: 140px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="assets/images/character-young.jpg" alt="Young Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
               <div class="character-name">The Orphan</div>
             </div>
-            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 140px; margin: 0 auto 1.5rem;">
-              <img src="assets/images/character-training.jpg" alt="Training Nazumi" class="character-image" style="width: 140px; height: 140px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="assets/images/character-training.jpg" alt="Training Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
               <div class="character-name">The Student</div>
             </div>
-            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 140px; margin: 0 auto 1.5rem;">
-              <img src="assets/images/character-warrior.jpg" alt="Warrior Nazumi" class="character-image" style="width: 140px; height: 140px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
+            <div class="character-stage" style="text-align: center; position: relative; width: 33%; min-width: 200px; margin: 0 auto 1.5rem;">
+              <img src="assets/images/character-warrior.jpg" alt="Warrior Nazumi" class="character-image" style="width: 200px; height: 200px; object-fit: cover; border: 2px solid var(--ink); border-radius: 10px; margin: 0 auto 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: block;">
               <div class="character-name">The Swordsmouse</div>
             </div>
           </div>
@@ -836,7 +837,9 @@
             <div class="arc-number">巻</div>
             <div class="arc-title">Clan Scrolls</div>
           </div>
-          <p>Holders unlock new chapters and side stories of the clan wars.</p>
+          <p class="utility-description">
+            Ancient texts that reveal the hidden chapters of the clan wars. Holders gain access to exclusive lore, backstory expansions, and side stories that delve into the untold tales of the Kage-Nezumi conflict. Each scroll unlocks new dimensions of the saga—revealing the secrets of forgotten warriors, the origins of legendary weapons, and the untold histories that shaped the lands of Musouka and beyond.
+          </p>
         </div>
 
         <div class="panel panel-md">
@@ -844,7 +847,9 @@
             <div class="arc-number">位</div>
             <div class="arc-title">Clan Ranks</div>
           </div>
-          <p>Earn your rank in the clan through holding and taking part.</p>
+          <p class="utility-description">
+            Rise through the hierarchy of the clan. Your standing is earned through loyalty—holding tokens and participating in community rituals. From the lowly Initiate to the honored Elder, each rank carries its own privileges: access to exclusive channels, early reveals, special Discord roles, and unique identifiers within the clan. Those who prove their dedication rise to become guardians of the clan's legacy.
+          </p>
         </div>
 
         <div class="panel panel-md">
@@ -852,7 +857,9 @@
             <div class="arc-number">議</div>
             <div class="arc-title">Clan Council</div>
           </div>
-          <p>Holders vote on story directions, art, and character names.</p>
+          <p class="utility-description">
+            The voice of the clan rests with its holders. Through the Clan Council, you wield influence over the very fabric of the narrative. Vote on story directions—determine which paths Nazumi treads, which enemies rise, and which fates await. Participate in art decisions, character naming, and the evolution of the clan's identity. The Council ensures that the saga remains a collective creation.
+          </p>
         </div>
 
         <div class="panel panel-md">
@@ -860,7 +867,9 @@
             <div class="arc-number">遊</div>
             <div class="arc-title">Ronin's Quest</div>
           </div>
-          <p>A story-driven game with collectible character NFTs. Cosmetic only. In design.</p>
+          <p class="utility-description">
+            A story-driven adventure game set in the world of Nazumi Ronin. Collect character NFTs that unlock playable warriors, each with unique abilities and backstories. Journey through treacherous lands, face ancient enemies, and uncover the mysteries of the past. These are cosmetic treasures—no pay-to-win, no power imbalances. Only the beauty of collection and the thrill of the quest. Currently in design.
+          </p>
         </div>
       </div>
     </section>
@@ -1007,8 +1016,8 @@
 
           <h4>Step 2: Connect Your Wallet</h4>
           <ul>
-            <li>Install a compatible wallet extension</li>
-            <li>Connect your wallet to the chosen exchange</li>
+            <li>Open this site in Chrome or Brave with Phantom, Solflare, or Backpack</li>
+            <li>Use Connect below if the wallet is already installed</li>
             <li>Verify the connection is secure</li>
           </ul>
 
