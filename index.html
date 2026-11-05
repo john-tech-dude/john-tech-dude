@@ -385,33 +385,35 @@
       <h2 class="section-title">THE AWAKENING</h2>
       <div class="panel-grid">
 
-        <!-- Panel 九: The Shadow Path -->
-        <div class="panel panel-lg warrior-showcase">
-          <div class="arc-header">
-            <div class="arc-number">九</div>
-            <div class="arc-title">The Shadow Path</div>
-          </div>
-
-          <div class="warrior-image-container" style="min-height: 400px;">
-            <img src="assets/images/warrior-showcase.jpg" alt="Nazumi on his dark arc" class="warrior-image" style="min-height: 400px; object-fit: cover;">
-            <div class="warrior-image-overlay">
-              <span>堕落</span>
+        <!-- Side-by-side panels for Shadow Path and Awakening -->
+        <div class="panel-grid-2-col" style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: stretch;">
+          <!-- Panel 九: The Shadow Path -->
+          <div class="panel panel-lg warrior-showcase" style="flex: 1; min-width: 300px;">
+            <div class="arc-header">
+              <div class="arc-number">九</div>
+              <div class="arc-title">The Shadow Path</div>
             </div>
+
+            <div class="warrior-image-container" style="min-height: 400px;">
+              <img src="assets/images/warrior-showcase.jpg" alt="Nazumi on his dark arc" class="warrior-image" style="min-height: 400px; object-fit: cover;">
+              <div class="warrior-image-overlay">
+                <span>堕落</span>
+              </div>
+            </div>
+
+            <div class="warrior-caption">
+              <p>He hunted them for two years. Kage-Nezumi remnants who still prowled the granary towns. He told himself each blade drawn was justice. The towns went quiet when they heard his name — not from safety. From fear.</p>
+              <p style="margin-top: 1rem;">What Takashi had tried to teach him — that the blade was to protect, not to destroy — he forgot in blood. Every kill brought him closer to what he hunted. Every town he passed, he left fewer enemies behind. But the weight on his shoulders grew heavier with each life taken. He had become the very thing he swore to destroy.</p>
+            </div>
+
+            <blockquote class="pull-quote" style="margin-top: 2rem;">
+              <span class="pull-mark" aria-hidden="true">九</span>
+              <p>The line between justice and vengeance is drawn in blood. Once crossed, there is no going back.</p>
+              <cite>Narrator</cite>
+            </blockquote>
           </div>
 
-          <div class="warrior-caption">
-            <p>He hunted them for two years. Kage-Nezumi remnants who still prowled the granary towns. He told himself each blade drawn was justice. The towns went quiet when they heard his name — not from safety. From fear.</p>
-            <p style="margin-top: 1rem;">What Takashi had tried to teach him — that the blade was to protect, not to destroy — he forgot in blood. Every kill brought him closer to what he hunted. Every town he passed, he left fewer enemies behind. But the weight on his shoulders grew heavier with each life taken. He had become the very thing he swore to destroy.</p>
-          </div>
-
-          <blockquote class="pull-quote" style="margin-top: 2rem;">
-            <span class="pull-mark" aria-hidden="true">九</span>
-            <p>The line between justice and vengeance is drawn in blood. Once crossed, there is no going back.</p>
-            <cite>Narrator</cite>
-          </blockquote>
-        </div>
-
-        <!-- Panel 十 + Awakening: The Moment That Ends It -->
+          <!-- Panel 十 + Awakening: The Moment That Ends It -->
         <div class="panel panel-lg awakening-panel" style="
       position: relative;
       min-height: 500px;
@@ -420,6 +422,8 @@
       justify-content: center;
       overflow: hidden;
       padding: 2.5rem;
+      flex: 1;
+      min-width: 300px;
       ">
           <!-- Background image with parallax effect -->
           <div class="parallax-bg awakening-bg" style="
@@ -603,6 +607,7 @@
               background-color: var(--dm-primary-red) !important;
             }
           </style>
+        </div>
         </div>
       </div>
     </section>
