@@ -635,11 +635,17 @@ const jupiterSwap = {
         quotePrice: null,
         quotePriceImpact: null,
         quoteMinReceived: null,
-        swapStatus: null
+        swapStatus: null,
+        swapDirectionBtn: null,
+        swapInputLabel: null,
+        swapOutputLabel: null,
+        swapInputSymbol: null,
+        swapOutputSymbol: null
     },
 
     currentQuote: null,
     debounceTimer: null,
+    swapDirection: 'SOL_TO_NAZUMI', // 'SOL_TO_NAZUMI' or 'NAZUMI_TO_SOL'
 
     init() {
         // Get DOM elements
@@ -652,12 +658,18 @@ const jupiterSwap = {
         this.elements.quotePriceImpact = document.getElementById('quotePriceImpact');
         this.elements.quoteMinReceived = document.getElementById('quoteMinReceived');
         this.elements.swapStatus = document.getElementById('swapStatus');
+        this.elements.swapDirectionBtn = document.getElementById('swapDirectionBtn');
+        this.elements.swapInputLabel = document.getElementById('swapInputLabel');
+        this.elements.swapOutputLabel = document.getElementById('swapOutputLabel');
+        this.elements.swapInputSymbol = document.getElementById('swapInputSymbol');
+        this.elements.swapOutputSymbol = document.getElementById('swapOutputSymbol');
 
         if (!this.elements.inputAmount || !this.elements.swapButton) return;
 
         // Bind events
         this.elements.inputAmount.addEventListener('input', (e) => this.onInputChange(e));
         this.elements.swapButton.addEventListener('click', () => this.executeSwap());
+        this.elements.swapDirectionBtn.addEventListener('click', () => this.toggleSwapDirection());
 
         // Update button state based on wallet connection
         this.updateButtonState();
@@ -667,13 +679,42 @@ const jupiterSwap = {
         window.addEventListener('walletDisconnected', () => this.updateButtonState());
     },
 
+    toggleSwapDirection() {
+        // Clear current quote
+        this.currentQuote = null;
+        this.elements.inputAmount.value = '';
+        this.elements.outputAmount.value = '';
+        this.elements.quoteInfo.style.display = 'none';
+
+        // Toggle direction
+        if (this.swapDirection === 'SOL_TO_NAZUMI') {
+            this.swapDirection = 'NAZUMI_TO_SOL';
+            this.elements.swapInputLabel.textContent = 'From (NAZUMI)';
+            this.elements.swapOutputLabel.textContent = 'To (SOL)';
+            this.elements.swapInputSymbol.textContent = 'NAZUMI';
+            this.elements.swapOutputSymbol.textContent = 'SOL';
+        } else {
+            this.swapDirection = 'SOL_TO_NAZUMI';
+            this.elements.swapInputLabel.textContent = 'From (SOL)';
+            this.elements.swapOutputLabel.textContent = 'To (NAZUMI)';
+            this.elements.swapInputSymbol.textContent = 'SOL';
+            this.elements.swapOutputSymbol.textContent = 'NAZUMI';
+        }
+
+        this.updateButtonState();
+    },
+
     updateButtonState() {
         if (!walletConnection.connected) {
             this.elements.swapButton.disabled = true;
             this.elements.swapButtonText.textContent = 'Connect Wallet to Swap';
         } else {
             this.elements.swapButton.disabled = !this.elements.inputAmount.value;
-            this.elements.swapButtonText.textContent = this.elements.inputAmount.value ? 'Swap SOL for NAZUMI' : 'Enter Amount to Swap';
+            if (this.swapDirection === 'SOL_TO_NAZUMI') {
+                this.elements.swapButtonText.textContent = this.elements.inputAmount.value ? 'Swap SOL for NAZUMI' : 'Enter Amount to Swap';
+            } else {
+                this.elements.swapButtonText.textContent = this.elements.inputAmount.value ? 'Swap NAZUMI for SOL' : 'Enter Amount to Swap';
+            }
         }
     },
 
@@ -701,12 +742,16 @@ const jupiterSwap = {
         try {
             this.showStatus('loading', 'Fetching quote...');
 
-            // Convert SOL amount to lamports (1 SOL = 1,000,000,000 lamports)
+            // Determine input and output mints based on direction
+            const inputMint = this.swapDirection === 'SOL_TO_NAZUMI' ? this.SOL_MINT : this.NAZUMI_MINT;
+            const outputMint = this.swapDirection === 'SOL_TO_NAZUMI' ? this.NAZUMI_MINT : this.SOL_MINT;
+
+            // Convert amount to lamports (assuming 9 decimals for both tokens)
             const amountLamports = Math.floor(amount * 1e9);
 
             const params = new URLSearchParams({
-                inputMint: this.SOL_MINT,
-                outputMint: this.NAZUMI_MINT,
+                inputMint: inputMint,
+                outputMint: outputMint,
                 amount: amountLamports.toString(),
                 taker: walletConnection.publicKey,
                 slippageBps: '100' // 1% slippage
@@ -739,20 +784,29 @@ const jupiterSwap = {
         // Show quote info
         this.elements.quoteInfo.style.display = 'block';
 
-        // Calculate price (SOL per NAZUMI)
-        const price = inputAmount / outputAmount;
-        this.elements.quotePrice.textContent = `${price.toFixed(6)} SOL/NAZUMI`;
+        // Calculate price based on direction
+        if (this.swapDirection === 'SOL_TO_NAZUMI') {
+            const price = inputAmount / outputAmount;
+            this.elements.quotePrice.textContent = `${price.toFixed(6)} SOL/NAZUMI`;
+            const minReceived = outputAmount * 0.99;
+            this.elements.quoteMinReceived.textContent = `${minReceived.toFixed(6)} NAZUMI`;
+        } else {
+            const price = outputAmount / inputAmount;
+            this.elements.quotePrice.textContent = `${price.toFixed(6)} SOL/NAZUMI`;
+            const minReceived = outputAmount * 0.99;
+            this.elements.quoteMinReceived.textContent = `${minReceived.toFixed(6)} SOL`;
+        }
 
         // Price impact (placeholder - Jupiter doesn't always return this)
         this.elements.quotePriceImpact.textContent = '< 1%';
 
-        // Min received (accounting for slippage)
-        const minReceived = outputAmount * 0.99; // 1% slippage
-        this.elements.quoteMinReceived.textContent = `${minReceived.toFixed(6)} NAZUMI`;
-
         // Enable swap button
         this.elements.swapButton.disabled = false;
-        this.elements.swapButtonText.textContent = 'Swap SOL for NAZUMI';
+        if (this.swapDirection === 'SOL_TO_NAZUMI') {
+            this.elements.swapButtonText.textContent = 'Swap SOL for NAZUMI';
+        } else {
+            this.elements.swapButtonText.textContent = 'Swap NAZUMI for SOL';
+        }
     },
 
     async executeSwap() {
@@ -808,6 +862,7 @@ const jupiterSwap = {
             const result = await executeResponse.json();
 
             if (result.status === 'Success') {
+                const directionText = this.swapDirection === 'SOL_TO_NAZUMI' ? 'SOL for NAZUMI' : 'NAZUMI for SOL';
                 this.showStatus('success', `Swap successful! Tx: ${result.signature.slice(0, 8)}...`);
                 // Clear inputs
                 this.elements.inputAmount.value = '';

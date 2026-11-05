@@ -1103,25 +1103,25 @@
         <h3 class="buy-panel-subtitle">Instant Swap</h3>
         <div class="jupiter-swap-container">
           <div class="swap-input-group">
-            <label class="swap-label">From (SOL)</label>
+            <label class="swap-label" id="swapInputLabel">From (SOL)</label>
             <div class="swap-input-wrapper">
               <input type="number" id="swapInputAmount" class="swap-input" placeholder="0.0" min="0" step="0.001">
               <div class="swap-token-info">
-                <span class="swap-token-symbol">SOL</span>
+                <span class="swap-token-symbol" id="swapInputSymbol">SOL</span>
               </div>
             </div>
           </div>
 
-          <div class="swap-arrow">
+          <div class="swap-arrow" id="swapDirectionBtn">
             <i class="fa-solid fa-arrow-down"></i>
           </div>
 
           <div class="swap-input-group">
-            <label class="swap-label">To (NAZUMI)</label>
+            <label class="swap-label" id="swapOutputLabel">To (NAZUMI)</label>
             <div class="swap-input-wrapper">
               <input type="number" id="swapOutputAmount" class="swap-input" placeholder="0.0" readonly>
               <div class="swap-token-info">
-                <span class="swap-token-symbol">NAZUMI</span>
+                <span class="swap-token-symbol" id="swapOutputSymbol">NAZUMI</span>
               </div>
             </div>
           </div>

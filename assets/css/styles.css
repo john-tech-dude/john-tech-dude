@@ -2891,10 +2891,15 @@ html {
   font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
 }
 
 .swap-arrow:hover {
-  transform: scale(1.2);
+  transform: scale(1.2) rotate(180deg);
+  background-color: rgba(155, 34, 38, 0.1);
 }
 
 .swap-quote-info {
