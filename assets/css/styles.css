@@ -3745,6 +3745,39 @@ html {
   /* Adjust container padding for fixed nav */
   .container {
     padding-top: 80px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Footer mobile adjustments */
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .footer-logo {
+    font-size: 1.5rem;
+  }
+
+  .social-link {
+    width: 45px;
+    height: 45px;
+  }
+
+  /* Prevent overflow on specific elements */
+  .speech-bubble,
+  .wisdom-scroll,
+  .warrior-caption,
+  .buy-option-description {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Prevent horizontal scroll on buy panel */
+  .buy-panel {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .hero {
@@ -3800,6 +3833,80 @@ html {
 
   .buy-options {
     grid-template-columns: 1fr;
+  }
+
+  /* More wallets dropdown - single column on mobile */
+  .more-wallets-dropdown.active {
+    grid-template-columns: 1fr;
+  }
+
+  /* Jupiter swap container mobile fixes */
+  .jupiter-swap-container {
+    padding: 1rem;
+  }
+
+  .swap-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .swap-token-info {
+    padding-left: 0;
+    border-left: none;
+    margin-left: 0;
+    border-top: 2px solid var(--ink);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .swap-input {
+    font-size: 1rem;
+  }
+
+  .swap-label {
+    font-size: 0.8rem;
+  }
+
+  /* Tokenomics container mobile fixes */
+  .tokenomics-container {
+    padding: 1rem;
+  }
+
+  .tokenomics-title {
+    font-size: 1.4rem;
+  }
+
+  .distribution-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+  }
+
+  .distribution-label {
+    margin-bottom: 0.25rem;
+  }
+
+  /* Staking section mobile fixes */
+  .jupiter-swap-container + .jupiter-swap-container {
+    margin-top: 1rem;
+  }
+
+  /* Swap button mobile */
+  .swap-btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Exchange logos container mobile */
+  .exchange-logos-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .exchange-logo {
+    width: 100%;
   }
 
   /* Mobile-specific fixes to prevent overlapping elements */
@@ -3930,6 +4037,91 @@ html {
   .japanese-stamp {
     width: 120px;
     height: 120px;
+  }
+
+  /* Very small screen specific fixes */
+  .swap-input {
+    font-size: 0.9rem;
+  }
+
+  .swap-token-select {
+    font-size: 0.9rem;
+  }
+
+  .buy-option-name {
+    font-size: 1.1rem;
+  }
+
+  .buy-option-description {
+    font-size: 0.9rem;
+  }
+
+  .arc-number-long {
+    font-size: 0.85rem;
+  }
+
+  .speech-text {
+    font-size: 0.9rem;
+  }
+
+  .pull-quote p {
+    font-size: 0.95rem;
+  }
+
+  /* Embedded logo size adjustments for very small screens */
+  .embedded-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Exchange logo size adjustments */
+  .exchange-logo .embedded-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Buy panel width for very small screens */
+  .buy-panel {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Container padding adjustment */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Tablet-specific adjustments (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .panel-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .panel-sm {
+    grid-column: span 4;
+  }
+
+  .panel-md {
+    grid-column: span 8;
+  }
+
+  .panel-lg {
+    grid-column: span 8;
+  }
+
+  .buy-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .more-wallets-dropdown.active {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
