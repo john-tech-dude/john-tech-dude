@@ -3835,9 +3835,23 @@ html {
     grid-template-columns: 1fr;
   }
 
-  /* More wallets dropdown - single column on mobile */
+  /* More wallets dropdown - two cards per row on mobile */
   .more-wallets-dropdown.active {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .more-wallets-dropdown .buy-option {
+    padding: 1rem;
+    min-height: 0;
+  }
+
+  .more-wallets-dropdown .buy-option-name {
+    font-size: 1.1rem;
+  }
+
+  .more-wallets-dropdown .buy-option-description {
+    font-size: 0.8rem;
   }
 
   /* Jupiter swap container mobile fixes */
