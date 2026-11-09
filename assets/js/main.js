@@ -1,4 +1,4 @@
-// NAZUMI RONIN V6 - Enhanced Performance & Splash Screen
+// NAZUMI RONIN V1.2
 document.addEventListener('DOMContentLoaded', function() {
   // Splash screen plays a short loading animation, then opens the site
   const splashScreen = document.getElementById('splashScreen');
@@ -101,8 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
       delay: 100, // Small delay to ensure proper initialization
       mirror: false // No animation on scroll up
     });
-    // Mark as V5 in console
-    console.log('NAZUMI RONIN V5 - Enhanced with splash screen and floating action button');
+    console.log('NAZUMI RONIN V1.2');
   });
   // Open Buy Panel functions
   const openBuyPanel = function() {
@@ -192,24 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-// Preload critical images for better performance
-const preloadImages = () => {
-  const criticalImages = [
-    'https://i.imgur.com/6rxfmNY.jpg',
-    'https://i.imgur.com/nD9J9A7.jpg',
-    'https://i.imgur.com/VsnU0Lb.jpg',
-    'https://i.imgur.com/p49CxJb.jpg',
-    'https://i.imgur.com/go2g6R9.jpg',
-    'https://i.imgur.com/wmY44Ld.jpg'
-  ];
-  criticalImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-};
-// Run preload
-preloadImages();
-
 // Solana wallet connection for the buy-panel buttons.
 // Providers are injected by the Phantom, Solflare, and Backpack extensions.
 const WALLET_PROVIDERS = {

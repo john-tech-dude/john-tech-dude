@@ -957,7 +957,7 @@ html {
   justify-content: space-between;
   padding: 2rem;
   background-color: var(--dark-stone);
-  background-image: url("../images/hero-bg.jpg");
+  background-image: url("../images/hero-bg.webp");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
