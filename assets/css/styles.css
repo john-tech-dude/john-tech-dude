@@ -934,6 +934,10 @@ html {
   min-height: 400px;
 }
 
+.panel-md.panel-center {
+  grid-column: 4 / span 6;
+}
+
 /* Panel Shapes */
 .panel-diagonal {
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
@@ -3801,7 +3805,8 @@ html {
   .panel-sm,
   .panel-md,
   .panel-lg,
-  .panel-xl {
+  .panel-xl,
+  .panel-md.panel-center {
     grid-column: 1 / -1;
   }
 
@@ -4119,6 +4124,10 @@ html {
 
   .panel-md {
     grid-column: span 8;
+  }
+
+  .panel-md.panel-center {
+    grid-column: 1 / -1;
   }
 
   .panel-lg {
