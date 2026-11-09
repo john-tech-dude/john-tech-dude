@@ -256,6 +256,76 @@ const WALLET_PROVIDERS = {
 
             return null;
         }
+    },
+    exodus: {
+        name: 'Exodus',
+        installUrl: 'https://www.exodus.com/download',
+        getProvider() {
+            // Exodus injects as window.exodus or window.exodusWallet
+            const provider = window.exodus || window.exodusWallet;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    ledger: {
+        name: 'Ledger',
+        installUrl: 'https://www.ledger.com/',
+        getProvider() {
+            // Ledger Live injects as window.ledger or window.ledgerWallet
+            const provider = window.ledger || window.ledgerWallet;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    trezor: {
+        name: 'Trezor',
+        installUrl: 'https://trezor.io/',
+        getProvider() {
+            // Trezor injects as window.trezor or window.trezorWallet
+            const provider = window.trezor || window.trezorWallet;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    'trust-wallet': {
+        name: 'Trust Wallet',
+        installUrl: 'https://trustwallet.com/download',
+        getProvider() {
+            // Trust Wallet injects as window.trustWallet or window.trustwallet
+            const provider = window.trustWallet || window.trustwallet;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    tiplink: {
+        name: 'TipLink',
+        installUrl: 'https://tiplink.io',
+        getProvider() {
+            // TipLink injects as window.tiplink or window.tiplinkWallet
+            const provider = window.tiplink || window.tiplinkWallet;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    'jupiter-wallet': {
+        name: 'Jupiter Wallet',
+        installUrl: 'https://jup.ag',
+        getProvider() {
+            // Jupiter Wallet injects as window.jupiterWallet or window.jupiter
+            const provider = window.jupiterWallet || window.jupiter;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
+    },
+    coin98: {
+        name: 'Coin98',
+        installUrl: 'https://coin98.com/wallet',
+        getProvider() {
+            // Coin98 injects as window.coin98Wallet or window.coin98
+            const provider = window.coin98Wallet || window.coin98;
+            if (provider && typeof provider.connect === 'function') return provider;
+            return null;
+        }
     }
 };
 
@@ -619,19 +689,22 @@ document.addEventListener('DOMContentLoaded', () => {
     walletConnection.init();
 });
 
-// Jupiter Swap Integration
+// Jupiter Swap API V2 (Meta-Aggregator path): GET /order returns a routed
+// quote plus a ready-to-sign transaction; POST /execute lands it with managed
+// execution. Docs: https://developers.jup.ag/docs/swap
 const jupiterSwap = {
-    // Token registry with mint addresses
+    // Token registry: mint address + decimals (amounts are sent in base units)
     tokens: {
-        SOL: 'So11111111111111111111111111111111111111112',
-        USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-        USDT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
-        BONK: 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',
-        WIF: 'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm',
-        NAZUMI: 'NAZUMI_PLACEHOLDER_MINT_ADDRESS' // Replace with actual mint
+        SOL: { mint: 'So11111111111111111111111111111111111111112', decimals: 9 },
+        USDC: { mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', decimals: 6 },
+        USDT: { mint: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', decimals: 6 },
+        BONK: { mint: 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', decimals: 5 },
+        WIF: { mint: 'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm', decimals: 6 },
+        NAZUMI: { mint: 'NAZUMI_PLACEHOLDER_MINT_ADDRESS', decimals: 6 } // Replace with actual mint
     },
 
     API_BASE: 'https://api.jup.ag/swap/v2',
+    SLIPPAGE_BPS: 100, // 1%
 
     elements: {
         inputAmount: null,
@@ -679,7 +752,14 @@ const jupiterSwap = {
         this.updateButtonState();
 
         // Listen for wallet connection changes
-        window.addEventListener('walletConnected', () => this.updateButtonState());
+        window.addEventListener('walletConnected', () => {
+            this.updateButtonState();
+            // Re-quote with a taker so the response includes a transaction
+            if (this.elements.inputAmount.value) {
+                const amount = parseFloat(this.elements.inputAmount.value);
+                if (amount > 0) this.getQuote(amount);
+            }
+        });
         window.addEventListener('walletDisconnected', () => this.updateButtonState());
     },
 
@@ -712,12 +792,16 @@ const jupiterSwap = {
             this.elements.swapButton.disabled = true;
             this.elements.swapButtonText.textContent = 'Connect Wallet to Swap';
         } else {
-            this.elements.swapButton.disabled = !this.elements.inputAmount.value;
+            const hasAmount = parseFloat(this.elements.inputAmount.value) > 0;
+            const executable = this.currentQuote && this.currentQuote.transaction;
+            this.elements.swapButton.disabled = !(hasAmount && executable);
             const inputToken = this.elements.inputToken.value;
             const outputToken = this.elements.outputToken.value;
-            this.elements.swapButtonText.textContent = this.elements.inputAmount.value
+            this.elements.swapButtonText.textContent = executable
                 ? `Swap ${inputToken} for ${outputToken}`
-                : 'Enter Amount to Swap';
+                : hasAmount
+                    ? 'Fetching quote…'
+                    : 'Enter Amount to Swap';
         }
     },
 
@@ -739,142 +823,176 @@ const jupiterSwap = {
         this.debounceTimer = setTimeout(() => this.getQuote(amount), 500);
     },
 
-    async getQuote(amount) {
-        if (!walletConnection.connected) return;
+    base64ToBytes(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return bytes;
+    },
 
+    bytesToBase64(bytes) {
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        return btoa(binary);
+    },
+
+    formatAmount(baseUnits, decimals, maxFrac = 6) {
+        const value = Number(baseUnits) / 10 ** decimals;
+        if (!isFinite(value)) return '0';
+        // Avoid noisy long decimals but keep small amounts readable
+        return value.toLocaleString('en-US', { maximumFractionDigits: maxFrac });
+    },
+
+    async getQuote(amount) {
         try {
             this.showStatus('loading', 'Fetching quote...');
 
-            // Get selected tokens
             const inputToken = this.elements.inputToken.value;
             const outputToken = this.elements.outputToken.value;
 
-            // Get mint addresses
-            const inputMint = this.tokens[inputToken];
-            const outputMint = this.tokens[outputToken];
+            const input = this.tokens[inputToken];
+            const output = this.tokens[outputToken];
 
-            if (!inputMint || !outputMint) {
+            if (!input || !output) {
                 throw new Error('Invalid token selection');
             }
-
-            // Convert amount to lamports (assuming 9 decimals for most tokens)
-            const amountLamports = Math.floor(amount * 1e9);
-
-            const params = new URLSearchParams({
-                inputMint: inputMint,
-                outputMint: outputMint,
-                amount: amountLamports.toString(),
-                taker: walletConnection.publicKey,
-                slippageBps: '100' // 1% slippage
-            });
-
-            const response = await fetch(`${this.API_BASE}/order?${params}`);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch quote');
+            if (inputToken === outputToken) {
+                throw new Error('Input and output tokens must differ');
+            }
+            if (input.mint === output.mint) {
+                throw new Error('Input and output tokens must differ');
             }
 
-            const quote = await response.json();
-            this.currentQuote = quote;
+            // ExactIn mode: `amount` is the input amount in base units
+            const amountBaseUnits = Math.floor(amount * 10 ** input.decimals);
+            if (amountBaseUnits <= 0) return;
 
-            // Update UI with quote
-            this.displayQuote(quote, amount, inputToken, outputToken);
+            const params = new URLSearchParams({
+                inputMint: input.mint,
+                outputMint: output.mint,
+                amount: amountBaseUnits.toString(),
+                swapMode: 'ExactIn',
+                slippageBps: this.SLIPPAGE_BPS.toString(),
+                // web3.js 1.x can only deserialize/sign v0 transactions
+                maxSupportedTransactionVersion: '0'
+            });
+            // taker is optional: without it Jupiter returns a quote only,
+            // no transaction. Include it when a wallet is connected.
+            if (walletConnection.connected && walletConnection.publicKey) {
+                params.set('taker', walletConnection.publicKey);
+            }
+
+            const response = await fetch(`${this.API_BASE}/order?${params}`);
+            const quote = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(quote.error || `Quote request failed (${response.status})`);
+            }
+
+            this.currentQuote = quote;
+            this.displayQuote(quote, amount, inputToken, outputToken, input, output);
+
+            // Transaction is only present when taker was sent and could be built
+            if (!walletConnection.connected) {
+                this.showStatus('info', 'Connect a wallet to execute this swap');
+                return;
+            }
+            if (!quote.transaction) {
+                this.showStatus('error', quote.errorMessage || quote.error || 'Quote found but no transaction could be built');
+                return;
+            }
             this.hideStatus();
 
         } catch (error) {
             console.error('Quote error:', error);
-            this.showStatus('error', 'Failed to fetch quote. Please try again.');
+            this.showStatus('error', error.message || 'Failed to fetch quote. Please try again.');
         }
     },
 
-    displayQuote(quote, inputAmount, inputToken, outputToken) {
-        // Calculate output amount in human-readable format
-        const outputAmount = parseInt(quote.outAmount) / 1e9; // Assuming 9 decimals
-        this.elements.outputAmount.value = outputAmount.toFixed(6);
+    displayQuote(quote, inputAmount, inputToken, outputToken, input, output) {
+        const outAmount = this.formatAmount(quote.outAmount, output.decimals);
+        this.elements.outputAmount.value = outAmount;
 
-        // Show quote info
         this.elements.quoteInfo.style.display = 'block';
 
-        // Calculate price
-        const price = inputAmount / outputAmount;
+        const price = Number(quote.inUsdValue) > 0 && Number(quote.outUsdValue) > 0
+            ? (Number(quote.inUsdValue) / Number(quote.outUsdValue))
+            : inputAmount / (Number(quote.outAmount) / 10 ** output.decimals);
         this.elements.quotePrice.textContent = `${price.toFixed(6)} ${inputToken}/${outputToken}`;
 
-        // Price impact (placeholder - Jupiter doesn't always return this)
-        this.elements.quotePriceImpact.textContent = '< 1%';
+        // priceImpact is in percentage points (e.g. -0.1 = -0.1%)
+        const impact = Number(quote.priceImpact);
+        this.elements.quotePriceImpact.textContent = isFinite(impact)
+            ? `${impact.toFixed(2)}%`
+            : '-';
 
-        // Min received (accounting for slippage)
-        const minReceived = outputAmount * 0.99; // 1% slippage
-        this.elements.quoteMinReceived.textContent = `${minReceived.toFixed(6)} ${outputToken}`;
+        // Minimum output after slippage
+        const minReceived = this.formatAmount(quote.otherAmountThreshold, output.decimals);
+        this.elements.quoteMinReceived.textContent = `${minReceived} ${outputToken}`;
 
-        // Enable swap button
-        this.elements.swapButton.disabled = false;
-        this.elements.swapButtonText.textContent = `Swap ${inputToken} for ${outputToken}`;
+        this.updateButtonState();
     },
 
     async executeSwap() {
-        if (!this.currentQuote || !walletConnection.connected) return;
+        if (!walletConnection.connected || !walletConnection.wallet) {
+            this.showStatus('error', 'Connect a wallet first');
+            return;
+        }
+        if (!this.currentQuote || !this.currentQuote.transaction) {
+            this.showStatus('error', 'No executable quote. Enter an amount and wait for a quote.');
+            return;
+        }
 
         try {
             this.showStatus('loading', 'Preparing transaction...');
 
-            // Get the transaction from the quote
-            if (!this.currentQuote.transaction) {
-                throw new Error('No transaction in quote');
-            }
-
-            // Deserialize and sign the transaction
-            const transactionBytes = Buffer.from(this.currentQuote.transaction, 'base64');
             const { VersionedTransaction } = window.solanaWeb3;
-
             if (!VersionedTransaction) {
                 throw new Error('Solana web3.js not loaded');
             }
-
-            const transaction = VersionedTransaction.deserialize(transactionBytes);
-
-            // Sign with the connected wallet
-            const provider = walletConnection.wallet;
-            if (!provider) {
-                throw new Error('Wallet not connected');
+            if (Number(this.currentQuote.transactionVersion) !== 0) {
+                throw new Error('This quote returned an unsupported transaction version. Try again.');
             }
 
-            // Sign transaction
-            const signedTransaction = await provider.signTransaction(transaction);
-            const signedTxBytes = Buffer.from(signedTransaction.serialize()).toString('base64');
+            const transaction = VersionedTransaction.deserialize(
+                this.base64ToBytes(this.currentQuote.transaction)
+            );
+
+            this.showStatus('loading', 'Confirm in your wallet...');
+            const signedTransaction = await walletConnection.wallet.signTransaction(transaction);
+            const signedTxBase64 = this.bytesToBase64(signedTransaction.serialize());
 
             this.showStatus('loading', 'Executing swap...');
 
-            // Execute the swap
             const executeResponse = await fetch(`${this.API_BASE}/execute`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    signedTransaction: signedTxBytes,
-                    requestId: this.currentQuote.requestId
+                    signedTransaction: signedTxBase64,
+                    requestId: this.currentQuote.requestId,
+                    lastValidBlockHeight: this.currentQuote.lastValidBlockHeight
                 })
             });
 
-            if (!executeResponse.ok) {
-                const errorText = await executeResponse.text();
-                throw new Error(`Execution failed: ${errorText}`);
-            }
+            const result = await executeResponse.json().catch(() => ({}));
 
-            const result = await executeResponse.json();
+            if (!executeResponse.ok) {
+                throw new Error(result.error || `Execution failed (${executeResponse.status})`);
+            }
 
             if (result.status === 'Success') {
                 const inputToken = this.elements.inputToken.value;
                 const outputToken = this.elements.outputToken.value;
-                this.showStatus('success', `Swap successful! Tx: ${result.signature.slice(0, 8)}...`);
-                // Clear inputs
+                const sig = result.signature ? ` Tx: ${result.signature.slice(0, 8)}...` : '';
+                this.showStatus('success', `Swap successful!${sig}`);
+                window.open(`https://solscan.io/tx/${result.signature}`, '_blank', 'noopener,noreferrer');
                 this.elements.inputAmount.value = '';
                 this.elements.outputAmount.value = '';
                 this.elements.quoteInfo.style.display = 'none';
                 this.currentQuote = null;
                 this.updateButtonState();
             } else {
-                throw new Error(result.error || 'Swap failed');
+                throw new Error(result.error || `Swap failed (code ${result.code ?? 'unknown'})`);
             }
 
         } catch (error) {
@@ -886,6 +1004,7 @@ const jupiterSwap = {
     showStatus(type, message) {
         this.elements.swapStatus.className = `swap-status ${type}`;
         this.elements.swapStatus.textContent = message;
+        this.elements.swapStatus.style.display = 'block';
     },
 
     hideStatus() {
@@ -897,6 +1016,168 @@ const jupiterSwap = {
 // Initialize Jupiter swap
 document.addEventListener('DOMContentLoaded', () => {
     jupiterSwap.init();
+});
+
+// Nazumi Ronin Staking
+// Requires a deployed staking program. Set STAKING_PROGRAM_ID (and STAKING_VAULT
+// if the program uses one) once the contract is live — the UI activates itself.
+const nazumiStaking = {
+    STAKING_PROGRAM_ID: '',   // e.g. 'Stake111...' — TODO: deployed program
+    STAKING_VAULT: '',        // TODO: program vault/stake authority if required
+    APY_PERCENT: 12.5,        // displayed APY until on-chain params exist
+
+    RPC_URL: 'https://api.mainnet-beta.solana.com',
+
+    elements: {},
+
+    stakedBalance: 0,
+    pendingRewards: 0,
+
+    init() {
+        this.elements.inputAmount = document.getElementById('stakeInputAmount');
+        this.elements.stakeButton = document.getElementById('stakeButton');
+        this.elements.stakeButtonText = document.getElementById('stakeButtonText');
+        this.elements.unstakeButton = document.getElementById('unstakeButton');
+        this.elements.unstakeButtonText = document.getElementById('unstakeButtonText');
+        this.elements.status = document.getElementById('stakeStatus');
+        this.elements.apy = document.getElementById('stakeApy');
+        this.elements.balance = document.getElementById('stakeBalance');
+        this.elements.rewards = document.getElementById('stakeRewards');
+
+        if (!this.elements.inputAmount || !this.elements.stakeButton) return;
+
+        this.elements.stakeButton.addEventListener('click', () => this.stake());
+        this.elements.unstakeButton.addEventListener('click', () => this.unstake());
+        this.elements.inputAmount.addEventListener('input', () => this.updateButtonState());
+
+        this.elements.apy.textContent = `${this.APY_PERCENT}%`;
+
+        this.updateButtonState();
+        window.addEventListener('walletConnected', () => {
+            this.updateButtonState();
+            this.refreshState();
+        });
+        window.addEventListener('walletDisconnected', () => {
+            this.stakedBalance = 0;
+            this.pendingRewards = 0;
+            this.renderState();
+            this.updateButtonState();
+        });
+    },
+
+    get configured() {
+        return Boolean(this.STAKING_PROGRAM_ID) &&
+               jupiterSwap.tokens.NAZUMI.mint &&
+               !jupiterSwap.tokens.NAZUMI.mint.includes('PLACEHOLDER');
+    },
+
+    updateButtonState() {
+        const connected = walletConnection.connected;
+        const amount = parseFloat(this.elements.inputAmount.value) || 0;
+        const hasAmount = amount > 0;
+
+        if (!this.configured) {
+            this.elements.stakeButton.disabled = true;
+            this.elements.stakeButtonText.textContent = 'Staking Soon';
+            this.elements.unstakeButton.disabled = true;
+            this.elements.unstakeButtonText.textContent = 'Unstake';
+            return;
+        }
+
+        this.elements.stakeButton.disabled = !(connected && hasAmount);
+        this.elements.stakeButtonText.textContent = !connected
+            ? 'Connect Wallet to Stake'
+            : hasAmount ? `Stake ${amount} NAZUMI` : 'Enter Amount to Stake';
+
+        this.elements.unstakeButton.disabled = !(connected && this.stakedBalance > 0);
+        this.elements.unstakeButtonText.textContent = this.stakedBalance > 0
+            ? `Unstake ${this.formatAmount(this.stakedBalance)}`
+            : 'Nothing Staked';
+    },
+
+    async refreshState() {
+        // TODO: once STAKING_PROGRAM_ID is set, query the stake account for
+        // this wallet (program-specific — e.g. getAccountInfo / getTokenAccountsByOwner)
+        // and populate stakedBalance / pendingRewards, then call renderState().
+        if (!this.configured || !walletConnection.connected) return;
+        this.renderState();
+        this.updateButtonState();
+    },
+
+    renderState() {
+        const decimals = jupiterSwap.tokens.NAZUMI.decimals;
+        this.elements.balance.textContent = this.stakedBalance > 0
+            ? this.formatAmount(this.stakedBalance)
+            : '0';
+        this.elements.rewards.textContent = this.pendingRewards > 0
+            ? this.formatAmount(this.pendingRewards)
+            : '0';
+    },
+
+    formatAmount(baseUnits) {
+        const decimals = jupiterSwap.tokens.NAZUMI.decimals;
+        const value = Number(baseUnits) / 10 ** decimals;
+        return isFinite(value)
+            ? value.toLocaleString('en-US', { maximumFractionDigits: 6 })
+            : '0';
+    },
+
+    async stake() {
+        if (!this.configured) {
+            this.showStatus('info', 'Staking opens when the NAZUMI contract is deployed.');
+            return;
+        }
+        try {
+            const amount = parseFloat(this.elements.inputAmount.value);
+            if (!walletConnection.connected || !amount || amount <= 0) return;
+
+            // TODO: build the stake instruction(s) for the deployed program,
+            // wrap in a VersionedTransaction, sign via walletConnection.wallet,
+            // and send through the wallet's sendTransaction or an RPC endpoint.
+            throw new Error('Stake instructions pending — set STAKING_PROGRAM_ID and wire the program.');
+        } catch (error) {
+            this.showStatus('error', `Stake failed: ${error.message}`);
+        }
+    },
+
+    async unstake() {
+        if (!this.configured) {
+            this.showStatus('info', 'Staking opens when the NAZUMI contract is deployed.');
+            return;
+        }
+        try {
+            if (!walletConnection.connected || this.stakedBalance <= 0) return;
+
+            // TODO: build the unstake/claim instruction(s) — see stake().
+            throw new Error('Unstake instructions pending — set STAKING_PROGRAM_ID and wire the program.');
+        } catch (error) {
+            this.showStatus('error', `Unstake failed: ${error.message}`);
+        }
+    },
+
+    showStatus(type, message) {
+        this.elements.status.className = `swap-status ${type}`;
+        this.elements.status.textContent = message;
+        this.elements.status.style.display = 'block';
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    nazumiStaking.init();
+});
+
+// More Wallets Dropdown Toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const moreWalletsToggle = document.getElementById('moreWalletsToggle');
+    const moreWalletsDropdown = document.getElementById('moreWalletsDropdown');
+    const moreWalletsIcon = document.getElementById('moreWalletsIcon');
+
+    if (moreWalletsToggle && moreWalletsDropdown) {
+        moreWalletsToggle.addEventListener('click', () => {
+            moreWalletsDropdown.classList.toggle('active');
+            moreWalletsToggle.classList.toggle('active');
+        });
+    }
 });
 
 // Parallax scrolling effect - Training section

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+  <g transform="translate(3.82 4)scale(.21212)">
+    <path fill="url(#w3i-wallet-exodus_exodus-a)" d="M262.42 73.71 149.99 0v41.21l72.13 46.87-8.49 26.85H150v34.14h63.63l8.49 26.85L150 222.8V264l112.42-73.48-18.39-58.4z"/>
+    <path fill="url(#w3i-wallet-exodus_exodus-b)" d="M52.18 149.07h63.4v-34.14H51.95L43.7 88.08l71.88-46.87V0L3.16 73.71l18.39 58.4-18.39 58.41L115.82 264v-41.21L43.7 175.92z"/>
+    <mask id="w3i-wallet-exodus_exodus-e" width="260" height="264" x="3" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+      <path fill="url(#w3i-wallet-exodus_exodus-c)" d="M262.42 73.71 150 0v41.21l72.12 46.87-8.49 26.85H150v34.14h63.63l8.49 26.85L150 222.8V264l112.42-73.48-18.39-58.4z"/>
+      <path fill="url(#w3i-wallet-exodus_exodus-d)" d="M52.18 149.07h63.4v-34.14H51.95L43.7 88.08l71.88-46.87V0L3.16 73.71l18.39 58.4-18.39 58.41L115.82 264v-41.21L43.7 175.92z"/>
+    </mask>
+    <g mask="url(#w3i-wallet-exodus_exodus-e)">
+      <rect width="257.4" height="264" x="3.3" fill="url(#w3i-wallet-exodus_exodus-f)"/>
+    </g>
+    <defs>
+      <linearGradient id="w3i-wallet-exodus_exodus-a" x1="226.05" x2="150.74" y1="282.15" y2="-28.99" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0B46F9"/>
+        <stop offset="1" stop-color="#BBFBE0"/>
+      </linearGradient>
+      <linearGradient id="w3i-wallet-exodus_exodus-b" x1="226.05" x2="150.74" y1="282.15" y2="-28.99" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0B46F9"/>
+        <stop offset="1" stop-color="#BBFBE0"/>
+      </linearGradient>
+      <linearGradient id="w3i-wallet-exodus_exodus-c" x1="226.05" x2="150.74" y1="282.15" y2="-28.99" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0B46F9"/>
+        <stop offset="1" stop-color="#BBFBE0"/>
+      </linearGradient>
+      <linearGradient id="w3i-wallet-exodus_exodus-d" x1="226.05" x2="150.74" y1="282.15" y2="-28.99" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0B46F9"/>
+        <stop offset="1" stop-color="#BBFBE0"/>
+      </linearGradient>
+      <linearGradient id="w3i-wallet-exodus_exodus-f" x1="19.8" x2="150.15" y1="59.4" y2="156.75" gradientUnits="userSpaceOnUse">
+        <stop offset=".12" stop-color="#8952FF" stop-opacity=".87"/>
+        <stop offset="1" stop-color="#DABDFF" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </g>
+</svg>
