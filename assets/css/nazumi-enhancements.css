@@ -609,6 +609,10 @@
   letter-spacing: 0.08em;
 }
 
+.documentation-content h4:not(:first-child) {
+  margin-top: 1.5rem;
+}
+
 .documentation-content p {
   font-size: 0.9rem;
   line-height: 1.6;
@@ -659,6 +663,21 @@
 
 .dark-mode .documentation-list li strong {
   color: var(--dm-light-red);
+}
+
+/* ── Mobile responsive for documentation ── */
+@media (max-width: 768px) {
+  .documentation-content {
+    padding: 1rem;
+  }
+
+  .documentation-content h4 {
+    font-size: 1.1rem;
+  }
+
+  .documentation-list li {
+    font-size: 0.8rem;
+  }
 }
 
 /* ── GTranslate Widget - Discrete Footer Styling ── */
