@@ -586,6 +586,46 @@
   opacity: 0.6;
 }
 
+/* ── Pump.fun Info Styles ── */
+.pumpfun-info {
+  font-family: 'Oswald', sans-serif;
+}
+
+.pumpfun-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(20, 18, 24, 0.05);
+}
+
+.pumpfun-row:last-child {
+  border-bottom: none;
+}
+
+.pumpfun-category {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+
+.pumpfun-details {
+  font-size: 0.75rem;
+  color: var(--ink);
+  opacity: 0.7;
+  text-align: right;
+}
+
+.dark-mode .pumpfun-category {
+  color: var(--dm-text);
+}
+
+.dark-mode .pumpfun-details {
+  color: var(--dm-text);
+  opacity: 0.6;
+}
+
 /* ── Documentation Section Styles ── */
 .documentation-section {
   background: linear-gradient(135deg, var(--stone) 0%, var(--dark-stone) 100%);
