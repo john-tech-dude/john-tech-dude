@@ -546,6 +546,121 @@
   }
 }
 
+/* ── Vesting Schedule Styles ── */
+.vesting-schedule {
+  font-family: 'Oswald', sans-serif;
+}
+
+.vesting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(20, 18, 24, 0.05);
+}
+
+.vesting-row:last-child {
+  border-bottom: none;
+}
+
+.vesting-category {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+
+.vesting-details {
+  font-size: 0.75rem;
+  color: var(--ink);
+  opacity: 0.7;
+  text-align: right;
+}
+
+.dark-mode .vesting-category {
+  color: var(--dm-text);
+}
+
+.dark-mode .vesting-details {
+  color: var(--dm-text);
+  opacity: 0.6;
+}
+
+/* ── Documentation Section Styles ── */
+.documentation-section {
+  background: linear-gradient(135deg, var(--stone) 0%, var(--dark-stone) 100%);
+}
+
+.documentation-panel {
+  background: white;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.documentation-content {
+  padding: 1.5rem;
+}
+
+.documentation-content h4 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  color: var(--primary-red);
+  margin-bottom: 1rem;
+  letter-spacing: 0.08em;
+}
+
+.documentation-content p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.documentation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.documentation-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(20, 18, 24, 0.05);
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.documentation-list li:last-child {
+  border-bottom: none;
+}
+
+.documentation-list li strong {
+  color: var(--primary-red);
+  font-weight: 700;
+}
+
+.dark-mode .documentation-panel {
+  background: var(--dm-panel);
+  border-color: var(--dm-border);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .documentation-content h4 {
+  color: var(--dm-light-red);
+}
+
+.dark-mode .documentation-content p {
+  color: var(--dm-text);
+}
+
+.dark-mode .documentation-list li {
+  color: var(--dm-text);
+  border-bottom-color: rgba(255, 250, 242, 0.1);
+}
+
+.dark-mode .documentation-list li strong {
+  color: var(--dm-light-red);
+}
+
 /* ── GTranslate Widget - Discrete Footer Styling ── */
 #gtranslate_wrapper_footer {
   position: absolute;
