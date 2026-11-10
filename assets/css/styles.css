@@ -1160,7 +1160,7 @@ html {
   animation-delay: 2.2s;
 }
 
-/* Cherry blossom petals floating in hero section */
+/* Cherry blossom petals floating in hero section - Zen-enhanced */
 .cherry-petals {
   position: absolute;
   top: 0;
@@ -1169,46 +1169,57 @@ html {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  opacity: 0;
-  animation: fadeIn 2s ease-out forwards 1.5s;
+  opacity: 1;
   transform-style: preserve-3d;
   perspective: 1000px;
 }
 
 .petal {
   position: absolute;
-  width: 15px;
-  height: 15px;
-  background-color: rgba(255, 183, 197, 0.8);
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 200, 212, 0.35); /* More muted, translucent */
   border-radius: 150% 0 150% 0;
-  animation: floatPetal 15s linear infinite, rotatePetal 10s linear infinite;
+  animation: floatPetalZen 25s linear infinite, rotatePetalZen 18s linear infinite;
   transform: rotate(45deg);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  opacity: 0.6;
 }
 
-@keyframes floatPetal {
+/* Zen-inspired petal movement - slower, more meditative */
+@keyframes floatPetalZen {
   0% {
     transform: translateX(0) translateY(-10px) rotate(45deg);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 0.6;
   }
 
   25% {
-    transform: translateX(100px) translateY(200px) rotate(90deg);
+    transform: translateX(80px) translateY(150px) rotate(90deg);
   }
 
   50% {
-    transform: translateX(50px) translateY(400px) rotate(135deg);
+    transform: translateX(40px) translateY(300px) rotate(135deg);
   }
 
   75% {
-    transform: translateX(-50px) translateY(600px) rotate(180deg);
+    transform: translateX(-40px) translateY(450px) rotate(180deg);
+  }
+
+  95% {
+    opacity: 0.6;
   }
 
   100% {
-    transform: translateX(0) translateY(800px) rotate(225deg);
+    transform: translateX(0) translateY(600px) rotate(225deg);
+    opacity: 0;
   }
 }
 
-@keyframes rotatePetal {
+@keyframes rotatePetalZen {
   0% {
     transform: rotateX(0deg) rotateY(0deg) rotate(45deg);
   }
@@ -2899,234 +2910,488 @@ html {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Jupiter Swap Container */
-.jupiter-swap-container {
-  background-color: white;
+/* ==========================================================================
+   Modern Jupiter-Style Swap & Staking UI (Manga / Ronin Unified Theme)
+   ========================================================================== */
+
+.jup-dex-card {
+  background-color: var(--white);
   border: 2px solid var(--ink);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-}
-
-.swap-input-group {
-  margin-bottom: 1rem;
-}
-
-.swap-label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 0.5rem;
-  font-family: 'Oswald', sans-serif;
-}
-
-.swap-input-wrapper {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
   display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+}
+
+/* Card Header */
+.jup-card-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: var(--stone);
-  border: 2px solid var(--ink);
-  border-radius: 6px;
-  padding: 0.75rem;
-  transition: border-color 0.3s ease;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed rgba(20, 18, 24, 0.2);
 }
 
-.swap-input-wrapper:focus-within {
-  border-color: var(--primary-red);
-}
-
-.swap-input {
-  flex: 1;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--ink);
-  outline: none;
-  font-family: 'Oswald', sans-serif;
-}
-
-.swap-input::placeholder {
-  color: rgba(20, 18, 24, 0.4);
-}
-
-.swap-token-info {
+.jup-card-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding-left: 0.75rem;
-  border-left: 2px solid var(--ink);
-  margin-left: 0.75rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  letter-spacing: 0.5px;
 }
 
-.swap-token-select {
-  background: none;
-  border: none;
-  font-weight: bold;
-  color: var(--primary-red);
-  font-family: 'Bangers', cursive;
-  font-size: 1.1rem;
-  cursor: pointer;
-  outline: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+.jup-mini-logo {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
 }
 
-.swap-token-select:hover {
-  background-color: rgba(155, 34, 38, 0.1);
-}
-
-.swap-token-select:focus {
-  background-color: rgba(155, 34, 38, 0.15);
-}
-
-.swap-token-symbol {
-  font-weight: bold;
-  color: var(--primary-red);
-  font-family: 'Bangers', cursive;
-  font-size: 1.1rem;
-}
-
-.swap-arrow {
+.jup-slippage-selector {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0.5rem 0;
-  color: var(--primary-red);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  background: none;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 50%;
+  gap: 0.35rem;
 }
 
-.swap-arrow:hover {
-  transform: scale(1.2) rotate(180deg);
-  background-color: rgba(155, 34, 38, 0.1);
+.jup-slippage-label {
+  font-size: 0.75rem;
+  color: rgba(20, 18, 24, 0.6);
+  font-family: 'Oswald', sans-serif;
 }
 
-.swap-quote-info {
-  background-color: var(--stone);
+.jup-slippage-btn {
+  background: var(--stone);
   border: 1px solid var(--ink);
-  border-radius: 6px;
-  padding: 1rem;
-  margin: 1rem 0;
-  font-size: 0.9rem;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-family: 'Oswald', sans-serif;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.2s ease;
 }
 
-.quote-row {
+.jup-slippage-btn.active,
+.jup-slippage-btn:hover {
+  background-color: var(--primary-red);
+  color: #fff;
+  border-color: var(--primary-red);
+}
+
+/* Nested input boxes (Jupiter-style selling/receiving cards) */
+.jup-box {
+  background-color: var(--stone);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jup-box:focus-within {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 1px var(--primary-red);
+}
+
+.jup-box-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
 }
 
-.quote-row:last-child {
-  margin-bottom: 0;
-}
-
-.quote-label {
-  color: var(--ink);
-  opacity: 0.7;
+.jup-box-label {
   font-family: 'Oswald', sans-serif;
-}
-
-.quote-value {
+  font-size: 0.8rem;
+  color: rgba(20, 18, 24, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   font-weight: 600;
-  color: var(--ink);
-  font-family: 'Oswald', sans-serif;
 }
 
-.swap-button {
+.jup-balance-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-family: 'Oswald', sans-serif;
+  color: rgba(20, 18, 24, 0.7);
+}
+
+.jup-quick-btn {
+  background: rgba(20, 18, 24, 0.08);
+  border: 1px solid rgba(20, 18, 24, 0.2);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.7rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.jup-quick-btn:hover {
+  background: var(--primary-red);
+  color: #fff;
+  border-color: var(--primary-red);
+}
+
+.jup-estimate-tag {
+  font-size: 0.75rem;
+  font-family: 'Oswald', sans-serif;
+  color: rgba(20, 18, 24, 0.5);
+  font-style: italic;
+}
+
+.jup-box-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.jup-amount-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.jup-amount-input::placeholder {
+  color: rgba(20, 18, 24, 0.3);
+}
+
+.jup-token-pill {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--ink);
+  border-radius: 20px;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.jup-token-select {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Bangers', cursive;
+  font-size: 1.15rem;
+  color: var(--primary-red);
+  cursor: pointer;
+  padding-right: 0.25rem;
+  letter-spacing: 0.5px;
+}
+
+.static-pill {
+  background: var(--stone);
+  padding: 0.35rem 0.85rem;
+}
+
+.jup-token-static {
+  font-family: 'Bangers', cursive;
+  font-size: 1.15rem;
+  color: var(--primary-red);
+  letter-spacing: 0.5px;
+}
+
+/* Central Swap/Flip button */
+.jup-flip-wrap {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: -0.6rem 0;
+  z-index: 2;
+}
+
+.jup-flip-btn {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-red);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.jup-flip-btn:hover {
+  transform: scale(1.15) rotate(180deg);
+  background-color: var(--primary-red);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+/* Execution Route details */
+.jup-route-details {
+  background-color: rgba(20, 18, 24, 0.03);
+  border: 1px dashed rgba(20, 18, 24, 0.3);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-family: 'Oswald', sans-serif;
+  margin-top: 0.25rem;
+}
+
+.jup-route-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(20, 18, 24, 0.75);
+}
+
+.jup-highlight {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Call to action button */
+.jup-cta-btn {
   width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  font-family: 'Oswald', sans-serif;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
+  padding: 0.95rem;
+  font-size: 1.15rem;
+  font-family: 'Bangers', cursive;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.swap-button:disabled {
+.jup-cta-btn:not(:disabled):hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.jup-cta-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-.swap-button:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.2);
+/* ================= Staking Card Elements ================= */
+.jup-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
-.swap-status {
-  margin-top: 1rem;
-  padding: 0.75rem;
+.jup-metric-card {
+  background: var(--stone);
+  border: 1.5px solid var(--ink);
   border-radius: 6px;
-  font-size: 0.9rem;
+  padding: 0.6rem 0.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.jup-metric-label {
   font-family: 'Oswald', sans-serif;
-  display: none;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: rgba(20, 18, 24, 0.65);
+  font-weight: 600;
 }
 
-.swap-status.success {
-  display: block;
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10B981;
-  border: 1px solid #10B981;
+.jup-metric-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
-.swap-status.error {
-  display: block;
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-  border: 1px solid #EF4444;
+.jup-metric-val.jup-green {
+  color: #059669;
+  font-family: 'Bangers', cursive;
+  font-size: 1.25rem;
 }
 
-.swap-status.loading {
-  display: block;
-  background-color: rgba(155, 34, 38, 0.1);
-  color: var(--primary-red);
-  border: 1px solid var(--primary-red);
+.jup-tab-group {
+  display: flex;
+  background: var(--stone);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  padding: 0.25rem;
+  gap: 0.25rem;
 }
 
-.swap-status.info {
-  display: block;
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3B82F6;
-  border: 1px solid #3B82F6;
+.jup-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.4rem;
+  font-family: 'Bangers', cursive;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-/* Dark mode for Jupiter swap */
-.dark-mode .jupiter-swap-container {
+.jup-tab-btn.active {
+  background-color: var(--primary-red);
+  color: #fff;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.jup-actions-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ================= Dark Mode Support ================= */
+.dark-mode .jup-dex-card {
   background-color: var(--dm-panel);
   border-color: var(--dm-border);
-  box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
 }
 
-.dark-mode .swap-label {
+.dark-mode .jup-card-header {
+  border-bottom-color: var(--dm-border);
+}
+
+.dark-mode .jup-card-title {
   color: var(--dm-text);
 }
 
-.dark-mode .swap-input-wrapper {
-  background-color: rgba(77, 128, 230, 0.1);
+.dark-mode .jup-slippage-label {
+  color: var(--dm-text-muted);
+}
+
+.dark-mode .jup-slippage-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--dm-border);
+  color: var(--dm-text);
+}
+
+.dark-mode .jup-slippage-btn.active,
+.dark-mode .jup-slippage-btn:hover {
+  background-color: var(--primary-red);
+  color: #fff;
+  border-color: var(--primary-red);
+}
+
+.dark-mode .jup-box {
+  background-color: rgba(255, 255, 255, 0.03);
   border-color: var(--dm-border);
 }
 
-.dark-mode .swap-input-wrapper:focus-within {
-  border-color: var(--dm-primary-red);
+.dark-mode .jup-box-label {
+  color: var(--dm-text-muted);
 }
 
-.dark-mode .swap-input {
+.dark-mode .jup-balance-wrap {
+  color: var(--dm-text-muted);
+}
+
+.dark-mode .jup-quick-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--dm-border);
   color: var(--dm-text);
 }
 
-.dark-mode .swap-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+.dark-mode .jup-quick-btn:hover {
+  background: var(--primary-red);
+  color: #fff;
 }
 
-.dark-mode .swap-token-info {
-  border-left-color: var(--dm-border);
+.dark-mode .jup-amount-input {
+  color: var(--dm-text);
+}
+
+.dark-mode .jup-amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dark-mode .jup-token-pill {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--dm-border);
+}
+
+.dark-mode .static-pill {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dark-mode .jup-flip-btn {
+  background-color: var(--dm-panel);
+  border-color: var(--dm-border);
+  color: var(--primary-red);
+}
+
+.dark-mode .jup-flip-btn:hover {
+  background-color: var(--primary-red);
+  color: #fff;
+  border-color: var(--primary-red);
+}
+
+.dark-mode .jup-route-details {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: var(--dm-border);
+}
+
+.dark-mode .jup-route-row {
+  color: var(--dm-text-muted);
+}
+
+.dark-mode .jup-highlight {
+  color: #10B981;
+}
+
+.dark-mode .jup-metric-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--dm-border);
+}
+
+.dark-mode .jup-metric-label {
+  color: var(--dm-text-muted);
+}
+
+.dark-mode .jup-metric-val {
+  color: var(--dm-text);
+}
+
+.dark-mode .jup-metric-val.jup-green {
+  color: #10B981;
+}
+
+.dark-mode .jup-tab-group {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--dm-border);
+}
+
+.dark-mode .jup-tab-btn {
+  color: var(--dm-text);
+}
+
+.dark-mode .jup-tab-btn.active {
+  background-color: var(--primary-red);
+  color: #fff;
+}
 }
 
 .dark-mode .swap-token-symbol {
@@ -3690,6 +3955,10 @@ html {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
+  .nav-logo {
+    font-size: 1.5rem;
+  }
+
   .menu-toggle {
     display: block;
     margin-left: auto;
@@ -3787,6 +4056,8 @@ html {
   .hero {
     flex-direction: column;
     padding: 1.5rem;
+    min-height: 500px;
+    background-attachment: scroll;
   }
 
   .hero-character {
@@ -3860,8 +4131,33 @@ html {
   }
 
   /* Jupiter swap container mobile fixes */
+  .jup-dex-card,
   .jupiter-swap-container {
     padding: 1rem;
+  }
+
+  .jup-amount-input {
+    font-size: 1.25rem;
+  }
+
+  .jup-metrics-grid {
+    gap: 0.35rem;
+  }
+
+  .jup-metric-card {
+    padding: 0.4rem 0.25rem;
+  }
+
+  .jup-metric-label {
+    font-size: 0.65rem;
+  }
+
+  .jup-metric-val {
+    font-size: 0.85rem;
+  }
+
+  .jup-metric-val.jup-green {
+    font-size: 1.1rem;
   }
 
   .swap-input-wrapper {
@@ -4008,6 +4304,10 @@ html {
 
 /* Additional responsive adjustments for very small screens */
 @media (max-width: 480px) {
+  .nav-logo {
+    font-size: 1.3rem;
+  }
+
   .dark-mode-toggle {
     bottom: 95px;
     /* Position above buy button */
@@ -4038,7 +4338,7 @@ html {
   }
 
   .japanese-symbol {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .character-image {

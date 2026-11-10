@@ -1024,8 +1024,59 @@ const nazumiStaking = {
         this.elements.apy = document.getElementById('stakeApy');
         this.elements.balance = document.getElementById('stakeBalance');
         this.elements.rewards = document.getElementById('stakeRewards');
+        this.elements.tabStake = document.getElementById('tabStakeMode');
+        this.elements.tabUnstake = document.getElementById('tabUnstakeMode');
+        this.elements.boxLabel = document.getElementById('stakeBoxLabel');
 
         if (!this.elements.inputAmount || !this.elements.stakeButton) return;
+
+        // Mode tabs
+        if (this.elements.tabStake && this.elements.tabUnstake) {
+            this.elements.tabStake.addEventListener('click', () => this.setMode('stake'));
+            this.elements.tabUnstake.addEventListener('click', () => this.setMode('unstake'));
+        }
+
+        // Percentage preset buttons
+        document.querySelectorAll('.stake-preset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const pct = parseInt(e.currentTarget.dataset.pct, 10);
+                this.applyPreset(pct);
+            });
+        });
+
+        // Slippage selector buttons for swap
+        document.querySelectorAll('.jup-slippage-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.jup-slippage-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                const bps = parseInt(e.currentTarget.dataset.slippage, 10);
+                jupiterSwap.SLIPPAGE_BPS = bps;
+                if (jupiterSwap.elements.inputAmount && jupiterSwap.elements.inputAmount.value) {
+                    const amount = parseFloat(jupiterSwap.elements.inputAmount.value);
+                    if (amount > 0) jupiterSwap.getQuote(amount);
+                }
+            });
+        });
+
+        // Half / Max for swap
+        const swapHalfBtn = document.getElementById('swapHalfBtn');
+        const swapMaxBtn = document.getElementById('swapMaxBtn');
+        if (swapHalfBtn) {
+            swapHalfBtn.addEventListener('click', () => {
+                if (jupiterSwap.elements.inputAmount) {
+                    jupiterSwap.elements.inputAmount.value = '0.5';
+                    jupiterSwap.onInputChange({ target: jupiterSwap.elements.inputAmount });
+                }
+            });
+        }
+        if (swapMaxBtn) {
+            swapMaxBtn.addEventListener('click', () => {
+                if (jupiterSwap.elements.inputAmount) {
+                    jupiterSwap.elements.inputAmount.value = '1.0';
+                    jupiterSwap.onInputChange({ target: jupiterSwap.elements.inputAmount });
+                }
+            });
+        }
 
         this.elements.stakeButton.addEventListener('click', () => this.stake());
         this.elements.unstakeButton.addEventListener('click', () => this.unstake());
@@ -1050,6 +1101,31 @@ const nazumiStaking = {
         return Boolean(this.STAKING_PROGRAM_ID) &&
                jupiterSwap.tokens.NAZUMI.mint &&
                !jupiterSwap.tokens.NAZUMI.mint.includes('PLACEHOLDER');
+    },
+
+    setMode(mode) {
+        if (mode === 'stake') {
+            this.elements.tabStake.classList.add('active');
+            this.elements.tabUnstake.classList.remove('active');
+            this.elements.boxLabel.textContent = 'Amount to Stake';
+            this.elements.stakeButton.style.display = 'block';
+            this.elements.unstakeButton.style.display = 'none';
+        } else {
+            this.elements.tabStake.classList.remove('active');
+            this.elements.tabUnstake.classList.add('active');
+            this.elements.boxLabel.textContent = 'Amount to Unstake';
+            this.elements.stakeButton.style.display = 'none';
+            this.elements.unstakeButton.style.display = 'block';
+        }
+        this.updateButtonState();
+    },
+
+    applyPreset(pct) {
+        // If user has balance / staked balance, fill percentage; default mock to 1000 for preview
+        const base = this.stakedBalance > 0 ? this.stakedBalance : 1000;
+        const val = ((base * pct) / 100).toFixed(2);
+        this.elements.inputAmount.value = val;
+        this.updateButtonState();
     },
 
     updateButtonState() {

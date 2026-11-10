@@ -1164,13 +1164,34 @@
 
       <div class="buy-panel-section">
         <h3 class="buy-panel-subtitle">Instant Swap</h3>
-        <div class="jupiter-swap-container">
-          <div class="swap-input-group">
-            <label class="swap-label">From</label>
-            <div class="swap-input-wrapper">
-              <input type="number" id="swapInputAmount" class="swap-input" placeholder="0.0" min="0" step="0.001">
-              <div class="swap-token-info">
-                <select id="swapInputToken" class="swap-token-select">
+        <div class="jup-dex-card">
+          <!-- Card Header / Settings -->
+          <div class="jup-card-header">
+            <div class="jup-card-title">
+              <img src="assets/images/jupiter-logo.svg" alt="Jupiter" class="jup-mini-logo">
+              <span>Jupiter Meta-Aggregator</span>
+            </div>
+            <div class="jup-slippage-selector">
+              <span class="jup-slippage-label">Slippage:</span>
+              <button type="button" class="jup-slippage-btn" data-slippage="50">0.5%</button>
+              <button type="button" class="jup-slippage-btn active" data-slippage="100">1.0%</button>
+            </div>
+          </div>
+
+          <!-- Paying Section -->
+          <div class="jup-box">
+            <div class="jup-box-top">
+              <span class="jup-box-label">You're Selling</span>
+              <div class="jup-balance-wrap">
+                <span class="jup-balance-label">Balance: <span id="swapUserBalance">0.00</span></span>
+                <button type="button" class="jup-quick-btn" id="swapHalfBtn">Half</button>
+                <button type="button" class="jup-quick-btn" id="swapMaxBtn">Max</button>
+              </div>
+            </div>
+            <div class="jup-box-main">
+              <input type="number" id="swapInputAmount" class="jup-amount-input" placeholder="0.0" min="0" step="any">
+              <div class="jup-token-pill">
+                <select id="swapInputToken" class="jup-token-select">
                   <option value="SOL">SOL</option>
                   <option value="USDC">USDC</option>
                   <option value="USDT">USDT</option>
@@ -1182,16 +1203,23 @@
             </div>
           </div>
 
-          <div class="swap-arrow" id="swapDirectionBtn">
-            <i class="fa-solid fa-arrow-down"></i>
+          <!-- Flip Direction Button -->
+          <div class="jup-flip-wrap">
+            <button type="button" class="jup-flip-btn" id="swapDirectionBtn" title="Reverse tokens">
+              <i class="fa-solid fa-arrow-down-up"></i>
+            </button>
           </div>
 
-          <div class="swap-input-group">
-            <label class="swap-label">To</label>
-            <div class="swap-input-wrapper">
-              <input type="number" id="swapOutputAmount" class="swap-input" placeholder="0.0" readonly>
-              <div class="swap-token-info">
-                <select id="swapOutputToken" class="swap-token-select">
+          <!-- Receiving Section -->
+          <div class="jup-box">
+            <div class="jup-box-top">
+              <span class="jup-box-label">You're Receiving</span>
+              <span class="jup-estimate-tag">Estimated</span>
+            </div>
+            <div class="jup-box-main">
+              <input type="text" id="swapOutputAmount" class="jup-amount-input" placeholder="0.0" readonly>
+              <div class="jup-token-pill">
+                <select id="swapOutputToken" class="jup-token-select">
                   <option value="NAZUMI">NAZUMI</option>
                   <option value="SOL">SOL</option>
                   <option value="USDC">USDC</option>
@@ -1203,22 +1231,28 @@
             </div>
           </div>
 
-          <div class="swap-quote-info" id="swapQuoteInfo" style="display: none;">
-            <div class="quote-row">
-              <span class="quote-label">Price:</span>
-              <span class="quote-value" id="quotePrice">-</span>
+          <!-- Route & Execution Details -->
+          <div class="jup-route-details" id="swapQuoteInfo" style="display: none;">
+            <div class="jup-route-row">
+              <span>Best Route</span>
+              <span class="jup-highlight"><i class="fa-solid fa-bolt"></i> Jupiter Aggregator</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-label">Price Impact:</span>
-              <span class="quote-value" id="quotePriceImpact">-</span>
+            <div class="jup-route-row">
+              <span>Rate</span>
+              <span id="quotePrice">-</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-label">Min. Received:</span>
-              <span class="quote-value" id="quoteMinReceived">-</span>
+            <div class="jup-route-row">
+              <span>Price Impact</span>
+              <span id="quotePriceImpact">-</span>
+            </div>
+            <div class="jup-route-row">
+              <span>Min. Received</span>
+              <span id="quoteMinReceived">-</span>
             </div>
           </div>
 
-          <button id="swapButton" class="btn btn-red swap-button" disabled>
+          <!-- Swap CTA -->
+          <button id="swapButton" class="btn btn-red jup-cta-btn" disabled>
             <span id="swapButtonText">Connect Wallet to Swap</span>
           </button>
 
@@ -1228,37 +1262,54 @@
 
       <div class="buy-panel-section">
         <h3 class="buy-panel-subtitle">Staking</h3>
-        <div class="jupiter-swap-container">
-          <div class="swap-quote-info" id="stakeInfo" style="display: block;">
-            <div class="quote-row">
-              <span class="quote-label">APY:</span>
-              <span class="quote-value" id="stakeApy">-</span>
+        <div class="jup-dex-card">
+          <!-- Staking Metrics Bar -->
+          <div class="jup-metrics-grid">
+            <div class="jup-metric-card">
+              <span class="jup-metric-label">Estimated APY</span>
+              <span class="jup-metric-val jup-green" id="stakeApy">12.5%</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-label">Staked:</span>
-              <span class="quote-value" id="stakeBalance">-</span>
+            <div class="jup-metric-card">
+              <span class="jup-metric-label">Your Staked</span>
+              <span class="jup-metric-val" id="stakeBalance">0.00 NAZUMI</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-label">Pending Rewards:</span>
-              <span class="quote-value" id="stakeRewards">-</span>
+            <div class="jup-metric-card">
+              <span class="jup-metric-label">Rewards</span>
+              <span class="jup-metric-val" id="stakeRewards">0.00 NAZUMI</span>
             </div>
           </div>
 
-          <div class="swap-input-group">
-            <label class="swap-label">Amount (NAZUMI)</label>
-            <div class="swap-input-wrapper">
-              <input type="number" id="stakeInputAmount" class="swap-input" placeholder="0.0" min="0" step="0.001">
-              <div class="swap-token-info">
-                <span class="swap-token-select" style="cursor: default;">NAZUMI</span>
+          <!-- Mode Tabs -->
+          <div class="jup-tab-group">
+            <button type="button" class="jup-tab-btn active" id="tabStakeMode">Stake</button>
+            <button type="button" class="jup-tab-btn" id="tabUnstakeMode">Unstake</button>
+          </div>
+
+          <!-- Stake Input Box -->
+          <div class="jup-box">
+            <div class="jup-box-top">
+              <span class="jup-box-label" id="stakeBoxLabel">Amount to Stake</span>
+              <div class="jup-balance-wrap">
+                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="25">25%</button>
+                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="50">50%</button>
+                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="75">75%</button>
+                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="100">Max</button>
+              </div>
+            </div>
+            <div class="jup-box-main">
+              <input type="number" id="stakeInputAmount" class="jup-amount-input" placeholder="0.0" min="0" step="any">
+              <div class="jup-token-pill static-pill">
+                <span class="jup-token-static">NAZUMI</span>
               </div>
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-            <button id="stakeButton" class="btn btn-red swap-button" style="flex: 1;" disabled>
+          <!-- Actions -->
+          <div class="jup-actions-row">
+            <button id="stakeButton" class="btn btn-red jup-cta-btn" disabled>
               <span id="stakeButtonText">Connect Wallet to Stake</span>
             </button>
-            <button id="unstakeButton" class="btn btn-red swap-button" style="flex: 1;" disabled>
+            <button id="unstakeButton" class="btn btn-outline jup-cta-btn" style="display: none;" disabled>
               <span id="unstakeButtonText">Unstake</span>
             </button>
           </div>
