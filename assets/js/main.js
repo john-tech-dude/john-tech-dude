@@ -688,8 +688,9 @@ const jupiterSwap = {
         SOL: { mint: 'So11111111111111111111111111111111111111112', decimals: 9 },
         USDC: { mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', decimals: 6 },
         USDT: { mint: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', decimals: 6 },
-        BONK: { mint: 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', decimals: 5 },
-        WIF: { mint: 'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm', decimals: 6 },
+        JUP: { mint: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN', decimals: 6 },
+        ORCA: { mint: 'orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE', decimals: 6 },
+        RENDER: { mint: 'rndrizKT3MK1iimdxRdWabcF7ZG7X841ZDYduhS1us', decimals: 8 },
         NAZUMI: { mint: 'NAZUMI_PLACEHOLDER_MINT_ADDRESS', decimals: 6 } // Replace with actual mint
     },
 
