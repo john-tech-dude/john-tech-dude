@@ -89,6 +89,11 @@
     <i class="fas fa-moon"></i>
   </button>
 
+  <!-- Floating Buy Button (Mobile Only) -->
+  <button class="floating-buy-btn pulse" id="floatingBuyBtn">
+    <i class="fas fa-coins"></i>
+  </button>
+
   <!-- Main Container -->
   <div class="container">
 
@@ -1022,6 +1027,9 @@
         <div class="copyright">
           &copy; 2026 Nazumi Ronin V1.2. All rights reserved. The path of the swordsman is eternal.
         </div>
+
+        <!-- Language Selector -->
+        <div id="gtranslate_wrapper_footer"></div>
       </div>
     </footer>
     <!-- Overlay -->
@@ -1553,6 +1561,23 @@
 
     <!-- External JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- GTranslate Widget -->
+    <script>
+      window.gtranslateSettings = {
+        "default_language": "en",
+        "languages": ["en", "ja", "ko", "zh-CN", "zh-TW"],
+        "wrapper_selector": "#gtranslate_wrapper_footer",
+        "alt_flags": {
+          "en": "https://cdn.gtranslate.net/flags/svg/countries/us.svg",
+          "ja": "https://cdn.gtranslate.net/flags/svg/countries/jp.svg",
+          "ko": "https://cdn.gtranslate.net/flags/svg/countries/kr.svg",
+          "zh-CN": "https://cdn.gtranslate.net/flags/svg/countries/cn.svg",
+          "zh-TW": "https://cdn.gtranslate.net/flags/svg/countries/tw.svg"
+        }
+      };
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
 
     <!-- Custom JavaScript -->
     <script src="assets/js/main.js"></script>

@@ -1310,7 +1310,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   const parallaxBg = document.querySelector('.parallax-bg');
   if (!parallaxBg) return;
-  
+
   function updateParallax() {
     const scrollPosition = window.pageYOffset;
     const element = parallaxBg.parentElement;
@@ -1322,7 +1322,7 @@ document.addEventListener('DOMContentLoaded', function() {
       parallaxBg.style.transform = `translateY(${offset}px)`;
     }
   }
-  
+
   // Initial update
   updateParallax();
   // Update on scroll

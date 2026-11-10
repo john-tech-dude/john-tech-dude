@@ -3549,6 +3549,7 @@ html {
   transform: translateY(50px);
   opacity: 0;
   transition: transform 0.8s ease, opacity 0.8s ease;
+  position: relative;
 }
 
 .footer.animate {
@@ -4309,7 +4310,7 @@ html {
   }
 
   .dark-mode-toggle {
-    bottom: 95px;
+    bottom: 80px;
     /* Position above buy button */
     left: 20px;
   }

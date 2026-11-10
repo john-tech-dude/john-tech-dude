@@ -545,3 +545,252 @@
     margin: 0 auto;
   }
 }
+
+/* ── GTranslate Widget - Discrete Footer Styling ── */
+#gtranslate_wrapper_footer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+#gtranslate_wrapper_footer .gt_selector {
+  background: var(--navy) !important;
+  color: white !important;
+  border: 2px solid var(--primary-red) !important;
+  border-radius: 4px !important;
+  padding: 0.35rem 0.7rem !important;
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
+}
+
+#gtranslate_wrapper_footer .gt_selector:hover {
+  background: var(--primary-red) !important;
+  border-color: var(--light-red) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2) !important;
+}
+
+#gtranslate_wrapper_footer .gt_selector-wrapper {
+  position: relative !important;
+  display: inline-block !important;
+}
+
+#gtranslate_wrapper_footer .gt_selector-wrapper::after {
+  content: '▼' !important;
+  position: absolute !important;
+  right: 6px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 0.5rem !important;
+  pointer-events: none !important;
+  color: white !important;
+}
+
+#gtranslate_wrapper_footer .gt_option {
+  background: white !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15) !important;
+  padding: 0.5rem 0 !important;
+  margin-top: 8px !important;
+  min-width: 110px !important;
+  right: 0 !important;
+  left: auto !important;
+}
+
+#gtranslate_wrapper_footer .gt_option a {
+  display: block !important;
+  padding: 0.5rem 0.7rem !important;
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.05em !important;
+  transition: background 0.2s ease !important;
+}
+
+#gtranslate_wrapper_footer .gt_option a:hover {
+  background: rgba(155, 34, 38, 0.08) !important;
+  color: var(--primary-red) !important;
+}
+
+#gtranslate_wrapper_footer .gt_option a.gt_selected {
+  background: rgba(155, 34, 38, 0.15) !important;
+  color: var(--primary-red) !important;
+  font-weight: 700 !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_selector {
+  background: var(--dm-navy) !important;
+  border-color: var(--dm-primary-red) !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4) !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_selector:hover {
+  background: var(--dm-primary-red) !important;
+  border-color: var(--dm-light-red) !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_option {
+  background: var(--dm-panel) !important;
+  border-color: var(--dm-border) !important;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4) !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_option a {
+  color: var(--dm-text) !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_option a:hover {
+  background: rgba(229, 56, 59, 0.12) !important;
+  color: var(--dm-light-red) !important;
+}
+
+.dark-mode #gtranslate_wrapper_footer .gt_option a.gt_selected {
+  background: rgba(229, 56, 59, 0.2) !important;
+  color: var(--dm-light-red) !important;
+}
+
+/* Hide GTranslate branding */
+#gtranslate_wrapper_footer .powered_by {
+  display: none !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  #gtranslate_wrapper_footer {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  #gtranslate_wrapper_footer .gt_selector {
+    font-size: 0.65rem !important;
+    padding: 0.3rem 0.6rem !important;
+  }
+
+  #gtranslate_wrapper_footer .gt_option {
+    min-width: 100px !important;
+  }
+}
+
+/* ── Language Selector ── */
+.language-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.language-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary-red);
+  color: white;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.language-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+}
+
+.language-toggle .current-lang {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  background: white;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.language-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.language-option {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(20, 18, 24, 0.1);
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.language-option:last-child {
+  border-bottom: none;
+}
+
+.language-option:hover {
+  background: rgba(155, 34, 38, 0.08);
+  color: var(--primary-red);
+}
+
+.dark-mode .language-toggle {
+  background: var(--dm-primary-red);
+  border-color: var(--dm-border);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+}
+
+.dark-mode .language-toggle:hover {
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+}
+
+.dark-mode .language-dropdown {
+  background: var(--dm-panel);
+  border-color: var(--dm-border);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+}
+
+.dark-mode .language-option {
+  color: var(--dm-text);
+  border-bottom-color: rgba(255, 250, 242, 0.1);
+}
+
+.dark-mode .language-option:hover {
+  background: rgba(229, 56, 59, 0.12);
+  color: var(--dm-light-red);
+}
+
+@media (max-width: 768px) {
+  .language-dropdown {
+    right: -20px;
+  }
+}
