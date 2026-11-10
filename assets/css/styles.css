@@ -162,6 +162,7 @@ body.dark-mode {
   z-index: 1000;
   transform: scale(0);
   animation: bounceIn 0.5s cubic-bezier(0.28, 0.84, 0.42, 1) forwards 4s;
+  pointer-events: auto;
 }
 
 @keyframes bounceIn {

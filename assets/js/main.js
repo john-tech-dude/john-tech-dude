@@ -128,6 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
   if (floatingBuyBtn) {
     floatingBuyBtn.addEventListener('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
+      console.log('Floating buy button clicked');
+      openBuyPanel();
+    });
+    // Also add touch event for mobile
+    floatingBuyBtn.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Floating buy button touched');
       openBuyPanel();
     });
   }
