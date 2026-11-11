@@ -58,8 +58,10 @@
       <li class="nav-item" style="--item-index: 2;"><a href="#how-it-works" class="nav-link">How It Works</a></li>
       <li class="nav-item" style="--item-index: 3;"><a href="#tiers" class="nav-link">Training Tiers</a></li>
       <li class="nav-item" style="--item-index: 4;"><a href="#rewards" class="nav-link">Rewards</a></li>
-      <li class="nav-item" style="--item-index: 5;"><a href="#stake" class="nav-link">Stake Now</a></li>
-      <li class="nav-item" style="--item-index: 6;"><a href="index.html" class="nav-link">← Back</a></li>
+      <li class="nav-item" style="--item-index: 5;"><a href="#calculator" class="nav-link">Calculator</a></li>
+      <li class="nav-item" style="--item-index: 6;"><a href="#lore-preview" class="nav-link">Hidden Chapters</a></li>
+      <li class="nav-item" style="--item-index: 7;"><a href="#stake" class="nav-link">Stake Now</a></li>
+      <li class="nav-item" style="--item-index: 8;"><a href="index.html" class="nav-link">← Back</a></li>
     </ul>
   </header>
 
@@ -288,6 +290,164 @@
               <li><strong>Master+:</strong> Vote on major proposals and partnerships</li>
               <li><strong>Elder:</strong> Full governance participation and veto rights</li>
             </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Staking Calculator -->
+    <section id="calculator" class="manga-section scrolls-section">
+      <h2 class="section-title">TRAINING CALCULATOR</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">算</div>
+            <div class="arc-title">Estimate Your Rewards</div>
+          </div>
+          <div class="scrolls-content">
+            <div style="display: grid; gap: 1.5rem;">
+              <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--ink);">Stake Amount (NAZUMI)</label>
+                <input type="number" id="stakeAmount" placeholder="e.g., 50000" style="width: 100%; padding: 0.75rem; border: 2px solid var(--ink); border-radius: 4px; font-family: 'Oswald', sans-serif; font-size: 1rem;" />
+              </div>
+
+              <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--ink);">Lock Period</label>
+                <select id="lockPeriod" style="width: 100%; padding: 0.75rem; border: 2px solid var(--ink); border-radius: 4px; font-family: 'Oswald', sans-serif; font-size: 1rem;">
+                  <option value="0">Flexible (0 days) — Base APR</option>
+                  <option value="30">30 Days — +25% APR Bonus</option>
+                  <option value="90">90 Days — +50% APR Bonus</option>
+                  <option value="180">180 Days — +100% APR Bonus</option>
+                </select>
+              </div>
+
+              <div style="background: rgba(155, 34, 38, 0.1); border: 2px solid var(--primary-red); border-radius: 8px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: var(--primary-red); margin-bottom: 1rem;">Estimated Annual Rewards</h3>
+                <div id="rewardEstimate" style="font-size: 2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem;">—</div>
+                <div id="aprDisplay" style="font-size: 0.9rem; color: var(--ink); opacity: 0.7;">— APR</div>
+              </div>
+
+              <div id="tierPreview" style="background: rgba(20, 18, 24, 0.05); border: 1px solid rgba(20, 18, 24, 0.1); border-radius: 8px; padding: 1rem;">
+                <p style="margin: 0; font-size: 0.9rem; color: var(--ink);"><strong>Your Clan Rank:</strong> <span id="currentTier">Initiate</span></p>
+                <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--ink); opacity: 0.7;" id="tierBenefits">Basic Clan Scrolls access</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">道</div>
+            <div class="arc-title">Your Path to Mastery</div>
+          </div>
+          <div class="scrolls-content">
+            <div style="display: grid; gap: 1.5rem;">
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 700; color: var(--ink);">Initiate</span>
+                  <span style="font-size: 0.85rem; color: var(--ink); opacity: 0.7;">Any stake</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(20, 18, 24, 0.1); border-radius: 4px; overflow: hidden;">
+                  <div id="tier1Progress" style="width: 0%; height: 100%; background: var(--primary-red); transition: width 0.5s ease;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 700; color: var(--ink);">Warrior</span>
+                  <span style="font-size: 0.85rem; color: var(--ink); opacity: 0.7;">10K+ NAZUMI / 30+ days</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(20, 18, 24, 0.1); border-radius: 4px; overflow: hidden;">
+                  <div id="tier2Progress" style="width: 0%; height: 100%; background: var(--primary-red); transition: width 0.5s ease;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 700; color: var(--ink);">Master</span>
+                  <span style="font-size: 0.85rem; color: var(--ink); opacity: 0.7;">100K+ NAZUMI / 90+ days</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(20, 18, 24, 0.1); border-radius: 4px; overflow: hidden;">
+                  <div id="tier3Progress" style="width: 0%; height: 100%; background: var(--primary-red); transition: width 0.5s ease;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 700; color: var(--ink);">Elder</span>
+                  <span style="font-size: 0.85rem; color: var(--ink); opacity: 0.7;">1M+ NAZUMI / 180+ days</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(20, 18, 24, 0.1); border-radius: 4px; overflow: hidden;">
+                  <div id="tier4Progress" style="width: 0%; height: 100%; background: var(--primary-red); transition: width 0.5s ease;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lore Preview Section -->
+    <section id="lore-preview" class="manga-section scrolls-section">
+      <h2 class="section-title">THE HIDDEN CHAPTERS</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">巻</div>
+            <div class="arc-title">What You'll Unlock</div>
+          </div>
+          <div class="scrolls-content">
+            <div style="display: grid; gap: 1rem;">
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Initiate Lore</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Basic story chapters, character introductions, and world overview</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Warrior Lore</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Intermediate backstories, clan history, and battle chronicles</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Master Lore</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Advanced world-building, artifact histories, and prophecies</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Elder Lore</h4>
+                <p style="margin: 0; font-size: 0.9rem;">All content including unreleased stories, exclusive artwork, and community-created tales</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">秘</div>
+            <div class="arc-title">Exclusive Rewards</div>
+          </div>
+          <div class="scrolls-content">
+            <div style="display: grid; gap: 1rem;">
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Warrior Badge</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Discord role and profile badge for committed stakers</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Master Council</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Voting rights on lore direction and community decisions</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Elder Status</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Leadership role, veto rights, and exclusive event access</p>
+              </div>
+
+              <div style="padding: 1rem; background: rgba(155, 34, 38, 0.05); border-left: 3px solid var(--primary-red);">
+                <h4 style="margin: 0 0 0.5rem; color: var(--primary-red);">Legendary NFT</h4>
+                <p style="margin: 0; font-size: 0.9rem;">Limited edition NFT for top stakers (future)</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -609,6 +769,94 @@
           navMenu.classList.toggle('active');
         });
       }
+
+      // Staking Calculator Logic
+      const stakeAmountInput = document.getElementById('stakeAmount');
+      const lockPeriodSelect = document.getElementById('lockPeriod');
+      const rewardEstimate = document.getElementById('rewardEstimate');
+      const aprDisplay = document.getElementById('aprDisplay');
+      const currentTier = document.getElementById('currentTier');
+      const tierBenefits = document.getElementById('tierBenefits');
+
+      // Clan Rank thresholds
+      const clanRanks = [
+        { name: 'Initiate', minStake: 0, minDays: 0, benefits: 'Basic Clan Scrolls access' },
+        { name: 'Warrior', minStake: 10000, minDays: 30, benefits: 'Intermediate lore, Clan Council access' },
+        { name: 'Master', minStake: 100000, minDays: 90, benefits: 'Advanced chapters, governance voting rights' },
+        { name: 'Elder', minStake: 1000000, minDays: 180, benefits: 'All content, Clan Council leadership, special events' }
+      ];
+
+      function updateCalculator() {
+        const amount = parseFloat(stakeAmountInput.value) || 0;
+        const lockDays = parseInt(lockPeriodSelect.value) || 0;
+
+        // Base APR rates (estimated for pre-launch)
+        const baseAPRs = {
+          0: 50,    // Flexible: 50% APR
+          30: 75,   // 30 days: 75% APR (+25%)
+          90: 100,  // 90 days: 100% APR (+50%)
+          180: 150  // 180 days: 150% APR (+100%)
+        };
+
+        const apr = baseAPRs[lockDays] || 50;
+        const annualRewards = (amount * apr) / 100;
+
+        // Update display
+        if (amount > 0) {
+          rewardEstimate.textContent = annualRewards.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' NAZUMI';
+          aprDisplay.textContent = apr + '% APR';
+        } else {
+          rewardEstimate.textContent = '—';
+          aprDisplay.textContent = '— APR';
+        }
+
+        // Update Clan Rank
+        let currentRankIndex = 0;
+        for (let i = 0; i < clanRanks.length; i++) {
+          if (amount >= clanRanks[i].minStake && lockDays >= clanRanks[i].minDays) {
+            currentRankIndex = i;
+          }
+        }
+
+        const rank = clanRanks[currentRankIndex];
+        currentTier.textContent = rank.name;
+        tierBenefits.textContent = rank.benefits;
+
+        // Update progress bars
+        updateProgressBars(amount, lockDays);
+      }
+
+      function updateProgressBars(amount, lockDays) {
+        // Tier 1: Initiate (any stake)
+        const tier1Progress = document.getElementById('tier1Progress');
+        tier1Progress.style.width = amount > 0 ? '100%' : '0%';
+
+        // Tier 2: Warrior (10K+ / 30+ days)
+        const tier2Progress = document.getElementById('tier2Progress');
+        const warriorProgress = Math.min((amount / 10000) * 50 + (lockDays / 30) * 50, 100);
+        tier2Progress.style.width = warriorProgress + '%';
+
+        // Tier 3: Master (100K+ / 90+ days)
+        const tier3Progress = document.getElementById('tier3Progress');
+        const masterProgress = Math.min((amount / 100000) * 50 + (lockDays / 90) * 50, 100);
+        tier3Progress.style.width = masterProgress + '%';
+
+        // Tier 4: Elder (1M+ / 180+ days)
+        const tier4Progress = document.getElementById('tier4Progress');
+        const elderProgress = Math.min((amount / 1000000) * 50 + (lockDays / 180) * 50, 100);
+        tier4Progress.style.width = elderProgress + '%';
+      }
+
+      // Event listeners
+      if (stakeAmountInput) {
+        stakeAmountInput.addEventListener('input', updateCalculator);
+      }
+      if (lockPeriodSelect) {
+        lockPeriodSelect.addEventListener('change', updateCalculator);
+      }
+
+      // Initial calculation
+      updateCalculator();
     });
   </script>
 </body>
