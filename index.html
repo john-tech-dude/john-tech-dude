@@ -1410,60 +1410,25 @@
       </div>
 
       <div class="buy-panel-section">
-        <h3 class="buy-panel-subtitle">Staking</h3>
+        <h3 class="buy-panel-subtitle">Warrior's Training</h3>
         <div class="jup-dex-card">
-          <!-- Staking Metrics Bar -->
-          <div class="jup-metrics-grid">
-            <div class="jup-metric-card">
-              <span class="jup-metric-label">Estimated APY</span>
-              <span class="jup-metric-val jup-green" id="stakeApy">12.5%</span>
+          <div style="padding: 1.5rem; text-align: center;">
+            <div style="margin-bottom: 1rem;">
+              <i class="fa-solid fa-dumbbell" style="font-size: 2rem; color: var(--primary-red);"></i>
             </div>
-            <div class="jup-metric-card">
-              <span class="jup-metric-label">Your Staked</span>
-              <span class="jup-metric-val" id="stakeBalance">0.00 NAZUMI</span>
+            <h4 style="margin-bottom: 0.5rem; color: var(--ink);">Stake NAZUMI to Train</h4>
+            <p style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--ink); opacity: 0.8;">
+              Earn rewards, unlock hidden lore, and climb the ranks of the Ronin Clan. The path of the ronin requires discipline.
+            </p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+              <span style="padding: 0.25rem 0.75rem; background: rgba(155, 34, 38, 0.1); border: 1px solid var(--primary-red); border-radius: 20px; font-size: 0.8rem; color: var(--primary-red);">StakePoint Powered</span>
+              <span style="padding: 0.25rem 0.75rem; background: rgba(155, 34, 38, 0.1); border: 1px solid var(--primary-red); border-radius: 20px; font-size: 0.8rem; color: var(--primary-red);">Non-Custodial</span>
+              <span style="padding: 0.25rem 0.75rem; background: rgba(155, 34, 38, 0.1); border: 1px solid var(--primary-red); border-radius: 20px; font-size: 0.8rem; color: var(--primary-red);">Audited</span>
             </div>
-            <div class="jup-metric-card">
-              <span class="jup-metric-label">Rewards</span>
-              <span class="jup-metric-val" id="stakeRewards">0.00 NAZUMI</span>
-            </div>
+            <a href="staking.html" class="btn btn-red" style="display: inline-block; text-decoration: none;">
+              <i class="fa-solid fa-arrow-right"></i> Enter Training Grounds
+            </a>
           </div>
-
-          <!-- Mode Tabs -->
-          <div class="jup-tab-group">
-            <button type="button" class="jup-tab-btn active" id="tabStakeMode">Stake</button>
-            <button type="button" class="jup-tab-btn" id="tabUnstakeMode">Unstake</button>
-          </div>
-
-          <!-- Stake Input Box -->
-          <div class="jup-box">
-            <div class="jup-box-top">
-              <span class="jup-box-label" id="stakeBoxLabel">Amount to Stake</span>
-              <div class="jup-balance-wrap">
-                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="25">25%</button>
-                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="50">50%</button>
-                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="75">75%</button>
-                <button type="button" class="jup-quick-btn stake-preset-btn" data-pct="100">Max</button>
-              </div>
-            </div>
-            <div class="jup-box-main">
-              <input type="number" id="stakeInputAmount" class="jup-amount-input" placeholder="0.0" min="0" step="any">
-              <div class="jup-token-pill static-pill">
-                <span class="jup-token-static">NAZUMI</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="jup-actions-row">
-            <button id="stakeButton" class="btn btn-red jup-cta-btn" disabled>
-              <span id="stakeButtonText">Connect Wallet to Stake</span>
-            </button>
-            <button id="unstakeButton" class="btn btn-outline jup-cta-btn" style="display: none;" disabled>
-              <span id="unstakeButtonText">Unstake</span>
-            </button>
-          </div>
-
-          <div class="swap-status" id="stakeStatus"></div>
         </div>
       </div>
 

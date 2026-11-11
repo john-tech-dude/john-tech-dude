@@ -1246,9 +1246,11 @@ const nazumiStaking = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    nazumiStaking.init();
-});
+// Nazumi Ronin Staking - Disabled in favor of StakePoint integration
+// Custom staking UI replaced with link to staking.html
+// document.addEventListener('DOMContentLoaded', () => {
+//     nazumiStaking.init();
+// });
 
 // More Wallets Dropdown Toggle
 document.addEventListener('DOMContentLoaded', () => {
