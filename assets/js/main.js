@@ -873,11 +873,23 @@ const jupiterSwap = {
                 params.set('taker', walletConnection.publicKey);
             }
 
+            console.log('Jupiter API Request:', {
+                url: `${this.API_BASE}/order?${params}`,
+                inputMint: input.mint,
+                outputMint: output.mint,
+                amount: amountBaseUnits.toString()
+            });
+
             const response = await fetch(`${this.API_BASE}/order?${params}`);
+            
+            console.log('Jupiter API Response Status:', response.status, response.statusText);
+            
             const quote = await response.json().catch(() => ({}));
+            
+            console.log('Jupiter API Response:', quote);
 
             if (!response.ok) {
-                throw new Error(quote.error || `Quote request failed (${response.status})`);
+                throw new Error(quote.error || `Quote request failed (${response.status}): ${JSON.stringify(quote)}`);
             }
 
             this.currentQuote = quote;
@@ -896,6 +908,11 @@ const jupiterSwap = {
 
         } catch (error) {
             console.error('Quote error:', error);
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
             this.showStatus('error', error.message || 'Failed to fetch quote. Please try again.');
         }
     },
