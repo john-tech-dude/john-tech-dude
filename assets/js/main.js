@@ -1340,3 +1340,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Update on resize
   window.addEventListener('resize', updateParallax);
 });
+
+// FAQ accordion
+function toggleFaq(element) {
+  const faqItem = element.parentElement;
+  const isOpen = faqItem.classList.contains('open');
+
+  // Close all FAQ items
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('open');
+  });
+
+  // Open clicked item if it was closed
+  if (!isOpen) {
+    faqItem.classList.add('open');
+  }
+}
