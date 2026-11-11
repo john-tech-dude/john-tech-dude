@@ -691,7 +691,7 @@ const jupiterSwap = {
         JUP: { mint: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN', decimals: 6 },
         ORCA: { mint: 'orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE', decimals: 6 },
         RENDER: { mint: 'rndrizKT3MK1iimdxRdWabcF7ZG7X841ZDYduhS1us', decimals: 8 },
-        NAZUMI: { mint: 'NAZUMI_PLACEHOLDER_MINT_ADDRESS', decimals: 6 } // Replace with actual mint
+        NAZUMI: { mint: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN', decimals: 6 } // TEST: Using JUP for testing - replace with actual NAZUMI mint after launch
     },
 
     API_BASE: 'https://api.jup.ag/swap/v2',
