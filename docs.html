@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE SCROLLS OF THE CLAN - Nazumi Ronin Documentation</title>
+  <meta name="description" content="Nazumi Ronin Documentation - Token economics, technical details, roadmap, and community information.">
+  <meta name="theme-color" content="#2c3e50">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/idr2g0H70M_1743216759084.jpeg">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/nazumi-enhancements.css">
+</head>
+
+<body>
+  <!-- Simple Header -->
+  <header class="docs-header">
+    <div class="docs-header-inner">
+      <a href="index.html" class="docs-logo">
+        <span class="docs-logo-text">NAZUMI RONIN</span>
+        <span class="docs-logo-subtitle">The Scrolls of the Clan</span>
+      </a>
+      <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Docs Container -->
+  <div class="docs-container">
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <nav class="docs-nav">
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Overview</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#overview" class="docs-nav-link active">Project Overview</a></li>
+            <li><a href="#tokenomics" class="docs-nav-link">Token Economics</a></li>
+            <li><a href="#technical" class="docs-nav-link">Technical Details</a></li>
+            <li><a href="#utility" class="docs-nav-link">Token Utility</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Strategy</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#roadmap" class="docs-nav-link">Roadmap</a></li>
+            <li><a href="#launch" class="docs-nav-link">Launch Strategy</a></li>
+            <li><a href="#community" class="docs-nav-link">Community Building</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Features</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#burn" class="docs-nav-link">Token Burn</a></li>
+            <li><a href="#airdrop" class="docs-nav-link">Airdrop Plans</a></li>
+            <li><a href="#nft" class="docs-nav-link">NFT Collection</a></li>
+            <li><a href="#buyback" class="docs-nav-link">Buyback Mechanism</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Legal & Security</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#legal" class="docs-nav-link">Legal & Compliance</a></li>
+            <li><a href="#security" class="docs-nav-link">Security & Audits</a></li>
+            <li><a href="#team" class="docs-nav-link">Team & Advisors</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Expansion</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#cex" class="docs-nav-link">CEX Listings</a></li>
+            <li><a href="#multichain" class="docs-nav-link">Multi-Chain Support</a></li>
+            <li><a href="#marketing" class="docs-nav-link">Marketing Campaigns</a></li>
+            <li><a href="#education" class="docs-nav-link">Educational Content</a></li>
+            <li><a href="#brand" class="docs-nav-link">Brand Guidelines</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-main">
+      <div class="docs-content">
+
+        <!-- Project Overview -->
+        <section id="overview" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">書</div>
+              <div class="arc-title">Project Overview</div>
+            </div>
+            <div class="documentation-content">
+              <h4>NAZUMI RONIN</h4>
+              <p>Nazumi Ronin is a Solana-based token project inspired by Japanese ronin philosophy. The project combines storytelling, community governance, and DeFi utilities to create a unique ecosystem for holders.</p>
+              <ul class="documentation-list">
+                <li><strong>Chain:</strong> Solana</li>
+                <li><strong>Standard:</strong> SPL Token</li>
+                <li><strong>Launch Date:</strong> Q1 2025 (Target)</li>
+                <li><strong>Audit Status:</strong> CertiK audit scheduled for December 2024</li>
+                <li><strong>Contract Address:</strong> [Will be published after deployment]</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Token Economics -->
+        <section id="tokenomics" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">算</div>
+              <div class="arc-title">Token Economics</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Pump.fun Launch Model</h4>
+              <ul class="documentation-list">
+                <li><strong>Total Supply:</strong> 1,000,000,000 NAZUMI (fixed)</li>
+                <li><strong>Launch Platform:</strong> Pump.fun bonding curve</li>
+                <li><strong>Graduation Target:</strong> ~$69,000 market cap</li>
+                <li><strong>Creator Fees:</strong> 0.05% of trading volume</li>
+                <li><strong>Liquidity:</strong> Automatic via Pump.fun → PumpSwap</li>
+                <li><strong>Distribution:</strong> Community-driven fair launch</li>
+              </ul>
+              <h4 style="margin-top: 1.5rem;">Community Benefits</h4>
+              <ul class="documentation-list">
+                <li><strong>Story-driven community:</strong> Japanese ronin narrative</li>
+                <li><strong>Cultural aesthetic:</strong> Manga-inspired design</li>
+                <li><strong>Future utility:</strong> Planned token utilities post-launch</li>
+                <li><strong>Community governance:</strong> Holder voting rights planned</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Technical Details -->
+        <section id="technical" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">技</div>
+              <div class="arc-title">Technical Details</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Pump.fun Token Information</h4>
+              <ul class="documentation-list">
+                <li><strong>Token Standard:</strong> SPL Token (Pump.fun compatible)</li>
+                <li><strong>Launch Platform:</strong> Pump.fun</li>
+                <li><strong>Post-Graduation:</strong> PumpSwap DEX</li>
+                <li><strong>Creator Fees:</strong> 0.05% of trading volume</li>
+                <li><strong>Liquidity:</strong> Automatic bonding curve → PumpSwap</li>
+                <li><strong>Contract:</strong> [Will be deployed via Pump.fun]</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Token Utility -->
+        <section id="utility" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">用</div>
+              <div class="arc-title">Token Utility</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Current & Future Benefits</h4>
+              <ul class="documentation-list">
+                <li><strong>Community Storytelling:</strong> Japanese ronin narrative</li>
+                <li><strong>Cultural Aesthetic:</strong> Manga-inspired design</li>
+                <li><strong>Future Staking:</strong> Planned post-launch development</li>
+                <li><strong>Governance:</strong> Community voting rights planned</li>
+                <li><strong>NFT Integration:</strong> Planned utility NFTs</li>
+                <li><strong>Game Development:</strong> Ronin's Quest planned</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Roadmap -->
+        <section id="roadmap" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">道</div>
+              <div class="arc-title">Roadmap</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Development Phases</h4>
+              <ul class="documentation-list">
+                <li><strong>Phase 1 (Q1 2025):</strong> Token launch, liquidity pool, community channels</li>
+                <li><strong>Phase 2 (Q2 2025):</strong> Staking contract, audit completion, governance system</li>
+                <li><strong>Phase 3 (Q3 2025):</strong> Ronin's Quest prototype, NFT collection launch</li>
+                <li><strong>Phase 4 (Q4 2025):</strong> Ecosystem expansion, partnership integrations</li>
+                <li><strong>Phase 5 (2026):</strong> Multi-chain support, advanced DeFi features</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Launch Strategy -->
+        <section id="launch" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">行</div>
+              <div class="arc-title">Launch Strategy</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Pump.fun Fair Launch</h4>
+              <ul class="documentation-list">
+                <li><strong>Platform:</strong> Pump.fun bonding curve</li>
+                <li><strong>Model:</strong> Community-driven fair launch</li>
+                <li><strong>Graduation:</strong> Automatic at ~$69K market cap to PumpSwap</li>
+                <li><strong>Community Building:</strong> Pre-launch community growth via Discord, Twitter/X, Telegram</li>
+                <li><strong>Organic Growth:</strong> Focus on organic community engagement, not artificial volume</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Community Building -->
+        <section id="community" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">団</div>
+              <div class="arc-title">Community Building</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Community Strategy</h4>
+              <ul class="documentation-list">
+                <li><strong>Discord:</strong> Server setup and growth strategy</li>
+                <li><strong>Twitter/X:</strong> Content strategy and engagement</li>
+                <li><strong>Telegram:</strong> Announcement channel</li>
+                <li><strong>Content:</strong> Storytelling, educational, community engagement</li>
+                <li><strong>Events:</strong> AMAs, trading competitions, workshops</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Token Burn -->
+        <section id="burn" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">焼</div>
+              <div class="arc-title">Token Burn Mechanism</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Deflationary Model</h4>
+              <ul class="documentation-list">
+                <li><strong>Transaction Burn:</strong> 1% of all transactions burned</li>
+                <li><strong>Staking Burn:</strong> 10% of staking rewards burned</li>
+                <li><strong>Protocol Fee Burn:</strong> 20% of protocol fees used for buyback & burn</li>
+                <li><strong>Target:</strong> 5% annual supply reduction</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Airdrop Plans -->
+        <section id="airdrop" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">配</div>
+              <div class="arc-title">Airdrop Plans</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Genesis Airdrop</h4>
+              <ul class="documentation-list">
+                <li><strong>Allocation:</strong> 5% genesis airdrop to early community</li>
+                <li><strong>Eligibility:</strong> Active Discord/Twitter followers</li>
+                <li><strong>Distribution:</strong> Pro-rata based on engagement</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- NFT Collection -->
+        <section id="nft" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">絵</div>
+              <div class="arc-title">NFT Collection</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Ronin's Arsenal</h4>
+              <ul class="documentation-list">
+                <li><strong>Collection:</strong> 10,000 NFTs</li>
+                <li><strong>Utility:</strong> Clan rank boosts, exclusive content</li>
+                <li><strong>Holder Benefits:</strong> Staking multipliers, governance weight</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Buyback Mechanism -->
+        <section id="buyback" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">買</div>
+              <div class="arc-title">Buyback Mechanism</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Revenue Sharing</h4>
+              <ul class="documentation-list">
+                <li><strong>Fee Allocation:</strong> 50% of protocol fees for buyback & burn</li>
+                <li><strong>Staking Rewards:</strong> 30% for staking rewards</li>
+                <li><strong>Treasury:</strong> 20% for treasury</li>
+                <li><strong>Frequency:</strong> Weekly buyback events</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Legal & Compliance -->
+        <section id="legal" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">法</div>
+              <div class="arc-title">Legal & Compliance</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Legal Framework</h4>
+              <ul class="documentation-list">
+                <li><strong>Jurisdiction:</strong> Cayman Islands (planned)</li>
+                <li><strong>Terms of Service:</strong> To be published</li>
+                <li><strong>Privacy Policy:</strong> To be published</li>
+                <li><strong>Risk Disclaimer:</strong> Investment risk disclosure required</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Security & Audits -->
+        <section id="security" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">証</div>
+              <div class="arc-title">Security & Audits</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Security Measures</h4>
+              <ul class="documentation-list">
+                <li><strong>Audit Firm:</strong> CertiK (scheduled for December 2024)</li>
+                <li><strong>Penetration Testing:</strong> Planned security assessments</li>
+                <li><strong>Bug Bounty:</strong> Community bug bounty program</li>
+                <li><strong>Multi-sig:</strong> Multi-signature wallet security</li>
+                <li><strong>Timelock:</strong> Timelock contracts for sensitive operations</li>
+                <li><strong>Emergency Pause:</strong> Emergency pause functionality</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Team & Advisors -->
+        <section id="team" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">団</div>
+              <div class="arc-title">Team & Advisors</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Core Team</h4>
+              <ul class="documentation-list">
+                <li><strong>Founder:</strong> [To be announced]</li>
+                <li><strong>Lead Developer:</strong> [To be announced]</li>
+                <li><strong>Community Manager:</strong> [To be announced]</li>
+                <li><strong>Marketing Lead:</strong> [To be announced]</li>
+              </ul>
+              <h4 style="margin-top: 1.5rem;">Advisors</h4>
+              <ul class="documentation-list">
+                <li><strong>Industry Advisors:</strong> [To be announced]</li>
+                <li><strong>Technical Advisors:</strong> [To be announced]</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- CEX Listings -->
+        <section id="cex" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">場</div>
+              <div class="arc-title">CEX Listings</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Exchange Strategy</h4>
+              <ul class="documentation-list">
+                <li><strong>Phase 1:</strong> Raydium DEX (launch)</li>
+                <li><strong>Phase 2:</strong> Orca DEX, Jupiter aggregation</li>
+                <li><strong>Phase 3:</strong> Tier 2 CEXs (Bybit, KuCoin)</li>
+                <li><strong>Phase 4:</strong> Tier 1 CEXs (Binance, Coinbase)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Multi-Chain Support -->
+        <section id="multichain" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">橋</div>
+              <div class="arc-title">Multi-Chain Support</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Cross-Chain Expansion</h4>
+              <ul class="documentation-list">
+                <li><strong>Phase 1:</strong> Solana (launch)</li>
+                <li><strong>Phase 2:</strong> Ethereum L2s (Arbitrum, Optimism)</li>
+                <li><strong>Phase 3:</strong> Cosmos ecosystem</li>
+                <li><strong>Phase 4:</strong> Bitcoin L2s</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Marketing Campaigns -->
+        <section id="marketing" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">広</div>
+              <div class="arc-title">Marketing Campaigns</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Marketing Strategy</h4>
+              <ul class="documentation-list">
+                <li><strong>Influencer Partnerships:</strong> Crypto YouTubers, Twitter KOLs</li>
+                <li><strong>Community Events:</strong> AMAs, Twitter Spaces</li>
+                <li><strong>Content Marketing:</strong> Blog, tutorials, video</li>
+                <li><strong>PR Campaigns:</strong> Crypto media outlets</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Educational Content -->
+        <section id="education" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">学</div>
+              <div class="arc-title">Educational Content</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Learning Resources</h4>
+              <ul class="documentation-list">
+                <li><strong>Documentation:</strong> This comprehensive guide</li>
+                <li><strong>Story Content:</strong> Japanese ronin narrative</li>
+                <li><strong>Community Guides:</strong> How to participate</li>
+                <li><strong>Future Academy:</strong> Interactive learning (planned)</li>
+                <li><strong>Blog:</strong> Project updates and insights</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Brand Guidelines -->
+        <section id="brand" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">広報</div>
+              <div class="arc-title">Brand Identity</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Japanese Aesthetic</h4>
+              <ul class="documentation-list">
+                <li><strong>Visual Style:</strong> Manga-inspired design</li>
+                <li><strong>Color Scheme:</strong> #9B2226 (primary), #2E4057 (secondary)</li>
+                <li><strong>Typography:</strong> Oswald, Bangers fonts</li>
+                <li><strong>Cultural Theme:</strong> Japanese ronin philosophy</li>
+                <li><strong>Storytelling:</strong> Narrative-driven community</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Simple Footer -->
+  <footer class="docs-footer">
+    <div class="docs-footer-inner">
+      <p>&copy; 2025 Nazumi Ronin. All rights reserved.</p>
+      <a href="index.html" class="docs-footer-link">← Back to Main Site</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Docs navigation active state
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.docs-nav-link');
+      const sections = document.querySelectorAll('.docs-section');
+
+      function setActiveLink() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (window.scrollY >= sectionTop - 100) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink);
+      setActiveLink();
+    });
+  </script>
+</body>
+</html>
