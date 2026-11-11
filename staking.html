@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WARRIOR'S TRAINING - Nazumi Ronin</title>
+  <meta name="description" content="Stake your NAZUMI to train, earn rewards, and unlock deeper lore. The path of the ronin requires discipline.">
+  <meta name="theme-color" content="#2c3e50">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/idr2g0H70M_1743216759084.jpeg">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/nazumi-enhancements.css">
+</head>
+
+<body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen" role="dialog" aria-label="Warrior's Training">
+    <div class="splash-wash" aria-hidden="true"></div>
+    <div class="japanese-symbol japanese-symbol-splash symbol-top-right-splash">修</div>
+    <div class="japanese-symbol japanese-symbol-splash symbol-bottom-left-splash">行</div>
+    <div class="splash-inner">
+      <div class="splash-seal" aria-hidden="true">鍛錬</div>
+      <p class="splash-kicker">WARRIOR'S PATH</p>
+      <h1 class="splash-title">THE TRAINING GROUNDS</h1>
+      <span class="splash-rule" aria-hidden="true"></span>
+      <p class="splash-subtitle">Stake. Train. Earn. Ascend.</p>
+      <div class="loading-bar-container" id="splashLoading">
+        <div class="loading-bar" id="loadingBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="bgCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+
+  <!-- Header -->
+  <header class="nav">
+    <div class="nav-logo">WARRIOR'S TRAINING <span class="nav-version">STAKE NAZUMI</span></div>
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item" style="--item-index: 1;"><a href="#overview" class="nav-link">Overview</a></li>
+      <li class="nav-item" style="--item-index: 2;"><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      <li class="nav-item" style="--item-index: 3;"><a href="#tiers" class="nav-link">Training Tiers</a></li>
+      <li class="nav-item" style="--item-index: 4;"><a href="#rewards" class="nav-link">Rewards</a></li>
+      <li class="nav-item" style="--item-index: 5;"><a href="#stake" class="nav-link">Stake Now</a></li>
+      <li class="nav-item" style="--item-index: 6;"><a href="index.html" class="nav-link">← Back</a></li>
+    </ul>
+  </header>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" id="darkModeToggle" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Section -->
+    <section class="hero scrolls-hero">
+      <div class="japanese-symbol symbol-top-right">修</div>
+      <div class="japanese-symbol symbol-bottom-left">行</div>
+
+      <!-- Cherry blossom petals -->
+      <div class="cherry-petals">
+        <div class="petal" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="petal" style="top: 5%; left: 40%; animation-delay: 2s;"></div>
+        <div class="petal" style="top: 15%; left: 60%; animation-delay: 3.5s;"></div>
+        <div class="petal" style="top: 8%; left: 80%; animation-delay: 1s;"></div>
+        <div class="petal" style="top: 20%; left: 10%; animation-delay: 4s;"></div>
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-title">THE TRAINING GROUNDS</h1>
+        <p class="hero-subtitle">Stake NAZUMI. Train Your Blade. Earn Rewards.</p>
+        <p class="hero-description">The path of the ronin requires discipline. Stake your tokens to prove your commitment, earn rewards, and unlock deeper chapters of the clan's story.</p>
+        <a href="#stake" class="btn btn-red hero-cta">Enter Training Grounds <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="hero-scroll">
+        <div class="scroll-title">WARRIOR'S DISCIPLINE</div>
+        <p class="scroll-version">Vol. 1 · Staking & Rewards</p>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text">A ronin is not chosen. A ronin is what remains. And the small survive by standing together.</div>
+        <div class="scroll-divider"></div>
+        <div class="scroll-text"><em>Stake to train. Hold to grow. Stand together to survive.</em></div>
+      </div>
+
+      <div class="red-seal">
+        鍛錬
+      </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="manga-section scrolls-section">
+      <h2 class="section-title">OVERVIEW</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">修</div>
+            <div class="arc-title">What is Staking?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Staking allows you to lock your NAZUMI tokens in a secure smart contract to earn rewards. The longer you stake, the greater your rewards and access to exclusive clan benefits.</p>
+            <p style="margin-top: 1rem;">Think of it as <strong>warrior training</strong> — the more you dedicate yourself to the path, the stronger you become and the more wisdom you unlock.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">行</div>
+            <div class="arc-title">Why Stake?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Staking aligns your interests with the clan's growth. By committing your tokens, you:</p>
+            <ul class="scrolls-list">
+              <li><strong>Earn Rewards:</strong> Receive NAZUMI tokens for staking</li>
+              <li><strong>Unlock Lore:</strong> Access hidden Clan Scrolls chapters</li>
+              <li><strong>Gain Status:</strong> Climb Clan Ranks for exclusive benefits</li>
+              <li><strong>Shape the Story:</strong> Vote on lore directions and community decisions</li>
+              <li><strong>Reduce Supply:</strong> Help stabilize the token through reduced circulation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="manga-section scrolls-section">
+      <h2 class="section-title">HOW IT WORKS</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">一</div>
+            <div class="arc-title">Step 1: Connect Wallet</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Connect your Solana wallet to the staking platform. We support all major wallets including Phantom, Solflare, and Backpack.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">二</div>
+            <div class="arc-title">Step 2: Choose Pool</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Select your staking pool based on your commitment level. Choose flexible staking or lock periods for higher rewards.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="400">
+          <div class="arc-header">
+            <div class="arc-number">三</div>
+            <div class="arc-title">Step 3: Stake Tokens</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Enter the amount of NAZUMI you wish to stake and confirm the transaction. Your tokens are secured in a non-custodial smart contract.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="600">
+          <div class="arc-header">
+            <div class="arc-number">四</div>
+            <div class="arc-title">Step 4: Earn & Unlock</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Rewards accrue automatically. Claim them anytime, unlock Clan Scrolls content, and climb the ranks of the Ronin Clan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training Tiers Section -->
+    <section id="tiers" class="manga-section scrolls-section">
+      <h2 class="section-title">TRAINING TIERS</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">初</div>
+            <div class="arc-title">Initiate</div>
+          </div>
+          <div class="scrolls-content">
+            <p><strong>Requirements:</strong> Stake any amount of NAZUMI</p>
+            <p><strong>Rewards:</strong> Base staking APR</p>
+            <p><strong>Benefits:</strong> Access to basic Clan Scrolls, community channels</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">中</div>
+            <div class="arc-title">Warrior</div>
+          </div>
+          <div class="scrolls-content">
+            <p><strong>Requirements:</strong> Stake 10,000+ NAZUMI for 30+ days</p>
+            <p><strong>Rewards:</strong> Enhanced APR + bonus rewards</p>
+            <p><strong>Benefits:</strong> Unlock intermediate lore chapters, Clan Council access</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="400">
+          <div class="arc-header">
+            <div class="arc-number">上</div>
+            <div class="arc-title">Master</div>
+          </div>
+          <div class="scrolls-content">
+            <p><strong>Requirements:</strong> Stake 100,000+ NAZUMI for 90+ days</p>
+            <p><strong>Rewards:</strong> Premium APR + exclusive rewards</p>
+            <p><strong>Benefits:</strong> Unlock advanced lore, governance voting rights, early access</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="600">
+          <div class="arc-header">
+            <div class="arc-number">聖</div>
+            <div class="arc-title">Elder</div>
+          </div>
+          <div class="scrolls-content">
+            <p><strong>Requirements:</strong> Stake 1,000,000+ NAZUMI for 180+ days</p>
+            <p><strong>Rewards:</strong> Maximum APR + legendary rewards</p>
+            <p><strong>Benefits:</strong> All lore unlocked, Clan Council leadership, special events</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rewards Section -->
+    <section id="rewards" class="manga-section scrolls-section">
+      <h2 class="section-title">REWARDS & BENEFITS</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">賞</div>
+            <div class="arc-title">Token Rewards</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Earn NAZUMI tokens proportional to your stake and duration. Rewards are distributed automatically and can be claimed at any time.</p>
+            <ul class="scrolls-list">
+              <li><strong>Flexible Staking:</strong> No lock period, lower APR</li>
+              <li><strong>30-Day Lock:</strong> Higher APR for committed stakers</li>
+              <li><strong>90-Day Lock:</strong> Premium APR for long-term warriors</li>
+              <li><strong>180-Day Lock:</strong> Maximum APR for clan elders</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">巻</div>
+            <div class="arc-title">Clan Scrolls Access</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Staking unlocks hidden chapters of the clan's story. Higher tiers grant access to exclusive lore and backstory expansions.</p>
+            <ul class="scrolls-list">
+              <li><strong>Initiate:</strong> Basic story chapters</li>
+              <li><strong>Warrior:</strong> Intermediate lore and character backstories</li>
+              <li><strong>Master:</strong> Advanced chapters and world-building</li>
+              <li><strong>Elder:</strong> All content including unreleased stories</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="400">
+          <div class="arc-header">
+            <div class="arc-number">議</div>
+            <div class="arc-title">Governance Rights</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Stakers earn voting power on community decisions, including lore direction, partnership approvals, and treasury allocations.</p>
+            <ul class="scrolls-list">
+              <li><strong>Warrior+:</strong> Vote on minor community decisions</li>
+              <li><strong>Master+:</strong> Vote on major proposals and partnerships</li>
+              <li><strong>Elder:</strong> Full governance participation and veto rights</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stake Now Section -->
+    <section id="stake" class="manga-section scrolls-section">
+      <h2 class="section-title">BEGIN YOUR TRAINING</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">鍛</div>
+            <div class="arc-title">Staking Pool</div>
+          </div>
+          <div class="scrolls-content">
+            <div style="background: rgba(155, 34, 38, 0.1); border: 2px solid var(--primary-red); border-radius: 8px; padding: 2rem; text-align: center;">
+              <h3 style="color: var(--primary-red); margin-bottom: 1rem;">STAKING POOL COMING SOON</h3>
+              <p style="margin-bottom: 1.5rem;">The Warrior's Training Grounds will open after the NAZUMI token graduates to PumpSwap. StakePoint integration is being prepared.</p>
+              <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://stakepoint.app" target="_blank" class="btn btn-red" style="font-size: 0.9rem;">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> StakePoint Platform
+                </a>
+                <a href="index.html" class="btn btn-outline" style="font-size: 0.9rem;">
+                  <i class="fa-solid fa-arrow-left"></i> Back to Main Site
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">準</div>
+            <div class="arc-title">Preparation Checklist</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Before staking becomes available:</p>
+            <ul class="scrolls-list">
+              <li>✓ NAZUMI token launched on pump.fun</li>
+              <li>✓ Token graduates to PumpSwap (~$69K market cap)</li>
+              <li>⏳ Staking pool creation on StakePoint</li>
+              <li>⏳ Website integration and widget embedding</li>
+              <li>⏳ Community announcement and education</li>
+            </ul>
+            <p style="margin-top: 1rem; font-style: italic;">The path ahead is clear. Prepare your tokens and your resolve.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="manga-section scrolls-section">
+      <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
+      <div class="panel-grid">
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up">
+          <div class="arc-header">
+            <div class="arc-number">問</div>
+            <div class="arc-title">Is staking safe?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Yes. Staking uses non-custodial smart contracts audited by CPK Solutions. Your tokens are held in Program Derived Addresses with no private keys. Nobody, including us, can access your staked tokens.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="200">
+          <div class="arc-header">
+            <div class="arc-number">疑</div>
+            <div class="arc-title">Can I unstake anytime?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Flexible staking allows unstaking at any time. Locked staking requires waiting for the lock period to end, but you can claim rewards at any time without resetting your timer.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="400">
+          <div class="arc-header">
+            <div class="arc-number">得</div>
+            <div class="arc-title">How are rewards calculated?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Rewards are distributed proportionally based on each staker's share of the pool. The more you stake and the longer you commit, the higher your rewards. APR adjusts dynamically based on total participation.</p>
+          </div>
+        </div>
+
+        <div class="panel panel-md scrolls-panel" data-aos="fade-up" data-aos-delay="600">
+          <div class="arc-header">
+            <div class="arc-number">税</div>
+            <div class="arc-title">Are staking rewards taxable?</div>
+          </div>
+          <div class="scrolls-content">
+            <p>Staking rewards may be considered taxable income in your jurisdiction. Consult with a tax professional for guidance on your specific situation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">NAZUMI RONIN</div>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link">
+            <img src="assets/images/x-logo.webp" alt="X logo" style="width: 60%; height: auto;">
+          </a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+        </div>
+
+        <div class="copyright">
+          &copy; 2026 Nazumi Ronin V1.2. All rights reserved. The path of the swordsman is eternal.
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100
+    });
+  </script>
+
+  <script>
+    // Three.js 3D Parallax Background
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('bgCanvas');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Create floating particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlesCount = 180;
+      const posArray = new Float32Array(particlesCount * 3);
+
+      for (let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 22;
+      }
+
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+      const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.045,
+        color: 0x9B2226,
+        transparent: true,
+        opacity: 0.5
+      });
+
+      const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particlesMesh);
+
+      // Create floating swords (planes)
+      const swordGeometry = new THREE.PlaneGeometry(0.3, 1.0);
+      const swordMaterial = new THREE.MeshBasicMaterial({
+        color: 0x9B2226,
+        transparent: true,
+        opacity: 0.06,
+        side: THREE.DoubleSide
+      });
+
+      const swordGroup = new THREE.Group();
+      for (let i = 0; i < 15; i++) {
+        const sword = new THREE.Mesh(swordGeometry, swordMaterial.clone());
+        sword.position.set(
+          (Math.random() - 0.5) * 18,
+          (Math.random() - 0.5) * 18,
+          (Math.random() - 0.5) * 9
+        );
+        sword.rotation.set(
+          Math.random() * Math.PI,
+          Math.random() * Math.PI,
+          Math.random() * Math.PI
+        );
+        swordGroup.add(sword);
+      }
+      scene.add(swordGroup);
+
+      // Create floating kanji
+      const kanjiGeometry = new THREE.PlaneGeometry(0.6, 0.6);
+      const kanjiMaterial = new THREE.MeshBasicMaterial({
+        color: 0x9B2226,
+        transparent: true,
+        opacity: 0.04,
+        side: THREE.DoubleSide
+      });
+
+      const kanjiGroup = new THREE.Group();
+      for (let i = 0; i < 12; i++) {
+        const kanji = new THREE.Mesh(kanjiGeometry, kanjiMaterial.clone());
+        kanji.position.set(
+          (Math.random() - 0.5) * 16,
+          (Math.random() - 0.5) * 16,
+          (Math.random() - 0.5) * 8
+        );
+        kanji.rotation.set(
+          Math.random() * Math.PI,
+          Math.random() * Math.PI,
+          Math.random() * Math.PI
+        );
+        kanjiGroup.add(kanji);
+      }
+      scene.add(kanjiGroup);
+
+      camera.position.z = 6;
+
+      // Mouse movement for parallax
+      let mouseX = 0;
+      let mouseY = 0;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        particlesMesh.rotation.y += 0.0007;
+        particlesMesh.rotation.x += 0.0004;
+
+        swordGroup.rotation.y += 0.0012;
+        swordGroup.children.forEach((sword, i) => {
+          sword.rotation.x += 0.0007 * (i % 2 === 0 ? 1 : -1);
+          sword.rotation.y += 0.0007 * (i % 3 === 0 ? 1 : -1);
+        });
+
+        kanjiGroup.rotation.y += 0.0009;
+        kanjiGroup.children.forEach((kanji, i) => {
+          kanji.rotation.x += 0.0006 * (i % 2 === 0 ? 1 : -1);
+          kanji.rotation.y += 0.0006 * (i % 3 === 0 ? 1 : -1);
+        });
+
+        // Parallax effect
+        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+        camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Handle resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Dark mode color update
+      const updateColors = () => {
+        const isDark = document.body.classList.contains('dark-mode');
+        const newColor = isDark ? 0xEF4444 : 0x9B2226;
+        particlesMaterial.color.setHex(newColor);
+        swordMaterial.color.setHex(newColor);
+        kanjiMaterial.color.setHex(newColor);
+      };
+
+      // Listen for dark mode toggle
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', updateColors);
+      }
+    });
+
+    // Dark mode toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+          body.classList.toggle('dark-mode');
+          if (body.classList.contains('dark-mode')) {
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          } else {
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          }
+        });
+
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          body.classList.add('dark-mode');
+          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      }
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') return;
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 70,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
+      // Menu toggle
+      const menuToggle = document.getElementById('menuToggle');
+      const navMenu = document.getElementById('navMenu');
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
