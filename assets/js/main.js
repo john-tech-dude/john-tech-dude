@@ -1340,3 +1340,52 @@ document.addEventListener('DOMContentLoaded', function() {
   // Update on resize
   window.addEventListener('resize', updateParallax);
 });
+
+// Documentation accordion — collapsible scroll panels
+document.addEventListener('DOMContentLoaded', function() {
+  const docPanels = document.querySelectorAll('.documentation-panel');
+  if (!docPanels.length) return;
+
+  const setOpen = (panel, header, content, open) => {
+    panel.classList.toggle('open', open);
+    header.setAttribute('aria-expanded', open);
+    content.style.maxHeight = open ? content.scrollHeight + 'px' : '0px';
+  };
+
+  docPanels.forEach((panel, index) => {
+    const header = panel.querySelector('.arc-header');
+    const content = panel.querySelector('.documentation-content');
+    if (!header || !content) return;
+
+    const chevron = document.createElement('span');
+    chevron.className = 'doc-chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+    chevron.textContent = '\u25B8';
+    header.appendChild(chevron);
+
+    header.setAttribute('role', 'button');
+    header.setAttribute('tabindex', '0');
+    header.setAttribute('aria-expanded', 'false');
+
+    header.addEventListener('click', () => {
+      setOpen(panel, header, content, !panel.classList.contains('open'));
+    });
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setOpen(panel, header, content, !panel.classList.contains('open'));
+      }
+    });
+
+    if (index === 0) setOpen(panel, header, content, true);
+  });
+
+  // Keep open panels sized correctly on resize (fonts, translation, rotation)
+  window.addEventListener('resize', () => {
+    docPanels.forEach((panel) => {
+      if (!panel.classList.contains('open')) return;
+      const content = panel.querySelector('.documentation-content');
+      if (content) content.style.maxHeight = content.scrollHeight + 'px';
+    });
+  });
+});

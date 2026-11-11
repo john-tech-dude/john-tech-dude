@@ -638,7 +638,39 @@
 }
 
 .documentation-content {
-  padding: 1.5rem;
+  padding: 0 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.35s ease;
+}
+
+.documentation-panel.open .documentation-content {
+  opacity: 1;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.documentation-panel .arc-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.documentation-panel .arc-header:hover .arc-title {
+  color: var(--primary-red);
+}
+
+.doc-chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--primary-red);
+  transition: transform 0.25s ease;
+}
+
+.documentation-panel.open .doc-chevron {
+  transform: rotate(90deg);
 }
 
 .documentation-content h4 {
@@ -705,10 +737,24 @@
   color: var(--dm-light-red);
 }
 
+.dark-mode .doc-chevron {
+  color: var(--dm-light-red);
+}
+
+.dark-mode .documentation-panel .arc-header:hover .arc-title {
+  color: var(--dm-light-red);
+}
+
 /* ── Mobile responsive for documentation ── */
 @media (max-width: 768px) {
   .documentation-content {
-    padding: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .documentation-panel.open .documentation-content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   .documentation-content h4 {
