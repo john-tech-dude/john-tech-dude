@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CLAN SCROLLS - Nazumi Ronin</title>
+  <meta name="description" content="Hidden chapters of the clan wars. Exclusive lore, backstory expansions, and untold tales of Honami and beyond.">
+  <meta name="theme-color" content="#2c3e50">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/idr2g0H70M_1743216759084.jpeg">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/nazumi-enhancements.css">
+</head>
+
+<body>
+  <!-- Three.js Background Canvas -->
+  <canvas id="bgCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+
+  <!-- Simple Header -->
+  <header class="docs-header">
+    <div class="docs-header-inner">
+      <a href="index.html" class="docs-logo">
+        <span class="docs-logo-text">NAZUMI RONIN</span>
+        <span class="docs-logo-subtitle">The Clan Scrolls</span>
+      </a>
+      <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Scrolls Container -->
+  <div class="docs-container">
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <nav class="docs-nav">
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">The Story</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#honami" class="docs-nav-link active">Honami</a></li>
+            <li><a href="#takashi" class="docs-nav-link">Takashi</a></li>
+            <li><a href="#kodama" class="docs-nav-link">Kodama</a></li>
+            <li><a href="#kage-nezumi" class="docs-nav-link">Kage-Nezumi</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">The World</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#iwane" class="docs-nav-link">Iwane</a></li>
+            <li><a href="#clan-wars" class="docs-nav-link">Clan Wars</a></li>
+            <li><a href="#ronin-code" class="docs-nav-link">Ronin Code</a></li>
+          </ul>
+        </div>
+
+        <div class="docs-nav-section">
+          <h3 class="docs-nav-title">Coming Soon</h3>
+          <ul class="docs-nav-list">
+            <li><a href="#untold-tales" class="docs-nav-link">Untold Tales</a></li>
+            <li><a href="#expansions" class="docs-nav-link">Backstory Expansions</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-main">
+      <div class="docs-content">
+
+        <!-- Intro -->
+        <section id="intro" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">序</div>
+              <div class="arc-title">The Clan Scrolls</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Hidden Chapters of the Clan Wars</h4>
+              <p>The Clan Scrolls contain exclusive lore, backstory expansions, and untold tales that deepen the world of Nazumi Ronin. Holders unlock chapters as they grow their stake in the clan.</p>
+              <p style="margin-top: 1rem; font-style: italic;">More scrolls will be unlocked as the community grows and the story expands.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Honami -->
+        <section id="honami" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">穂波</div>
+              <div class="arc-title">Honami — The Night at Honami</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Rice Village</h4>
+              <p>Honami (穂波) — "waves of rice ears" — was a village of granaries and drying racks, where the ripe rice-heads moved in the wind like water. The Kage-Nezumi came for the rice and stayed to burn.</p>
+              <p style="margin-top: 1rem;">The Black Crescent took the granaries first. They took Nazumi's parents second. He was small enough to hide in the temple rafters. A blade does not look up for what it cannot see. He watched through the smoke and made no sound, and that is the only reason he lived.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Takashi -->
+        <section id="takashi" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">隆</div>
+              <div class="arc-title">Takashi — The Soldier Who Stayed</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Confession</h4>
+              <p>A soldier climbed into the rafters. The Kage-Nezumi crest was on his sleeve and his hands were still wet from the night's work. Nazumi waited for the cut.</p>
+              <p style="margin-top: 1rem;">The soldier looked at him for a long time. Then he sheathed his sword and held out a paw.</p>
+              <blockquote style="margin: 1rem 0; padding-left: 1rem; border-left: 3px solid var(--primary-red); font-style: italic;">
+                "I will not name what I owe you, pup. But I will not leave you to die in our ashes."
+              </blockquote>
+              <p>His name was Takashi.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kodama -->
+        <section id="kodama" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">木霊</div>
+              <div class="arc-title">Kodama — The Echo</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Companion</h4>
+              <p>The pup followed him up the mountain. Nazumi tried to send it home. It showed him the cracked-millstone mark on its flank and stayed. It had nowhere to go, just as he once had nowhere to go.</p>
+              <p style="margin-top: 1rem;">He named it <strong>Kodama</strong> (木霊), the echo, for the eyes that kept finding him: in the rafters, in the ambush, on the mountain path. Two survivors of the same burning, walking the same road.</p>
+              <p style="margin-top: 1rem;">A ronin is not chosen. A ronin is what remains. And the small survive by standing together.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kage-Nezumi -->
+        <section id="kage-nezumi" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">影鼠</div>
+              <div class="arc-title">Kage-Nezumi — The Black Crescent</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Shadow Clan</h4>
+              <p>Kage-Nezumi (影鼠) — "shadow-rat" — the Black Crescent, the clan that takes by night. They came for the rice and stayed to burn.</p>
+              <p style="margin-top: 1rem;">Epithet: Kuro-Mikazuki (黒三日月) — the Black Crescent Moon.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Iwane -->
+        <section id="iwane" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">岩根</div>
+              <div class="arc-title">Iwane — Stone-Root</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Region</h4>
+              <p>Iwane (岩根) — "rock root" — a real place and surname. The Stone-Root villages dot the landscape, past cracked millstones and burrows sealed from the inside.</p>
+              <p style="margin-top: 1rem;">It was not kind to the small.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Clan Wars -->
+        <section id="clan-wars" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">戦</div>
+              <div class="arc-title">Clan Wars</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Conflict</h4>
+              <p>The clan wars raged across Iwane. The Kage-Nezumi took villages for sport. Takashi had been a scholar of Iwane before the Black Crescent took the rice lands and took him with them.</p>
+              <p style="margin-top: 1rem;">He had joined them believing they would bring order. Then he watched them burn villages for sport.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ronin Code -->
+        <section id="ronin-code" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">義</div>
+              <div class="arc-title">Ronin Code</div>
+            </div>
+            <div class="documentation-content">
+              <h4>The Five Virtues</h4>
+              <ul class="documentation-list">
+                <li><strong>義 — Righteousness:</strong> Do what is right, even when it costs you. A blade doesn't decide anything. The paw does.</li>
+                <li><strong>誠 — Sincerity:</strong> No unnamed debts. No business before dawn. The clan walks in the open.</li>
+                <li><strong>仁 — Benevolence:</strong> Protect the small. Mercy is harder than the cut. Choose it anyway.</li>
+                <li><strong>礼 — Respect:</strong> The monastery took him in without asking what he had done. The clan does the same. Everyone here is still walking.</li>
+                <li><strong>勇 — Courage:</strong> Lowering the blade is the brave act. Standing down when you could strike is harder than fighting.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Coming Soon -->
+        <section id="untold-tales" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">巻</div>
+              <div class="arc-title">Untold Tales</div>
+            </div>
+            <div class="documentation-content">
+              <h4>Coming Soon</h4>
+              <p>Additional scrolls will unlock as the community grows. Holders will gain access to:</p>
+              <ul class="documentation-list">
+                <li><strong>Hidden Chapters:</strong> Exclusive backstory content</li>
+                <li><strong>Character Lore:</strong> Deep dives into supporting characters</li>
+                <li><strong>World-Building:</strong> The geography and history of Iwane</li>
+                <li><strong>Clan Hierarchy:</strong> The structure of the Ronin Clan</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Back to Main -->
+        <section id="back" class="docs-section">
+          <div class="docs-panel">
+            <div class="arc-header">
+              <div class="arc-number">帰</div>
+              <div class="arc-title">Return to the Path</div>
+            </div>
+            <div class="documentation-content">
+              <a href="index.html" class="btn btn-red" style="display: inline-block;">
+                <i class="fa-solid fa-arrow-left"></i> BACK TO MAIN SITE
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Three.js 3D Parallax Background
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('bgCanvas');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Create floating particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlesCount = 150;
+      const posArray = new Float32Array(particlesCount * 3);
+
+      for (let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 20;
+      }
+
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+      const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.05,
+        color: 0x9B2226,
+        transparent: true,
+        opacity: 0.5
+      });
+
+      const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particlesMesh);
+
+      // Create floating scrolls (planes)
+      const scrollGeometry = new THREE.PlaneGeometry(0.8, 1.2);
+      const scrollMaterial = new THREE.MeshBasicMaterial({
+        color: 0x9B2226,
+        transparent: true,
+        opacity: 0.08,
+        side: THREE.DoubleSide
+      });
+
+      const scrollGroup = new THREE.Group();
+      for (let i = 0; i < 12; i++) {
+        const scroll = new THREE.Mesh(scrollGeometry, scrollMaterial.clone());
+        scroll.position.set(
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 8
+        );
+        scroll.rotation.set(
+          Math.random() * Math.PI,
+          Math.random() * Math.PI,
+          Math.random() * Math.PI
+        );
+        scrollGroup.add(scroll);
+      }
+      scene.add(scrollGroup);
+
+      camera.position.z = 5;
+
+      // Mouse movement for parallax
+      let mouseX = 0;
+      let mouseY = 0;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        particlesMesh.rotation.y += 0.0008;
+        particlesMesh.rotation.x += 0.0004;
+
+        scrollGroup.rotation.y += 0.0015;
+        scrollGroup.children.forEach((scroll, i) => {
+          scroll.rotation.x += 0.0008 * (i % 2 === 0 ? 1 : -1);
+          scroll.rotation.y += 0.0008 * (i % 3 === 0 ? 1 : -1);
+        });
+
+        // Parallax effect
+        camera.position.x += (mouseX * 0.4 - camera.position.x) * 0.05;
+        camera.position.y += (mouseY * 0.4 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Handle resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Dark mode color update
+      const updateColors = () => {
+        const isDark = document.body.classList.contains('dark-mode');
+        const newColor = isDark ? 0xEF4444 : 0x9B2226;
+        particlesMaterial.color.setHex(newColor);
+        scrollMaterial.color.setHex(newColor);
+      };
+
+      // Listen for dark mode toggle
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', updateColors);
+      }
+    });
+
+    // Dark mode toggle for clan scrolls page
+    document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+          body.classList.toggle('dark-mode');
+          if (body.classList.contains('dark-mode')) {
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          } else {
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          }
+        });
+
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          body.classList.add('dark-mode');
+          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      }
+
+      // Scrolls navigation active state
+      const navLinks = document.querySelectorAll('.docs-nav-link');
+      const sections = document.querySelectorAll('.docs-section');
+
+      function setActiveLink() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (window.scrollY >= sectionTop - 100) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink);
+      setActiveLink();
+    });
+  </script>
+</body>
+</html>
