@@ -578,13 +578,30 @@
   </script>
 
   <script>
-    // Three.js 3D Parallax Background
+    // Three.js 3D Parallax Background & Splash Screen
     document.addEventListener('DOMContentLoaded', function() {
+      // Splash screen dismissal
+      const splashScreen = document.getElementById('splashScreen');
+      const body = document.body;
+      document.body.style.overflow = 'hidden';
+
+      function dismissSplash() {
+        splashScreen.classList.add('is-leaving');
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+          splashScreen.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = 'auto';
+        }, 650);
+      }
+
+      setTimeout(dismissSplash, 2500);
+
+      // Three.js initialization
       const canvas = document.getElementById('bgCanvas');
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      
+
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -720,16 +737,6 @@
       // Listen for dark mode toggle
       const darkModeToggle = document.getElementById('darkModeToggle');
       if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', updateColors);
-      }
-    });
-
-    // Dark mode toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      const body = document.body;
-
-      if (darkModeToggle) {
         darkModeToggle.addEventListener('click', function() {
           body.classList.toggle('dark-mode');
           if (body.classList.contains('dark-mode')) {
@@ -737,12 +744,14 @@
           } else {
             darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
           }
+          updateColors();
         });
 
         // Check for saved preference
         if (localStorage.getItem('darkMode') === 'enabled') {
           body.classList.add('dark-mode');
           darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          updateColors();
         }
       }
 
